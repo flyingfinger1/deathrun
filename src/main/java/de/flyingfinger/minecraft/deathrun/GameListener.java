@@ -1,4 +1,4 @@
-package com.example.deathrun;
+package de.flyingfinger.minecraft.deathrun;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;

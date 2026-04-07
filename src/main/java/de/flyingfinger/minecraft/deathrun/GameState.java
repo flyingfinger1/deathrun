@@ -1,4 +1,4 @@
-package com.example.deathrun;
+package de.flyingfinger.minecraft.deathrun;
 
 public enum GameState {
     IDLE,

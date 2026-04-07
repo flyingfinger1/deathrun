@@ -1,4 +1,4 @@
-package com.example.deathrun;
+package de.flyingfinger.minecraft.deathrun;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

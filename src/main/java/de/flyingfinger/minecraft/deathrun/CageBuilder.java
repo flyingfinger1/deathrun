@@ -1,4 +1,4 @@
-package com.example.deathrun;
+package de.flyingfinger.minecraft.deathrun;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

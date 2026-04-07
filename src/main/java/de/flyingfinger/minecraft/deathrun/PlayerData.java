@@ -1,4 +1,4 @@
-package com.example.deathrun;
+package de.flyingfinger.minecraft.deathrun;
 
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;

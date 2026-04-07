@@ -1,6 +1,6 @@
 name: Deathrun
 version: '1.0'
-main: com.example.deathrun.DeathrunPlugin
+main: de.flyingfinger.minecraft.deathrun.DeathrunPlugin
 api-version: '1.21.8'
 description: Deathrun Minigame – Wettlauf mit permanentem Lebensverlust
 authors:
