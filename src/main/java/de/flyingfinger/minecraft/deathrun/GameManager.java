@@ -497,7 +497,7 @@ public class GameManager {
         if (paused) {
             pauseStartMs = System.currentTimeMillis();
             if (spawnLocation != null) spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-            broadcast("game.pause.on");
+            broadcast("game.pause.paused");
             // Action-Bar alle 0.5s anzeigen solange pausiert
             actionBarTask = new BukkitRunnable() {
                 @Override public void run() {
@@ -517,7 +517,7 @@ public class GameManager {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) p.sendActionBar(Component.empty());
             }
-            broadcast("game.pause.off");
+            broadcast("game.pause.resumed");
         }
     }
 

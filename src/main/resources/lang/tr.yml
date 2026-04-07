@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §ayeniden katıldı!"
   time-limit: "§c§l⏱ Süre doldu! Yarış bitti."
   pause:
-    on:        "§e§l⏸ Oyun duraklatıldı."
-    off:       "§a§l▶ Oyun devam ediyor."
+    paused:    "§e§l⏸ Oyun duraklatıldı."
+    resumed:   "§a§l▶ Oyun devam ediyor."
     actionbar: "§e§l⏸  DURAKLATILDI  ⏸"
   end:
     header:      "§6§l══════ SONUÇLAR ══════"

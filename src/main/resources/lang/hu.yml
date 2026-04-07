@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §avisszatért!"
   time-limit: "§c§l⏱ Lejárt az idő! A verseny véget ért."
   pause:
-    on:        "§e§l⏸ Játék szüneteltetve."
-    off:       "§a§l▶ Játék folytatva."
+    paused:    "§e§l⏸ Játék szüneteltetve."
+    resumed:   "§a§l▶ Játék folytatva."
     actionbar: "§e§l⏸  SZÜNET  ⏸"
   end:
     header:      "§6§l══════ EREDMÉNYEK ══════"

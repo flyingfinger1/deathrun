@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §ase vrátil!"
   time-limit: "§c§l⏱ Čas vypršel! Závod skončil."
   pause:
-    on:        "§e§l⏸ Hra pozastavena."
-    off:       "§a§l▶ Hra obnovena."
+    paused:    "§e§l⏸ Hra pozastavena."
+    resumed:   "§a§l▶ Hra obnovena."
     actionbar: "§e§l⏸  PAUZA  ⏸"
   end:
     header:      "§6§l══════ VÝSLEDKY ══════"

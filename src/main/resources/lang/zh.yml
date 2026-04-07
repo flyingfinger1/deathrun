@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §a已重新加入！"
   time-limit: "§c§l⏱ 时间到！比赛结束。"
   pause:
-    on:        "§e§l⏸ 游戏已暂停。"
-    off:       "§a§l▶ 游戏已恢复。"
+    paused:    "§e§l⏸ 游戏已暂停。"
+    resumed:   "§a§l▶ 游戏已恢复。"
     actionbar: "§e§l⏸  已暂停  ⏸"
   end:
     header:      "§6§l══════ 结果 ══════"

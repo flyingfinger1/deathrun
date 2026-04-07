@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §a재접속했습니다!"
   time-limit: "§c§l⏱ 시간 초과! 경주가 종료되었습니다."
   pause:
-    on:        "§e§l⏸ 게임 일시 정지."
-    off:       "§a§l▶ 게임 재개."
+    paused:    "§e§l⏸ 게임 일시 정지."
+    resumed:   "§a§l▶ 게임 재개."
     actionbar: "§e§l⏸  일시 정지  ⏸"
   end:
     header:      "§6§l══════ 결과 ══════"

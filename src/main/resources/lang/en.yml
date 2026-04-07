@@ -93,8 +93,8 @@ game:
   reconnect:  "§a▶ §f{0} §ahas rejoined!"
   time-limit: "§c§l⏱ Time's up! The race is over."
   pause:
-    on:        "§e§l⏸ Game paused."
-    off:       "§a§l▶ Game resumed."
+    paused:    "§e§l⏸ Game paused."
+    resumed:   "§a§l▶ Game resumed."
     actionbar: "§e§l⏸  PAUSED  ⏸"
   end:
     header:      "§6§l══════ RESULTS ══════"

@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §awrócił do gry!"
   time-limit: "§c§l⏱ Czas minął! Wyścig skończony."
   pause:
-    on:        "§e§l⏸ Gra wstrzymana."
-    off:       "§a§l▶ Gra wznowiona."
+    paused:    "§e§l⏸ Gra wstrzymana."
+    resumed:   "§a§l▶ Gra wznowiona."
     actionbar: "§e§l⏸  PAUZA  ⏸"
   end:
     header:      "§6§l══════ WYNIKI ══════"

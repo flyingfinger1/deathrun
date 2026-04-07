@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §as-a reconectat!"
   time-limit: "§c§l⏱ Timp expirat! Cursa s-a terminat."
   pause:
-    on:        "§e§l⏸ Joc pus pe pauză."
-    off:       "§a§l▶ Joc reluat."
+    paused:    "§e§l⏸ Joc pus pe pauză."
+    resumed:   "§a§l▶ Joc reluat."
     actionbar: "§e§l⏸  PAUZĂ  ⏸"
   end:
     header:      "§6§l══════ REZULTATE ══════"

@@ -91,8 +91,8 @@ game:
   reconnect:  "§a▶ §f{0} §aが再参加しました！"
   time-limit: "§c§l⏱ 時間切れ！レースが終了しました。"
   pause:
-    on:        "§e§l⏸ ゲームを一時停止しました。"
-    off:       "§a§l▶ ゲームを再開しました。"
+    paused:    "§e§l⏸ ゲームを一時停止しました。"
+    resumed:   "§a§l▶ ゲームを再開しました。"
     actionbar: "§e§l⏸  一時停止中  ⏸"
   end:
     header:      "§6§l══════ 結果 ══════"
