@@ -810,7 +810,10 @@ public class GameManager {
     private void setDayCycle(boolean running) {
         World world = spawnLocation != null ? spawnLocation.getWorld()
             : (Bukkit.getWorlds().isEmpty() ? null : Bukkit.getWorlds().get(0));
-        if (world != null) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, running);
+        if (world != null) {
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, running);
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, running);
+        }
     }
 
     /** Sendet eine lokalisierte Nachricht an jeden online Spieler in seiner eigenen Sprache. */
