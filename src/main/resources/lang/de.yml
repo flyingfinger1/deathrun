@@ -147,7 +147,7 @@ sidebar:
     dist:         "§7Dist: §f{0}m"
 
 tablist:
-  entry: "§7#{0} §f{1} §8- §7{2}m {3} {4}"  # {0}=Rang, {1}=Name, {2}=Dist, {3}=Icon
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"  # {0}=Rang, {1}=Name, {2}=Dist, {3}=Icon
 
 direction:
   north: "Norden"
