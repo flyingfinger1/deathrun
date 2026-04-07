@@ -2,70 +2,120 @@ package de.flyingfinger.minecraft.deathrun;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Lädt Sprachdateien aus plugins/Deathrun/lang/<language>.yml und
- * stellt Hilfsmethoden für lokalisierte Strings und Adventure-Komponenten bereit.
+ * Lädt Sprachdateien und stellt lokalisierte Strings bereit.
+ *
+ * Modus:
+ *  - language: de / en / ...  → eine globale Sprache für alle
+ *  - language: auto            → pro Spieler die Client-Sprache (player.locale())
+ *                                 Konsole und Broadcasts nutzen "en" als Fallback
  */
 public final class Messages {
 
-    private static YamlConfiguration lang;
+    /** Bekannte, mitgelieferte Sprachdateien */
+    private static final String[] BUNDLED = {"de", "en"};
+
+    private static boolean autoMode    = false;
+    private static String  defaultLang = "de";
+
+    /** Cache: Sprachcode → geladene YamlConfiguration */
+    private static final Map<String, YamlConfiguration> cache = new HashMap<>();
 
     private Messages() {}
 
-    /**
-     * Lädt die Sprachdatei für die angegebene Sprache.
-     * Falls die Datei noch nicht im Plugin-Ordner existiert, wird sie aus den Ressourcen kopiert.
-     * Unbekannte Sprache → Fallback auf Englisch (en).
-     */
+    // ── Laden ─────────────────────────────────────────────────────────────────
+
     public static void load(Plugin plugin, String language) {
-        // Sicherstellen, dass die Datei im Daten-Ordner existiert
+        autoMode = "auto".equalsIgnoreCase(language);
+        cache.clear();
+
+        if (autoMode) {
+            // Alle mitgelieferten Sprachen vorausladen
+            for (String lang : BUNDLED) extractAndLoad(plugin, lang);
+
+            // Zusätzliche Dateien im Plugin-Ordner einlesen
+            File langDir = new File(plugin.getDataFolder(), "lang");
+            if (langDir.isDirectory()) {
+                File[] files = langDir.listFiles((d, n) -> n.endsWith(".yml"));
+                if (files != null) {
+                    for (File f : files) {
+                        String lang = f.getName().replace(".yml", "");
+                        if (!cache.containsKey(lang)) extractAndLoad(plugin, lang);
+                    }
+                }
+            }
+            defaultLang = "en"; // Konsolen-Fallback im Auto-Modus
+        } else {
+            if (extractAndLoad(plugin, language) == null) {
+                plugin.getLogger().warning("Sprache '" + language + "' nicht gefunden, nutze 'de'.");
+                language = "de";
+                extractAndLoad(plugin, language);
+            }
+            defaultLang = language;
+        }
+    }
+
+    /** Extrahiert lang/<language>.yml aus dem JAR (falls noch nicht vorhanden) und lädt sie. */
+    private static String extractAndLoad(Plugin plugin, String language) {
         File langDir  = new File(plugin.getDataFolder(), "lang");
         File langFile = new File(langDir, language + ".yml");
 
         if (!langFile.exists()) {
-            // Aus JAR-Ressourcen extrahieren
             InputStream resource = plugin.getResource("lang/" + language + ".yml");
-            if (resource == null) {
-                plugin.getLogger().warning("Sprache '" + language + "' nicht gefunden, nutze 'de'.");
-                language = "de";
-                langFile = new File(langDir, "de.yml");
-                resource = plugin.getResource("lang/de.yml");
-            }
-            if (resource != null) {
-                langDir.mkdirs();
-                try (InputStream in = resource;
-                     OutputStream out = new FileOutputStream(langFile)) {
-                    in.transferTo(out);
-                } catch (IOException e) {
-                    plugin.getLogger().severe("Sprachdatei konnte nicht gespeichert werden: " + e.getMessage());
-                }
+            if (resource == null) return null;
+            langDir.mkdirs();
+            try (InputStream in = resource; OutputStream out = new FileOutputStream(langFile)) {
+                in.transferTo(out);
+            } catch (IOException e) {
+                plugin.getLogger().severe("Sprachdatei konnte nicht gespeichert werden: " + e.getMessage());
+                return null;
             }
         }
 
-        lang = YamlConfiguration.loadConfiguration(langFile);
-
-        // Defaults aus dem JAR einblenden (neue Keys in Sprachdateien werden so ergänzt)
+        YamlConfiguration cfg = YamlConfiguration.loadConfiguration(langFile);
+        // JAR-Defaults einblenden, damit neue Keys automatisch ergänzt werden
         InputStream def = plugin.getResource("lang/" + language + ".yml");
         if (def != null) {
-            YamlConfiguration defaults = YamlConfiguration.loadConfiguration(
-                new InputStreamReader(def, StandardCharsets.UTF_8));
-            lang.setDefaults(defaults);
+            cfg.setDefaults(YamlConfiguration.loadConfiguration(
+                new InputStreamReader(def, StandardCharsets.UTF_8)));
         }
+        cache.put(language, cfg);
+        return language;
     }
 
-    /**
-     * Gibt den lokalisierten String für den Schlüssel zurück.
-     * Platzhalter {0}, {1}, ... werden durch die übergebenen Argumente ersetzt.
-     */
-    public static String str(String key, Object... args) {
-        if (lang == null) return "§c[Messages not loaded: " + key + "]";
-        String value = lang.getString(key);
+    // ── Sprachauflösung ───────────────────────────────────────────────────────
+
+    private static YamlConfiguration getLang(String language) {
+        YamlConfiguration cfg = cache.get(language);
+        if (cfg != null) return cfg;
+        // Sprachpräfix prüfen: "de_DE" → "de"
+        if (language.length() > 2) {
+            cfg = cache.get(language.substring(0, 2));
+            if (cfg != null) return cfg;
+        }
+        return cache.getOrDefault(defaultLang,
+            cache.isEmpty() ? new YamlConfiguration() : cache.values().iterator().next());
+    }
+
+    private static String playerLang(Player player) {
+        if (!autoMode) return defaultLang;
+        return player.locale().getLanguage(); // z.B. "de", "en", "fr"
+    }
+
+    // ── Interne Formatierung ──────────────────────────────────────────────────
+
+    private static String format(YamlConfiguration cfg, String key, Object... args) {
+        String value = cfg.getString(key);
         if (value == null) value = "§c[?" + key + "]";
         for (int i = 0; i < args.length; i++) {
             value = value.replace("{" + i + "}", args[i] == null ? "" : String.valueOf(args[i]));
@@ -73,11 +123,36 @@ public final class Messages {
         return value;
     }
 
-    /**
-     * Gibt den lokalisierten String als Adventure-Component zurück.
-     * §-Farbcodes werden dabei in Adventure-Formatierung umgewandelt.
-     */
+    // ── Öffentliche API ───────────────────────────────────────────────────────
+
+    /** Standardsprache – für Broadcasts, Konsole und non-player Kontexte. */
+    public static String str(String key, Object... args) {
+        return format(getLang(defaultLang), key, args);
+    }
+
+    /** Spieler-spezifische Sprache (Client-Locale bei auto, sonst Standardsprache). */
+    public static String str(Player player, String key, Object... args) {
+        if (player == null) return str(key, args);
+        return format(getLang(playerLang(player)), key, args);
+    }
+
+    /** CommandSender: Spieler-Locale falls verfügbar, sonst Standardsprache. */
+    public static String str(CommandSender sender, String key, Object... args) {
+        if (sender instanceof Player p) return str(p, key, args);
+        return str(key, args);
+    }
+
     public static Component comp(String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(key, args));
     }
+
+    public static Component comp(Player player, String key, Object... args) {
+        return LegacyComponentSerializer.legacySection().deserialize(str(player, key, args));
+    }
+
+    public static Component comp(CommandSender sender, String key, Object... args) {
+        return LegacyComponentSerializer.legacySection().deserialize(str(sender, key, args));
+    }
+
+    public static boolean isAutoMode() { return autoMode; }
 }

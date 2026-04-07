@@ -59,6 +59,7 @@ public class SidebarManager {
     /** Aktualisiert den Countdown-Scoreboard (STARTING-Phase). */
     public void updateStarting(Collection<PlayerData> players, int remainingSeconds) {
         for (PlayerData pd : players) {
+            Player viewer = Bukkit.getPlayer(pd.getUuid());
             Scoreboard sb  = boards.get(pd.getUuid());
             Objective  obj = sidebarObjs.get(pd.getUuid());
             if (sb == null || obj == null) continue;
@@ -67,19 +68,19 @@ public class SidebarManager {
             for (String e : sb.getEntries()) sb.resetScores(e);
 
             int line = 14;
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
-            line = setLine(sb, obj, line, Messages.str("sidebar.starting.countdown", remainingSeconds));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.starting.countdown", remainingSeconds));
             line = setLine(sb, obj, line, " ");
 
             int shown = 0;
             for (PlayerData p2 : players) {
-                if (shown >= 8) { setLine(sb, obj, line--, Messages.str("sidebar.starting.more")); break; }
-                line = setLine(sb, obj, line, Messages.str("sidebar.starting.player", p2.getName()));
+                if (shown >= 8) { setLine(sb, obj, line--, Messages.str(viewer, "sidebar.starting.more")); break; }
+                line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.starting.player", p2.getName()));
                 shown++;
             }
 
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
-            setLine(sb, obj, line, Messages.str("sidebar.starting.ready", players.size()));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
+            setLine(sb, obj, line, Messages.str(viewer, "sidebar.starting.ready", players.size()));
         }
     }
 
@@ -136,19 +137,19 @@ public class SidebarManager {
             for (String entry : sb.getEntries()) sb.resetScores(entry);
 
             int line = 14;
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
 
             int topCount = Math.min(5, sorted.size());
             for (int i = 0; i < topCount; i++) {
                 PlayerData pd   = sorted.get(i);
                 double     dist = pd.isAlive() ? liveDistance(pd, gm) : pd.getFinalDistance();
-                String     icon = Messages.str(pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
+                String     icon = Messages.str(viewer, pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
                 String     col  = i == 0 ? "§e" : i == 1 ? "§f" : "§7";
                 line = setLine(sb, obj, line,
-                    Messages.str("sidebar.game.top-entry", col, i + 1, truncate(pd.getName(), 10), fmt(dist), icon));
+                    Messages.str(viewer, "sidebar.game.top-entry", col, i + 1, truncate(pd.getName(), 10), fmt(dist), icon));
             }
 
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
 
             int    myRank = getRank(sorted, viewerData.getUuid());
             double myDist = viewerData.isAlive() ? liveDistance(viewerData, gm) : viewerData.getFinalDistance();
@@ -156,10 +157,10 @@ public class SidebarManager {
                 gm.getStartLocation().getX(), gm.getStartLocation().getZ(),
                 viewer.getLocation().getX(),  viewer.getLocation().getZ());
 
-            line = setLine(sb, obj, line, Messages.str("sidebar.game.rank", myRank));
-            line = setLine(sb, obj, line, Messages.str("sidebar.game.dist", fmt(myDist)));
-            line = setLine(sb, obj, line, Messages.str("sidebar.game.ew", fmtDev(ewDev)));
-            setLine(sb, obj, line,        Messages.str("sidebar.game.time", gm.getTimerDisplay()));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.game.rank", myRank));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.game.dist", fmt(myDist)));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.game.ew", fmtDev(ewDev)));
+            setLine(sb, obj, line,        Messages.str(viewer, "sidebar.game.time", gm.getTimerDisplay(viewer)));
 
             // ── Tab-Scores: alle Spieler auf diesem Board aktualisieren ───────
             if (tab != null) {
@@ -197,33 +198,33 @@ public class SidebarManager {
             for (String e : sb.getEntries()) sb.resetScores(e);
 
             int line = 14;
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(p, "sidebar.separator"));
 
             if (!serverOpen) {
-                line = setLine(sb, obj, line, Messages.str("sidebar.lobby.locked"));
+                line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.locked"));
                 if (!cageBuilt) {
                     line = setLine(sb, obj, line, " ");
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.step-label"));
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.step-cmd"));
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.step-hint"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.step-label"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.step-cmd"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.step-hint"));
                 } else {
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.cage-ok"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.cage-ok"));
                     line = setLine(sb, obj, line, " ");
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.open-cmd"));
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.open-hint"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.open-cmd"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.open-hint"));
                     line = setLine(sb, obj, line, " ");
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.remove-cmd"));
-                    line = setLine(sb, obj, line, Messages.str("sidebar.lobby.remove-hint"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.remove-cmd"));
+                    line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.remove-hint"));
                 }
             } else {
-                line = setLine(sb, obj, line, Messages.str("sidebar.lobby.server-open"));
+                line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.server-open"));
                 line = setLine(sb, obj, line, " ");
-                line = setLine(sb, obj, line, Messages.str("sidebar.lobby.waiting"));
-                line = setLine(sb, obj, line, Messages.str("sidebar.lobby.start-cmd"));
+                line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.waiting"));
+                line = setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.start-cmd"));
             }
 
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
-            setLine(sb, obj, line, Messages.str("sidebar.lobby.online", online));
+            line = setLine(sb, obj, line, Messages.str(p, "sidebar.separator"));
+            setLine(sb, obj, line, Messages.str(p, "sidebar.lobby.online", online));
         }
     }
 
@@ -260,25 +261,25 @@ public class SidebarManager {
             for (String e : sb.getEntries()) sb.resetScores(e);
 
             int line = 14;
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
-            line = setLine(sb, obj, line, Messages.str("sidebar.end.winner-label"));
-            line = setLine(sb, obj, line, Messages.str("sidebar.end.winner-name", winnerName));
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.end.winner-label"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.end.winner-name", winnerName));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
 
             int topCount = Math.min(5, sorted.size());
             for (int i = 0; i < topCount; i++) {
                 PlayerData pd  = sorted.get(i);
                 String     col = i == 0 ? "§e" : i == 1 ? "§f" : "§7";
                 line = setLine(sb, obj, line,
-                    Messages.str("sidebar.end.top-entry", col, i + 1,
+                    Messages.str(viewer, "sidebar.end.top-entry", col, i + 1,
                         truncate(pd.getName(), 10), fmt(pd.getFinalDistance())));
             }
 
-            line = setLine(sb, obj, line, Messages.str("sidebar.separator"));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.separator"));
             int    myRank = getRank(sorted, viewerData.getUuid());
             double myDist = viewerData.getFinalDistance();
-            line = setLine(sb, obj, line, Messages.str("sidebar.end.rank", myRank));
-            setLine(sb, obj, line, Messages.str("sidebar.end.dist", fmt(myDist)));
+            line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.end.rank", myRank));
+            setLine(sb, obj, line, Messages.str(viewer, "sidebar.end.dist", fmt(myDist)));
         }
     }
 

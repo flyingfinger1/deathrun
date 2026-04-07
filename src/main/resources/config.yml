@@ -1,4 +1,8 @@
-# Sprache / Language: de, en  (eigene Dateien in plugins/Deathrun/lang/ möglich)
+# Sprache / Language
+#   de, en       – globale Sprache für alle Spieler
+#   auto         – jeder Spieler sieht Texte in seiner Minecraft-Client-Sprache
+#                  (Fallback auf Englisch wenn die Sprache nicht verfügbar ist)
+# Eigene Dateien in plugins/Deathrun/lang/ möglich
 language: de
 
 # Maximale Abweichung in Blöcken nach Ost/West vom Startpunkt

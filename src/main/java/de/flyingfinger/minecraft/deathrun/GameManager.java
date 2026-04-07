@@ -134,7 +134,7 @@ public class GameManager {
         // World-Spawn setzen
         center.getWorld().setSpawnLocation(spawnLocation);
 
-        sender.sendMessage(Messages.comp("cmd.buildcage.success", direction.getDisplayName()));
+        sender.sendMessage(Messages.comp(sender, "cmd.buildcage.success", direction.getDisplayName()));
     }
 
     private float spawnYaw(RunDirection dir) {
@@ -158,18 +158,18 @@ public class GameManager {
     public void removeCage(Player sender) {
         cageBuilder.removeCage(cageLocations);
         cageLocations.clear();
-        sender.sendMessage(Messages.comp("cmd.removecage.success"));
+        sender.sendMessage(Messages.comp(sender, "cmd.removecage.success"));
     }
 
     public void setCorridorWidth(CommandSender sender, int width) {
         if (width < 5 || width > 500) {
-            sender.sendMessage(Messages.comp("cmd.setcorridor.invalid"));
+            sender.sendMessage(Messages.comp(sender, "cmd.setcorridor.invalid"));
             return;
         }
         corridorWidth = width;
         plugin.getConfig().set("corridor-width", width);
         plugin.saveConfig();
-        sender.sendMessage(Messages.comp("cmd.setcorridor.success", width));
+        sender.sendMessage(Messages.comp(sender, "cmd.setcorridor.success", width));
     }
 
     public void setDirection(CommandSender sender, String arg) {
@@ -177,43 +177,43 @@ public class GameManager {
             direction = RunDirection.valueOf(arg.toUpperCase());
             plugin.getConfig().set("direction", direction.name());
             plugin.saveConfig();
-            sender.sendMessage(Messages.comp("cmd.setdirection.success", direction.getDisplayName()));
+            sender.sendMessage(Messages.comp(sender, "cmd.setdirection.success", direction.getDisplayName()));
         } catch (IllegalArgumentException e) {
-            sender.sendMessage(Messages.comp("cmd.setdirection.invalid"));
+            sender.sendMessage(Messages.comp(sender, "cmd.setdirection.invalid"));
         }
     }
 
     public void setMaxTime(CommandSender sender, int minutes) {
         if (minutes < 0) {
-            sender.sendMessage(Messages.comp("cmd.settime.invalid"));
+            sender.sendMessage(Messages.comp(sender, "cmd.settime.invalid"));
             return;
         }
         maxTimeSeconds = minutes * 60;
         plugin.getConfig().set("max-time", maxTimeSeconds);
         plugin.saveConfig();
         String display = maxTimeSeconds == 0
-            ? Messages.str("cmd.settime.unlimited")
-            : Messages.str("cmd.settime.minutes", minutes);
-        sender.sendMessage(Messages.comp("cmd.settime.success", display));
+            ? Messages.str(sender, "cmd.settime.unlimited")
+            : Messages.str(sender, "cmd.settime.minutes", minutes);
+        sender.sendMessage(Messages.comp(sender, "cmd.settime.success", display));
     }
 
     public void showStatus(CommandSender sender) {
-        sender.sendMessage(Messages.comp("cmd.status.header"));
-        sender.sendMessage(line(Messages.str("cmd.status.state"), state.name()));
-        sender.sendMessage(line(Messages.str("cmd.status.spawn"),
-            spawnLocation == null ? Messages.str("cmd.status.not-set") : fmtLoc(spawnLocation)));
-        sender.sendMessage(line(Messages.str("cmd.status.start"),
-            startLocation == null ? Messages.str("cmd.status.not-set") : fmtLoc(startLocation)));
-        sender.sendMessage(line(Messages.str("cmd.status.direction"), direction.getDisplayName()));
-        sender.sendMessage(line(Messages.str("cmd.status.corridor"),
-            Messages.str("cmd.status.corridor-value", corridorWidth)));
-        sender.sendMessage(line(Messages.str("cmd.status.countdown"),
-            Messages.str("cmd.status.countdown-value", countdownSeconds)));
-        sender.sendMessage(line(Messages.str("cmd.status.maxtime"),
+        sender.sendMessage(Messages.comp(sender, "cmd.status.header"));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.state"), state.name()));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.spawn"),
+            spawnLocation == null ? Messages.str(sender, "cmd.status.not-set") : fmtLoc(spawnLocation)));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.start"),
+            startLocation == null ? Messages.str(sender, "cmd.status.not-set") : fmtLoc(startLocation)));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.direction"), direction.getDisplayName()));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.corridor"),
+            Messages.str(sender, "cmd.status.corridor-value", corridorWidth)));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.countdown"),
+            Messages.str(sender, "cmd.status.countdown-value", countdownSeconds)));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.maxtime"),
             maxTimeSeconds == 0
-                ? Messages.str("cmd.status.time-unlimited")
-                : Messages.str("cmd.status.time-minutes", maxTimeSeconds / 60)));
-        sender.sendMessage(line(Messages.str("cmd.status.online"),
+                ? Messages.str(sender, "cmd.status.time-unlimited")
+                : Messages.str(sender, "cmd.status.time-minutes", maxTimeSeconds / 60)));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.online"),
             String.valueOf(Bukkit.getOnlinePlayers().size())));
     }
 
@@ -221,15 +221,15 @@ public class GameManager {
 
     public boolean startGame(CommandSender sender) {
         if (state == GameState.STARTING || state == GameState.RUNNING) {
-            sender.sendMessage(Messages.comp("cmd.start.already-running"));
+            sender.sendMessage(Messages.comp(sender, "cmd.start.already-running"));
             return false;
         }
         if (spawnLocation == null) {
-            sender.sendMessage(Messages.comp("cmd.start.no-cage"));
+            sender.sendMessage(Messages.comp(sender, "cmd.start.no-cage"));
             return false;
         }
         if (Bukkit.getOnlinePlayers().isEmpty()) {
-            sender.sendMessage(Messages.comp("cmd.start.no-players"));
+            sender.sendMessage(Messages.comp(sender, "cmd.start.no-players"));
             return false;
         }
 
@@ -248,7 +248,7 @@ public class GameManager {
             p.setSaturation(20f);
         }
 
-        broadcast(Messages.comp("game.countdown.announce", countdownSeconds));
+        broadcast("game.countdown.announce", countdownSeconds);
 
         // Scoreboard schon während Countdown zeigen
         sidebar.setupStarting(players.values(), serverName);
@@ -260,7 +260,7 @@ public class GameManager {
                 if (state != GameState.STARTING) { cancel(); return; }
                 if (rem[0] <= 0) { cancel(); beginRace(); return; }
                 if (rem[0] <= 5 || rem[0] % 10 == 0) {
-                    broadcast(Messages.comp("game.countdown.tick", rem[0]));
+                    broadcast("game.countdown.tick", rem[0]);
                 }
                 sidebar.updateStarting(players.values(), rem[0]);
                 sound(Sound.BLOCK_NOTE_BLOCK_PLING, rem[0] <= 3 ? 2f : 1f);
@@ -319,7 +319,7 @@ public class GameManager {
                 if (state != GameState.RUNNING) { cancel(); return; }
                 // Zeitlimit prüfen (nicht während Pause)
                 if (maxTimeSeconds > 0 && !paused && getElapsedSeconds() >= maxTimeSeconds) {
-                    broadcast(Messages.comp("game.time-limit"));
+                    broadcast("game.time-limit");
                     endGame();
                     return;
                 }
@@ -330,7 +330,7 @@ public class GameManager {
             }
         }.runTaskTimer(plugin, 20L, 20L);
 
-        broadcast(Messages.comp("game.countdown.go", direction.getDisplayName()));
+        broadcast("game.countdown.go", direction.getDisplayName());
         sound(Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1f);
     }
 
@@ -379,7 +379,7 @@ public class GameManager {
         pd.setAlive(false);
         clearBorder(pd);
 
-        broadcast(Messages.comp("game.death", player.getName(), fmt(dist)));
+        broadcast("game.death", player.getName(), fmt(dist));
 
         checkEndCondition();
     }
@@ -459,21 +459,28 @@ public class GameManager {
             if (p != null) p.setGameMode(GameMode.SURVIVAL);
         }
 
-        // Ergebnis im Chat
-        broadcast(Messages.comp("game.end.header"));
+        // Ergebnis im Chat – jeder Spieler bekommt seine Sprache
+        broadcast("game.end.header");
         for (int i = 0; i < finalResults.size(); i++) {
             PlayerData pd = finalResults.get(i);
             String col = i == 0 ? "§6" : i == 1 ? "§e" : i == 2 ? "§a" : "§7";
-            broadcast(Messages.comp("game.end.entry", col, i + 1, pd.getName(), fmt(pd.getFinalDistance())));
+            final int rank = i + 1;
+            final String name = pd.getName();
+            final String dist = fmt(pd.getFinalDistance());
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.sendMessage(Messages.comp(p, "game.end.entry", col, rank, name, dist));
+            }
         }
 
         // Klickbare Teleport-Nachricht (wenn Gewinner-Position bekannt)
         if (winnerLocation != null) {
-            Component gotoMsg = Messages.comp("game.end.goto-prefix")
-                .append(Messages.comp("game.end.goto-link")
-                    .clickEvent(ClickEvent.runCommand("/dr goto"))
-                    .hoverEvent(HoverEvent.showText(Messages.comp("game.end.goto-hover"))));
-            broadcast(gotoMsg);
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                Component gotoMsg = Messages.comp(p, "game.end.goto-prefix")
+                    .append(Messages.comp(p, "game.end.goto-link")
+                        .clickEvent(ClickEvent.runCommand("/dr goto"))
+                        .hoverEvent(HoverEvent.showText(Messages.comp(p, "game.end.goto-hover"))));
+                p.sendMessage(gotoMsg);
+            }
         }
 
         // End-Scoreboard aufbauen und Lobby-Task starten
@@ -483,22 +490,21 @@ public class GameManager {
 
     public void togglePause(CommandSender sender) {
         if (state != GameState.RUNNING) {
-            sender.sendMessage(Messages.comp("cmd.pause.not-running"));
+            sender.sendMessage(Messages.comp(sender, "cmd.pause.not-running"));
             return;
         }
         paused = !paused;
         if (paused) {
             pauseStartMs = System.currentTimeMillis();
             if (spawnLocation != null) spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-            broadcast(Messages.comp("game.pause.on"));
+            broadcast("game.pause.on");
             // Action-Bar alle 0.5s anzeigen solange pausiert
             actionBarTask = new BukkitRunnable() {
                 @Override public void run() {
                     if (!paused) { cancel(); actionBarTask = null; return; }
-                    Component msg = Messages.comp("game.pause.actionbar");
                     for (UUID uuid : players.keySet()) {
                         Player p = Bukkit.getPlayer(uuid);
-                        if (p != null) p.sendActionBar(msg);
+                        if (p != null) p.sendActionBar(Messages.comp(p, "game.pause.actionbar"));
                     }
                 }
             }.runTaskTimer(plugin, 0L, 10L);
@@ -511,17 +517,17 @@ public class GameManager {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) p.sendActionBar(Component.empty());
             }
-            broadcast(Messages.comp("game.pause.off"));
+            broadcast("game.pause.off");
         }
     }
 
     public void stopGame(CommandSender sender) {
         if (state == GameState.IDLE) {
-            sender.sendMessage(Messages.comp("cmd.stop.no-game"));
+            sender.sendMessage(Messages.comp(sender, "cmd.stop.no-game"));
             return;
         }
         forceStop();
-        sender.sendMessage(Messages.comp("cmd.stop.success"));
+        sender.sendMessage(Messages.comp(sender, "cmd.stop.success"));
     }
 
     public void forceStop() {
@@ -550,32 +556,32 @@ public class GameManager {
 
     public void openServer(CommandSender sender) {
         if (spawnLocation == null) {
-            sender.sendMessage(Messages.comp("cmd.open.no-cage"));
+            sender.sendMessage(Messages.comp(sender, "cmd.open.no-cage"));
             return;
         }
         serverOpen = true;
-        sender.sendMessage(Messages.comp("cmd.open.success"));
-        broadcast(Messages.comp("cmd.open.broadcast"));
+        sender.sendMessage(Messages.comp(sender, "cmd.open.success"));
+        broadcast("cmd.open.broadcast");
     }
 
     public void closeServer(CommandSender sender) {
         serverOpen = false;
-        sender.sendMessage(Messages.comp("cmd.close.success"));
+        sender.sendMessage(Messages.comp(sender, "cmd.close.success"));
     }
 
     public void handleGoto(Player player) {
         if (finalResults.isEmpty()) {
-            player.sendMessage(Messages.comp("cmd.goto.no-game"));
+            player.sendMessage(Messages.comp(player, "cmd.goto.no-game"));
             return;
         }
         Location dest = winnerLocation != null ? winnerLocation : spawnLocation;
         if (dest == null) {
-            player.sendMessage(Messages.comp("cmd.goto.no-location"));
+            player.sendMessage(Messages.comp(player, "cmd.goto.no-location"));
             return;
         }
         if (player.getGameMode() == GameMode.SPECTATOR) player.setGameMode(GameMode.SURVIVAL);
         player.teleport(dest);
-        player.sendMessage(Messages.comp("cmd.goto.success"));
+        player.sendMessage(Messages.comp(player, "cmd.goto.success"));
     }
 
     // ── Lobby-Task ────────────────────────────────────────────────────────────
@@ -625,7 +631,7 @@ public class GameManager {
                 player.setGameMode(GameMode.SURVIVAL);
                 assignBorder(pd, player, startLocation.getX(), startLocation.getZ());
                 sidebar.setupPlayerBoard(pd, player, serverName);
-                broadcast(Messages.comp("game.reconnect", player.getName()));
+                broadcast("game.reconnect", player.getName());
 
             } else if (pd != null && !pd.isAlive()) {
                 // War schon tot → Zuschauer-Scoreboard wiederherstellen
@@ -659,7 +665,7 @@ public class GameManager {
         pd.setFinalDistance(Math.max(0, dist));
         pd.setDisconnected(true);
         clearBorder(pd);
-        broadcast(Messages.comp("game.disconnect", player.getName(), fmt(dist)));
+        broadcast("game.disconnect", player.getName(), fmt(dist));
         checkEndCondition();
     }
 
@@ -688,7 +694,15 @@ public class GameManager {
         if (actionBarTask != null)  { actionBarTask.cancel();  actionBarTask = null; }
     }
 
-    private void broadcast(Component msg) {
+    /** Sendet eine lokalisierte Nachricht an jeden online Spieler in seiner eigenen Sprache. */
+    private void broadcast(String key, Object... args) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(Messages.comp(p, key, args));
+        }
+    }
+
+    /** Sendet eine fertige Component an alle (für nicht-lokalisierbare Nachrichten). */
+    private void broadcastRaw(Component msg) {
         Bukkit.broadcast(msg);
     }
 
@@ -731,7 +745,13 @@ public class GameManager {
     }
 
     public String getTimerDisplay() {
-        if (paused) return Messages.str("sidebar.game.timer-pause");
+        return getTimerDisplay(null);
+    }
+
+    public String getTimerDisplay(Player viewer) {
+        if (paused) return viewer != null
+            ? Messages.str(viewer, "sidebar.game.timer-pause")
+            : Messages.str("sidebar.game.timer-pause");
         int secs = hasTimeLimit() ? getRemainingSeconds() : getElapsedSeconds();
         String color = !hasTimeLimit() ? "§f"
             : getRemainingSeconds() > maxTimeSeconds / 2 ? "§a"

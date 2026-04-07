@@ -270,7 +270,7 @@ public class GameListener implements Listener {
         if (!gm.isServerOpen() && (state == GameState.IDLE || state == GameState.ENDED)) {
             if (!isAdmin) {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
-                    Messages.comp("login.maintenance"));
+                    Messages.comp(event.getPlayer(), "login.maintenance"));
             }
             return;
         }
@@ -279,7 +279,7 @@ public class GameListener implements Listener {
         if (state == GameState.STARTING || state == GameState.RUNNING) {
             if (!isAdmin && !gm.getPlayers().containsKey(event.getPlayer().getUniqueId())) {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
-                    Messages.comp("login.game-running"));
+                    Messages.comp(event.getPlayer(), "login.game-running"));
             }
         }
     }

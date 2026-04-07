@@ -19,9 +19,9 @@ public class TablistManager {
             if (p == null) continue;
 
             double dist   = pd.isAlive() ? liveDistance(pd, gm) : pd.getFinalDistance();
-            String status = Messages.str(pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
+            String status = Messages.str(p, pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
             p.playerListName(LegacyComponentSerializer.legacySection().deserialize(
-                Messages.str("tablist.entry", i + 1, p.getName(), fmt(dist), status)
+                Messages.str(p, "tablist.entry", i + 1, p.getName(), fmt(dist), status)
             ));
         }
     }
