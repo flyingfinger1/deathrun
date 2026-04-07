@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7已断开连接。(§f{1}m§7) §8[可重新加入]"
   reconnect:  "§a▶ §f{0} §a已重新加入！"
   time-limit: "§c§l⏱ 时间到！比赛结束。"
+  pvp:
+    announce:  "§c⚔ PVP将在§f{0}§c秒后激活！"
+    countdown: "§c⚔ PVP还有§f{0}§c秒..."
+    activated: "§c§l⚔ PVP现已激活！"
   pause:
     paused:    "§e§l⏸ 游戏已暂停。"
     resumed:   "§a§l▶ 游戏已恢复。"

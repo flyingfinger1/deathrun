@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7katkaisi yhteyden. (§f{1}m§7) §8[voi palata]"
   reconnect:  "§a▶ §f{0} §aon liittynyt takaisin!"
   time-limit: "§c§l⏱ Aika loppui! Kilpailu on ohi."
+  pvp:
+    announce:  "§c⚔ PVP aktivoituu §f{0} §csekuntin kuluttua!"
+    countdown: "§c⚔ PVP §f{0}§c s..."
+    activated: "§c§l⚔ PVP on nyt aktiivinen!"
   pause:
     paused:    "§e§l⏸ Peli tauolla."
     resumed:   "§a§l▶ Peli jatkuu."

@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7kilépett. (§f{1}m§7) §8[visszaléphet]"
   reconnect:  "§a▶ §f{0} §avisszatért!"
   time-limit: "§c§l⏱ Lejárt az idő! A verseny véget ért."
+  pvp:
+    announce:  "§c⚔ A PVP §f{0} §cmásodperc múlva aktiválódik!"
+    countdown: "§c⚔ PVP §f{0}§c mp..."
+    activated: "§c§l⚔ A PVP most aktív!"
   pause:
     paused:    "§e§l⏸ Játék szüneteltetve."
     resumed:   "§a§l▶ Játék folytatva."

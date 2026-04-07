@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7s-a deconectat. (§f{1}m§7) §8[poate reveni]"
   reconnect:  "§a▶ §f{0} §as-a reconectat!"
   time-limit: "§c§l⏱ Timp expirat! Cursa s-a terminat."
+  pvp:
+    announce:  "§c⚔ PVP se activează în §f{0} §csecunde!"
+    countdown: "§c⚔ PVP în §f{0}§c..."
+    activated: "§c§l⚔ PVP este acum activ!"
   pause:
     paused:    "§e§l⏸ Joc pus pe pauză."
     resumed:   "§a§l▶ Joc reluat."

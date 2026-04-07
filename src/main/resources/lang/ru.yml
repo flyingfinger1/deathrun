@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7отключился. (§f{1}м§7) §8[может вернуться]"
   reconnect:  "§a▶ §f{0} §aвернулся в игру!"
   time-limit: "§c§l⏱ Время вышло! Забег окончен."
+  pvp:
+    announce:  "§c⚔ PVP активируется через §f{0} §cсекунд!"
+    countdown: "§c⚔ PVP через §f{0}§c..."
+    activated: "§c§l⚔ PVP теперь активно!"
   pause:
     paused:    "§e§l⏸ Игра на паузе."
     resumed:   "§a§l▶ Игра возобновлена."

@@ -28,6 +28,9 @@ public class GameManager {
     private double  borderDamagePerBlock = 0.5;
     private double  borderDamageBuffer   = 0.0;
     private boolean pvpEnabled           = false;
+    private boolean pvpActive            = false; // Laufzeit-Zustand: PVP gerade aktiv?
+    private int     pvpDelaySeconds      = 0;     // Sekunden bis PVP aktiviert wird
+    private int     pvpCountdownSeconds  = 5;     // Sekunden des Einzel-Countdowns davor
     private int     maxTimeSeconds       = 0;
 
     // ── Spielzustand ──────────────────────────────────────────────────────────
@@ -50,6 +53,7 @@ public class GameManager {
     private BukkitTask updateTask;
     private BukkitTask actionBarTask;
     private BukkitTask lobbyTask;
+    private BukkitTask pvpDelayTask;
 
     // ── Manager ───────────────────────────────────────────────────────────────
     private final CageBuilder cageBuilder = new CageBuilder();
@@ -74,8 +78,10 @@ public class GameManager {
         } catch (IllegalArgumentException ignored) {}
         borderDamagePerBlock = cfg.getDouble("border-damage-per-block", 0.5);
         borderDamageBuffer   = cfg.getDouble("border-damage-buffer", 0.0);
-        pvpEnabled           = cfg.getBoolean("pvp", false);
-        maxTimeSeconds       = cfg.getInt("max-time", 0);
+        pvpEnabled          = cfg.getBoolean("pvp", false);
+        pvpDelaySeconds     = cfg.getInt("pvp-delay", 0);
+        pvpCountdownSeconds = cfg.getInt("pvp-countdown", 5);
+        maxTimeSeconds      = cfg.getInt("max-time", 0);
 
         String worldName = cfg.getString("start.world", "");
         if (!worldName.isEmpty()) {
@@ -301,6 +307,8 @@ public class GameManager {
         raceStartTime = System.currentTimeMillis();
         totalPausedMs = 0;
         setDayCycle(true); // Zyklus läuft nur während aktiven Rennens
+        pvpActive = false;
+        if (pvpEnabled) schedulePvpActivation();
 
         // Käfigtür ZUERST öffnen – unabhängig von allem anderen
         cageBuilder.openCage();
@@ -473,6 +481,7 @@ public class GameManager {
         state = GameState.ENDED;
 
         cancelTasks();
+        pvpActive = false;
         tablist.reset(players.values());
 
         finalResults = getSorted();
@@ -566,6 +575,7 @@ public class GameManager {
         // Tag-Nacht-Zyklus anhalten (IDLE/ENDED = immer eingefroren)
         setDayCycle(false);
         paused = false;
+        pvpActive = false;
         if (lobbyTask != null) { lobbyTask.cancel(); lobbyTask = null; }
         cancelTasks();
         for (PlayerData pd : players.values()) {
@@ -727,6 +737,41 @@ public class GameManager {
         if (borderTask != null)     { borderTask.cancel();     borderTask = null; }
         if (updateTask != null)     { updateTask.cancel();     updateTask = null; }
         if (actionBarTask != null)  { actionBarTask.cancel();  actionBarTask = null; }
+        if (pvpDelayTask != null)   { pvpDelayTask.cancel();   pvpDelayTask = null; }
+    }
+
+    /**
+     * Plant die verzögerte PVP-Aktivierung nach Rennstart.
+     * Bei pvpDelaySeconds=0 wird PVP sofort aktiviert.
+     * Die letzten pvpCountdownSeconds werden sekündlich angekündigt.
+     */
+    private void schedulePvpActivation() {
+        if (pvpDelaySeconds <= 0) {
+            pvpActive = true;
+            broadcast("game.pvp.activated");
+            return;
+        }
+
+        // Ankündigung beim Start
+        broadcast("game.pvp.announce", pvpDelaySeconds);
+
+        final int[] remaining = {pvpDelaySeconds};
+        pvpDelayTask = new BukkitRunnable() {
+            @Override public void run() {
+                if (state != GameState.RUNNING) { cancel(); pvpDelayTask = null; return; }
+                remaining[0]--;
+                if (remaining[0] <= 0) {
+                    pvpActive = true;
+                    broadcast("game.pvp.activated");
+                    cancel();
+                    pvpDelayTask = null;
+                    return;
+                }
+                if (remaining[0] <= pvpCountdownSeconds) {
+                    broadcast("game.pvp.countdown", remaining[0]);
+                }
+            }
+        }.runTaskTimer(plugin, 20L, 20L);
     }
 
     /**
@@ -776,6 +821,8 @@ public class GameManager {
     public GameState getState()  { return state; }
     public boolean isPaused()       { return paused; }
     public boolean isPvpEnabled()   { return pvpEnabled; }
+    /** PVP ist aktuell aktiv: nur während RUNNING, nach Ablauf des Delays, und nicht in der Pause. */
+    public boolean isPvpActive()    { return pvpActive && !paused; }
     public boolean hasTimeLimit()   { return maxTimeSeconds > 0; }
     public int getMaxTimeSeconds()  { return maxTimeSeconds; }
 

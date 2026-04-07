@@ -23,6 +23,13 @@ direction: NORTH
 # PVP zwischen Spielern erlauben (false = kein Spieler-gegen-Spieler-Schaden)
 pvp: false
 
+# Sekunden nach Rennstart, bevor PVP aktiviert wird (0 = sofort beim Start)
+pvp-delay: 30
+
+# Sekunden des Countdowns, der am Ende des PVP-Delays eingeblendet wird
+# Beispiel: pvp-delay=30, pvp-countdown=5 → bei Sekunde 25 startet der 5s-Countdown
+pvp-countdown: 5
+
 # Maximale Spielzeit in Sekunden (0 = kein Limit, Timer zählt nur hoch)
 max-time: 0
 

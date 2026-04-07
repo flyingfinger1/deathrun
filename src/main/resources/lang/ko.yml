@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7연결 끊김. (§f{1}m§7) §8[재접속 가능]"
   reconnect:  "§a▶ §f{0} §a재접속했습니다!"
   time-limit: "§c§l⏱ 시간 초과! 경주가 종료되었습니다."
+  pvp:
+    announce:  "§c⚔ §f{0}§c초 후 PVP가 활성화됩니다!"
+    countdown: "§c⚔ PVP §f{0}§c초..."
+    activated: "§c§l⚔ PVP가 활성화되었습니다!"
   pause:
     paused:    "§e§l⏸ 게임 일시 정지."
     resumed:   "§a§l▶ 게임 재개."

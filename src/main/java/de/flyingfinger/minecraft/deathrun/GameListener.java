@@ -261,7 +261,7 @@ public class GameListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPvp(EntityDamageByEntityEvent event) {
         if (gm.getState() != GameState.RUNNING) return;
-        if (gm.isPvpEnabled()) return;
+        if (gm.isPvpActive()) return; // PVP aktiv (Delay abgelaufen, nicht pausiert) → Schaden erlaubt
         if (!(event.getDamager() instanceof Player attacker)) return;
         if (!(event.getEntity() instanceof Player)) return;
         if (!gm.isInGame(attacker)) return;

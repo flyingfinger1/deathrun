@@ -94,6 +94,10 @@ game:
   disconnect:  "§7⚡ §f{0} §7hat die Verbindung getrennt. (§f{1}m§7) §8[kann zurückkehren]"
   reconnect:   "§a▶ §f{0} §aist wieder dabei!"
   time-limit:  "§c§l⏱ Zeit abgelaufen! Das Rennen ist vorbei."
+  pvp:
+    announce:  "§c⚔ PVP wird in §f{0} §cSekunden aktiviert!"
+    countdown: "§c⚔ PVP in §f{0}§c..."
+    activated: "§c§l⚔ PVP ist jetzt aktiv!"
   pause:
     paused:    "§e§l⏸ Spiel pausiert."
     resumed:   "§a§l▶ Spiel fortgesetzt."

@@ -90,6 +90,10 @@ game:
   disconnect: "§7⚡ §f{0} §7kopplade från. (§f{1}m§7) §8[kan återansluta]"
   reconnect:  "§a▶ §f{0} §ahar återanslutit!"
   time-limit: "§c§l⏱ Tiden ute! Loppet är över."
+  pvp:
+    announce:  "§c⚔ PVP aktiveras om §f{0} §csekunder!"
+    countdown: "§c⚔ PVP om §f{0}§c..."
+    activated: "§c§l⚔ PVP är nu aktivt!"
   pause:
     paused:    "§e§l⏸ Spel pausat."
     resumed:   "§a§l▶ Spel återupptaget."
