@@ -1,0 +1,39 @@
+# Maximale Abweichung in Blöcken nach Ost/West vom Startpunkt
+corridor-width: 30
+
+# Countdown in Sekunden vor dem Start
+countdown: 10
+
+# Name der im Scoreboard-Titel angezeigt wird
+server-name: "DeathRun"
+
+# Radius des Glaskäfigs um den Startpunkt (in Blöcken)
+cage-radius: 3
+
+# Laufrichtung: NORTH, SOUTH, EAST oder WEST
+direction: NORTH
+
+# PVP zwischen Spielern erlauben (false = kein Spieler-gegen-Spieler-Schaden)
+pvp: false
+
+# Maximale Spielzeit in Sekunden (0 = kein Limit, Timer zählt nur hoch)
+max-time: 0
+
+# Schaden pro Block Entfernung außerhalb der Border, pro Sekunde
+border-damage-per-block: 0.5
+# Ab wie vielen Blöcken außerhalb der Border Schaden beginnt (0 = sofort)
+border-damage-buffer: 0.0
+
+# Mess-Startpunkt (Außenkante der Käfigwand in Laufrichtung – wird automatisch gesetzt)
+start:
+  world: ""
+  x: 0
+  y: 64
+  z: 0
+
+# Spawn-Mitte des Käfigs (wird automatisch gesetzt)
+spawn:
+  world: ""
+  x: 0
+  y: 64
+  z: 0

@@ -1,0 +1,18 @@
+name: Deathrun
+version: '1.0'
+main: com.example.deathrun.DeathrunPlugin
+api-version: '1.21.8'
+description: Deathrun Minigame – Wettlauf mit permanentem Lebensverlust
+authors:
+  - Du
+
+commands:
+  dr:
+    description: Deathrun Hauptbefehl
+    usage: /dr <subbefehl>
+    permission: deathrun.admin
+
+permissions:
+  deathrun.admin:
+    description: Voller Zugriff auf Deathrun-Befehle
+    default: op
