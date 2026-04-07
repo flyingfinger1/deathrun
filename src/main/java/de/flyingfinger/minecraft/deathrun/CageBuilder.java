@@ -28,6 +28,8 @@ public class CageBuilder {
     private final Set<Location>           lastRemovedLocations = new HashSet<>();
     /** Snapshot der Welt-Blöcke vor dem Bau – für Restaurierung bei removeCage. */
     private final Map<Location, BlockData> snapshot            = new HashMap<>();
+    /** Spieler-Fußlevel (cy) – für den Fallback bei removeCage ohne Snapshot. */
+    private int cageBaseY = 0;
 
     /** Gibt die beim letzten openCage()-Aufruf entfernten Blöcke zurück. */
     public Set<Location> getLastRemovedLocations() { return new HashSet<>(lastRemovedLocations); }
@@ -52,6 +54,7 @@ public class CageBuilder {
         int   cz     = center.getBlockZ();
         int   r      = radius * CAGE_SCALE; // 3x breiter
         int   height = 4;                   // Innenhöhe
+        cageBaseY = cy;
 
         // 0. Snapshot aller betroffenen Blöcke speichern (vor jeder Veränderung)
         snapshot.clear();
@@ -214,6 +217,7 @@ public class CageBuilder {
         int cz     = spawnCenter.getBlockZ();
         int r      = radius * CAGE_SCALE;
         int height = 4;
+        cageBaseY  = cy;
 
         // Boden + Decke
         for (int x = cx - r; x <= cx + r; x++) {
@@ -263,11 +267,17 @@ public class CageBuilder {
             }
             snapshot.clear();
         } else {
-            // Fallback: alles auf Air setzen
+            // Fallback (kein Snapshot nach Neustart):
+            // Boden → Gras/Erde, alles andere → Luft
             for (Location loc : locations) {
-                if (loc.getWorld() != null) {
-                    loc.getBlock().setType(Material.AIR);
-                }
+                if (loc.getWorld() == null) continue;
+                int dy = cageBaseY - loc.getBlockY(); // >0 = unterhalb Spielerlevel
+                Material mat = switch (dy) {
+                    case 1  -> Material.GRASS_BLOCK; // direkt unter Spielerlevel
+                    case 2, 3 -> Material.DIRT;      // darunter
+                    default -> Material.AIR;          // Wände, Decke, Innenraum
+                };
+                loc.getBlock().setType(mat, false);
             }
         }
         builtLocations.clear();
