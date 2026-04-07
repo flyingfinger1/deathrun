@@ -84,6 +84,7 @@ public class SidebarManager {
         }
     }
 
+    /** Initialisiert die Spieler-Scoreboards für alle Teilnehmer zu Beginn des Rennens. */
     public void setup(Collection<PlayerData> players, String serverName) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -118,6 +119,12 @@ public class SidebarManager {
         tabObjs.put(pd.getUuid(), tab);
     }
 
+    /**
+     * Aktualisiert Sidebar und Tab-Scores für alle Spieler während des laufenden Rennens.
+     * @param sorted     Spielerliste, absteigend nach Distanz sortiert
+     * @param allPlayers alle Teilnehmer (UUID → PlayerData)
+     * @param gm         Referenz auf den GameManager für Live-Positionen und Timer
+     */
     public void update(List<PlayerData> sorted, Map<UUID, PlayerData> allPlayers, GameManager gm) {
         for (PlayerData viewerData : allPlayers.values()) {
             Player viewer = Bukkit.getPlayer(viewerData.getUuid());
@@ -175,6 +182,11 @@ public class SidebarManager {
 
     // ── Lobby-Board (IDLE) ────────────────────────────────────────────────────
 
+    /**
+     * Aktualisiert die Lobby-Scoreboards für alle aktuell online befindlichen Spieler.
+     * Zeigt Setup-Hinweise (Käfig bauen, Server öffnen) oder den Wartestatus.
+     * @param gm Referenz auf den GameManager für Käfig- und Serverstatus
+     */
     public void updateLobby(GameManager gm) {
         boolean cageBuilt  = gm.isCageBuilt();
         boolean serverOpen = gm.isServerOpen();
@@ -283,6 +295,7 @@ public class SidebarManager {
         }
     }
 
+    /** Setzt alle Spieler auf das Haupt-Scoreboard zurück und verwirft die Lobby-Boards. */
     public void clearLobbyBoards() {
         for (Map.Entry<UUID, Scoreboard> e : lobbyBoards.entrySet()) {
             Player p = Bukkit.getPlayer(e.getKey());
@@ -299,6 +312,11 @@ public class SidebarManager {
         tabObjs.remove(pd.getUuid());
     }
 
+    /**
+     * Setzt alle angegebenen Spieler auf das Haupt-Scoreboard zurück
+     * und leert alle internen Scoreboard-Maps.
+     * @param players die zu entfernenden Spieler
+     */
     public void removeAll(Collection<PlayerData> players) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -311,6 +329,14 @@ public class SidebarManager {
 
     // ── Hilfsmethoden ─────────────────────────────────────────────────────────
 
+    /**
+     * Schreibt eine Zeile in die Sidebar mithilfe eines Team-Präfixes.
+     * @param sb      das Scoreboard des Betrachters
+     * @param obj     das Sidebar-Objective
+     * @param score   Zeilennummer (von oben: höher = weiter oben)
+     * @param content anzuzeigender Text
+     * @return {@code score - 1} für die nächste Zeile
+     */
     private int setLine(Scoreboard sb, Objective obj, int score, String content) {
         String entry = SLOTS[score];
         Team   team  = sb.registerNewTeam("l" + score);
@@ -320,6 +346,12 @@ public class SidebarManager {
         return score - 1;
     }
 
+    /**
+     * Gibt den 1-basierten Rang eines Spielers in der sortierten Liste zurück.
+     * @param sorted nach Distanz sortierte Spielerliste
+     * @param uuid   UUID des gesuchten Spielers
+     * @return Rang (1 = Führender), oder {@code sorted.size()} falls nicht gefunden
+     */
     private int getRank(List<PlayerData> sorted, UUID uuid) {
         for (int i = 0; i < sorted.size(); i++) {
             if (sorted.get(i).getUuid().equals(uuid)) return i + 1;
@@ -327,6 +359,10 @@ public class SidebarManager {
         return sorted.size();
     }
 
+    /**
+     * Berechnet die aktuelle Vorwärtsdistanz eines lebenden Spielers zur Startlinie.
+     * Fällt auf {@link PlayerData#getFinalDistance()} zurück, falls der Spieler offline ist.
+     */
     private double liveDistance(PlayerData pd, GameManager gm) {
         Player p = Bukkit.getPlayer(pd.getUuid());
         if (p == null || gm.getStartLocation() == null) return pd.getFinalDistance();
@@ -335,7 +371,10 @@ public class SidebarManager {
             p.getLocation().getX(),       p.getLocation().getZ());
     }
 
+    /** Formatiert eine Distanz ohne Nachkommastellen (Minimum 0). */
     private String fmt(double d)     { return String.format("%.0f", Math.max(0, d)); }
+    /** Formatiert eine seitliche Abweichung mit Vorzeichen. */
     private String fmtDev(double d)  { return (d >= 0 ? "+" : "") + String.format("%.0f", d); }
+    /** Kürzt einen String auf {@code max} Zeichen und hängt „…" an falls nötig. */
     private String truncate(String s, int max) { return s.length() > max ? s.substring(0, max) + "…" : s; }
 }

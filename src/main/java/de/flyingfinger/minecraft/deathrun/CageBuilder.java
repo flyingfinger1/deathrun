@@ -15,6 +15,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Erstellt, öffnet, schließt und entfernt den Glas-Startkäfig in der Spielwelt.
+ * Speichert einen Block-Snapshot vor dem Bau, damit die ursprüngliche Welt
+ * bei {@link #removeCage(java.util.Set)} wiederhergestellt werden kann.
+ */
 public class CageBuilder {
 
     private static final int FLOOR_DEPTH  = 3; // Boden-Tiefe in Blöcken
@@ -111,6 +116,11 @@ public class CageBuilder {
     }
 
     /** Bestimmt das Material für eine Wand, je nachdem ob sie in Laufrichtung liegt. */
+    /**
+     * Bestimmt das Material für eine Wandposition.
+     * Die Wand in Laufrichtung erhält das Richtungs-Indikatormaterial (Lime-Glas),
+     * alle anderen Wände normales Glas.
+     */
     private Material getWallMaterial(int x, int z, int cx, int cz, int radius, RunDirection dir) {
         boolean isIndicator = switch (dir) {
             case NORTH -> z == cz - radius;
@@ -121,6 +131,10 @@ public class CageBuilder {
         return isIndicator ? dir.getIndicatorMaterial() : dir.getWallMaterial();
     }
 
+    /**
+     * Setzt einen Block in der Welt, registriert ihn in {@code builtLocations}
+     * und bei Bedarf in {@code indicatorLocations}.
+     */
     private void setBlock(World world, int x, int y, int z, Material mat) {
         Block b = world.getBlockAt(x, y, z);
         b.setType(mat);

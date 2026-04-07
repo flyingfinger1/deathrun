@@ -10,14 +10,23 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+/**
+ * Verarbeitet alle Unterbefehle des {@code /dr}-Befehls und stellt
+ * Tab-Vervollständigung bereit. Befehle ohne Admin-Berechtigung sind auf
+ * {@code /dr goto} beschränkt.
+ */
 public class DeathrunCommand implements CommandExecutor, TabCompleter {
 
     private final GameManager gm;
 
+    /**
+     * @param gm die zentrale GameManager-Instanz, an die Befehle delegiert werden
+     */
     public DeathrunCommand(GameManager gm) {
         this.gm = gm;
     }
 
+    /** Verteilt eingehende {@code /dr}-Befehle auf die entsprechenden GameManager-Methoden. */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         String sub = args.length > 0 ? args[0].toLowerCase() : "";
@@ -94,6 +103,10 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    /**
+     * Gibt die vollständige Befehlshilfe an den Absender aus.
+     * @param s Empfänger der Hilfe-Nachricht
+     */
     private void sendHelp(CommandSender s) {
         s.sendMessage(Component.text(Messages.str(s, "cmd.help.header"), NamedTextColor.GOLD));
         help(s, "/dr buildcage",          Messages.str(s, "cmd.help.buildcage"));
@@ -110,11 +123,18 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
         help(s, "/dr status",             Messages.str(s, "cmd.help.status"));
     }
 
+    /**
+     * Sendet eine einzelne formatierte Hilfszeile.
+     * @param s    Empfänger
+     * @param cmd  Befehl (gelb)
+     * @param desc Beschreibung (grau)
+     */
     private void help(CommandSender s, String cmd, String desc) {
         s.sendMessage(Component.text("  " + cmd, NamedTextColor.YELLOW)
             .append(Component.text(" – " + desc, NamedTextColor.GRAY)));
     }
 
+    /** Liefert Tab-Vorschläge für Unterbefehl und Richtungsargument. */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length == 1) {

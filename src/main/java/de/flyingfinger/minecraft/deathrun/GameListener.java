@@ -28,11 +28,20 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 
+/**
+ * Bukkit-Event-Listener für alle spielrelevanten Ereignisse.
+ * Delegiert die Spiellogik an den {@link GameManager} und setzt
+ * game-spezifische Einschränkungen (Pause, Block-Schutz, Login-Sperre) durch.
+ */
 public class GameListener implements Listener {
 
     private final GameManager gm;
     private final DeathrunPlugin plugin;
 
+    /**
+     * @param gm     der zentrale GameManager
+     * @param plugin die Plugin-Instanz (für verzögerte Tasks)
+     */
     public GameListener(GameManager gm, DeathrunPlugin plugin) {
         this.gm = gm;
         this.plugin = plugin;
@@ -40,6 +49,7 @@ public class GameListener implements Listener {
 
     // ── Tod ───────────────────────────────────────────────────────────────────
 
+    /** Behandelt den Tod eines Spielers im laufenden Rennen. Unterdrückt die Standard-Todesmeldung. */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
@@ -54,6 +64,7 @@ public class GameListener implements Listener {
         event.deathMessage(null);  // Keine Standard-Todesmeldung
     }
 
+    /** Setzt den Respawn-Punkt auf den Spawn und übergibt den Spieler im nächsten Tick in den Spektatormodus. */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
@@ -72,6 +83,7 @@ public class GameListener implements Listener {
 
     // ── Regen deaktivieren ────────────────────────────────────────────────────
 
+    /** Verhindert natürliche Heilung für lebende Spieler während des Rennens. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHealthRegen(EntityRegainHealthEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -83,6 +95,7 @@ public class GameListener implements Listener {
         event.setCancelled(true); // Kein Heilen während des Rennens
     }
 
+    /** Hält die Sättigung bei 0, damit der Regen-Mechanismus nicht durch Essen ausgelöst wird. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFoodChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -99,6 +112,7 @@ public class GameListener implements Listener {
 
     // ── Block-Schutz ──────────────────────────────────────────────────────────
 
+    /** Schützt Käfigblöcke vor dem Abbauen; sperrt Blockinteraktion während der Pause. */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         // Käfigblöcke immer schützen (für alle Spieler, jederzeit)
@@ -112,6 +126,7 @@ public class GameListener implements Listener {
         }
     }
 
+    /** Schützt Käfigblöcke vor dem Platzieren; sperrt Blockinteraktion während der Pause. */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         // Käfigblöcke immer schützen (für alle Spieler, jederzeit)
@@ -127,6 +142,7 @@ public class GameListener implements Listener {
 
     // ── Pause: Inventar, Essen, Craften gesperrt ──────────────────────────────
 
+    /** Sperrt Inventar-Klicks für In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (!gm.isPaused()) return;
@@ -135,6 +151,7 @@ public class GameListener implements Listener {
         event.setCancelled(true);
     }
 
+    /** Sperrt Inventar-Drag für In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
         if (!gm.isPaused()) return;
@@ -143,6 +160,7 @@ public class GameListener implements Listener {
         event.setCancelled(true);
     }
 
+    /** Verhindert das Konsumieren von Items (Tränken, Nahrung) während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         if (!gm.isPaused()) return;
@@ -151,6 +169,7 @@ public class GameListener implements Listener {
     }
 
     // Kein Item-Benutzen (Ender-Perlen, Angelrute, Tränke, Eimer …)
+    /** Verhindert Rechtsklick-Aktionen (Item-Benutzung) für In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         if (!gm.isPaused()) return;
@@ -163,6 +182,7 @@ public class GameListener implements Listener {
     }
 
     // Keine Projektile (Pfeile, Schneebälle, Dreizack …)
+    /** Verhindert den Abschuss von Projektilen durch In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProjectile(ProjectileLaunchEvent event) {
         if (!gm.isPaused()) return;
@@ -172,6 +192,7 @@ public class GameListener implements Listener {
     }
 
     // Kein Item-Droppen
+    /** Verhindert das Wegwerfen von Items durch In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent event) {
         if (!gm.isPaused()) return;
@@ -180,6 +201,7 @@ public class GameListener implements Listener {
     }
 
     // Kein Item-Aufheben
+    /** Verhindert das Aufheben von Items durch In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPickup(EntityPickupItemEvent event) {
         if (!gm.isPaused()) return;
@@ -189,6 +211,7 @@ public class GameListener implements Listener {
     }
 
     // Kein Boot/Lore betreten (umgeht den Bewegungs-Freeze)
+    /** Verhindert das Betreten von Fahrzeugen (Boot, Lore) während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVehicleEnter(VehicleEnterEvent event) {
         if (!gm.isPaused()) return;
@@ -199,6 +222,7 @@ public class GameListener implements Listener {
 
     // ── Pause: Bewegung einfrieren ────────────────────────────────────────────
 
+    /** Friert die horizontale Bewegung lebender In-Game-Spieler während der Pause ein; vertikales Fallen bleibt erlaubt. */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent event) {
         if (!gm.isPaused()) return;
@@ -220,6 +244,7 @@ public class GameListener implements Listener {
 
     // ── Kein Schaden nach Spielende + Pause ───────────────────────────────────
 
+    /** Unterdrückt Schaden nach Spielende sowie für In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         // Nach Spielende: kein Schaden für Spieler
@@ -234,6 +259,7 @@ public class GameListener implements Listener {
 
     // ── Mobs greifen nach Spielende nicht an + Pause ──────────────────────────
 
+    /** Deaktiviert Mob-Targeting auf Spieler nach Spielende sowie während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobTarget(EntityTargetLivingEntityEvent event) {
         // Nach Spielende: Mobs targeting Spieler deaktivieren
@@ -248,6 +274,7 @@ public class GameListener implements Listener {
 
     // ── Pause: Spielteilnehmer dürfen nichts angreifen ───────────────────────
 
+    /** Verhindert Angriffe durch In-Game-Spieler während der Pause. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAttackDuringPause(EntityDamageByEntityEvent event) {
         if (!gm.isPaused()) return;
@@ -258,6 +285,7 @@ public class GameListener implements Listener {
 
     // ── PVP-Kontrolle (gilt immer während des Rennens) ────────────────────────
 
+    /** Blockiert PVP zwischen In-Game-Spielern solange der PVP-Delay noch nicht abgelaufen ist. */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPvp(EntityDamageByEntityEvent event) {
         if (gm.getState() != GameState.RUNNING) return;
@@ -270,6 +298,10 @@ public class GameListener implements Listener {
 
     // ── Login-Sperre ──────────────────────────────────────────────────────────
 
+    /**
+     * Prüft beim Login, ob der Spieler in der aktuellen Spielphase zugelassen ist.
+     * Admins (OP oder {@code deathrun.admin}) können immer beitreten.
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onLogin(PlayerLoginEvent event) {
         boolean isAdmin = event.getPlayer().isOp()
@@ -296,6 +328,7 @@ public class GameListener implements Listener {
 
     // ── Join ──────────────────────────────────────────────────────────────────
 
+    /** Delegiert den Beitritt eines Spielers im nächsten Tick an den GameManager. */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         // Im nächsten Tick ausführen, damit der Spieler vollständig geladen ist
@@ -305,6 +338,7 @@ public class GameListener implements Listener {
 
     // ── Disconnect ────────────────────────────────────────────────────────────
 
+    /** Delegiert das Verlassen eines Spielers an den GameManager. */
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         gm.handleQuit(event.getPlayer());

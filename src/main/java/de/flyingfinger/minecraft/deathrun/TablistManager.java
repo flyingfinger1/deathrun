@@ -15,6 +15,12 @@ import java.util.*;
  */
 public class TablistManager {
 
+    /**
+     * Aktualisiert den {@code playerListName} aller Teilnehmer in der Tabliste.
+     * Zeigt Rang, Name, Distanz, Status-Icon und Herzanzeige.
+     * @param sorted nach Distanz sortierte Spielerliste
+     * @param gm     Referenz auf den GameManager für Live-Positionen
+     */
     public void update(List<PlayerData> sorted, GameManager gm) {
         for (int i = 0; i < sorted.size(); i++) {
             PlayerData pd = sorted.get(i);
@@ -61,6 +67,10 @@ public class TablistManager {
         return result;
     }
 
+    /**
+     * Setzt den {@code playerListName} aller angegebenen Spieler auf den Standard zurück.
+     * @param players die zurückzusetzenden Teilnehmer
+     */
     public void reset(Collection<PlayerData> players) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -68,6 +78,10 @@ public class TablistManager {
         }
     }
 
+    /**
+     * Berechnet die aktuelle Vorwärtsdistanz eines Spielers zur Startlinie.
+     * Gibt 0 zurück, falls der Spieler offline ist oder kein Startpunkt gesetzt wurde.
+     */
     private double liveDistance(PlayerData pd, GameManager gm) {
         Player p = Bukkit.getPlayer(pd.getUuid());
         if (p == null || gm.getStartLocation() == null) return 0;
@@ -76,5 +90,6 @@ public class TablistManager {
             p.getLocation().getX(),       p.getLocation().getZ());
     }
 
+    /** Formatiert eine Distanz ohne Nachkommastellen (Minimum 0). */
     private String fmt(double d) { return String.format("%.0f", Math.max(0, d)); }
 }

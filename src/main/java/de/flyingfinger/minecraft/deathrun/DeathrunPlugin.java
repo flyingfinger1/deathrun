@@ -5,10 +5,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Haupt-Plugin-Klasse. Initialisiert alle Subsysteme, registriert
+ * den Befehlshandler sowie den Event-Listener und startet den Lobby-Task.
+ */
 public class DeathrunPlugin extends JavaPlugin implements Listener {
 
     private GameManager gameManager;
 
+    /** Wird beim Aktivieren des Plugins aufgerufen. Lädt Konfiguration und startet alle Subsysteme. */
     @Override
     public void onEnable() {
         saveDefaultConfig();
@@ -31,12 +36,17 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
         getLogger().info("Deathrun Plugin aktiviert.");
     }
 
+    /** Wird beim Deaktivieren des Plugins aufgerufen. Stoppt laufende Tasks sauber. */
     @Override
     public void onDisable() {
         if (gameManager != null) gameManager.forceStop();
         getLogger().info("Deathrun Plugin deaktiviert.");
     }
 
+    /**
+     * Setzt die MOTD der Server-Liste abhängig vom aktuellen Spielzustand.
+     * @param event das Ping-Event des Clients
+     */
     @EventHandler
     public void onPing(ServerListPingEvent event) {
         if (gameManager == null) return;
@@ -52,5 +62,6 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
         }
     }
 
+    /** @return die zentrale {@link GameManager}-Instanz dieses Plugins */
     public GameManager getGameManager() { return gameManager; }
 }

@@ -15,6 +15,11 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Zentrale Steuerklasse des Deathrun-Plugins.
+ * Verwaltet den Spielzustand, koordiniert alle Subsysteme (Cage, Sidebar, Tablist)
+ * und stellt die öffentliche API für Befehle und Event-Listener bereit.
+ */
 public class GameManager {
 
     private final DeathrunPlugin plugin;
@@ -62,6 +67,10 @@ public class GameManager {
     private final SidebarManager sidebar = new SidebarManager();
     private final TablistManager tablist = new TablistManager();
 
+    /**
+     * Erstellt den GameManager und lädt die persistierte Konfiguration.
+     * @param plugin die zugehörige Plugin-Instanz
+     */
     public GameManager(DeathrunPlugin plugin) {
         this.plugin = plugin;
         loadConfig();
@@ -69,6 +78,7 @@ public class GameManager {
 
     // ── Konfiguration laden ───────────────────────────────────────────────────
 
+    /** Liest alle Plugin-Einstellungen aus der config.yml und stellt gespeicherte Positionen wieder her. */
     private void loadConfig() {
         var cfg = plugin.getConfig();
         corridorWidth = cfg.getInt("corridor-width", 30);
@@ -115,6 +125,11 @@ public class GameManager {
 
     // ── Admin-Befehle ─────────────────────────────────────────────────────────
 
+    /**
+     * Baut den Startkäfig an der aktuellen Position des Admins,
+     * speichert Spawn- und Startlokation und persistiert sie in der Konfiguration.
+     * @param sender der Admin, der den Befehl ausgeführt hat
+     */
     public void buildCage(Player sender) {
         // Käfig-Mittelpunkt = aktuelle Spielerposition (Block-Mitte)
         Location center = sender.getLocation().clone();
@@ -151,6 +166,12 @@ public class GameManager {
         sender.sendMessage(Messages.comp(sender, "cmd.buildcage.success", Messages.str(sender, direction.getLangKey())));
     }
 
+    /**
+     * Gibt die Blickrichtung (Yaw) zurück, mit der Spieler im Käfig stehen sollen,
+     * sodass sie in Laufrichtung schauen.
+     * @param dir Laufrichtung
+     * @return Yaw-Winkel in Grad
+     */
     private float spawnYaw(RunDirection dir) {
         return switch (dir) {
             case NORTH -> 180f;
@@ -160,6 +181,11 @@ public class GameManager {
         };
     }
 
+    /**
+     * Schreibt eine {@link Location} unter dem angegebenen Schlüssel-Präfix in die config.yml.
+     * @param key Präfix (z.B. {@code "start"} oder {@code "spawn"})
+     * @param loc zu speichernde Position
+     */
     private void saveLocCfg(String key, Location loc) {
         var cfg = plugin.getConfig();
         cfg.set(key + ".world", loc.getWorld().getName());
@@ -169,6 +195,10 @@ public class GameManager {
         if (loc.getYaw() != 0f) cfg.set(key + ".yaw", loc.getYaw());
     }
 
+    /**
+     * Entfernt den Käfig aus der Welt und aktualisiert die Konfiguration.
+     * @param sender der Admin, der den Befehl ausgeführt hat
+     */
     public void removeCage(Player sender) {
         cageBuilder.removeCage(cageLocations);
         cageLocations.clear();
@@ -177,6 +207,11 @@ public class GameManager {
         sender.sendMessage(Messages.comp(sender, "cmd.removecage.success"));
     }
 
+    /**
+     * Ändert die Korridorbreite (halbe WorldBorder-Größe).
+     * @param sender Befehlsabsender für Rückmeldungen
+     * @param width  neue Breite in Blöcken (5–500)
+     */
     public void setCorridorWidth(CommandSender sender, int width) {
         if (width < 5 || width > 500) {
             sender.sendMessage(Messages.comp(sender, "cmd.setcorridor.invalid"));
@@ -188,6 +223,12 @@ public class GameManager {
         sender.sendMessage(Messages.comp(sender, "cmd.setcorridor.success", width));
     }
 
+    /**
+     * Ändert die Laufrichtung. Falls der Käfig bereits steht, wird die Indicator-Wand
+     * und der Messpunkt sofort angepasst.
+     * @param sender Befehlsabsender für Rückmeldungen
+     * @param arg    Richtungsname (NORTH, SOUTH, EAST, WEST; Groß-/Kleinschreibung egal)
+     */
     public void setDirection(CommandSender sender, String arg) {
         try {
             direction = RunDirection.valueOf(arg.toUpperCase());
@@ -225,6 +266,11 @@ public class GameManager {
         }
     }
 
+    /**
+     * Setzt das Zeitlimit für das Rennen.
+     * @param sender  Befehlsabsender für Rückmeldungen
+     * @param minutes Maximale Renndauer in Minuten (0 = unbegrenzt)
+     */
     public void setMaxTime(CommandSender sender, int minutes) {
         if (minutes < 0) {
             sender.sendMessage(Messages.comp(sender, "cmd.settime.invalid"));
@@ -239,6 +285,10 @@ public class GameManager {
         sender.sendMessage(Messages.comp(sender, "cmd.settime.success", display));
     }
 
+    /**
+     * Gibt eine Status-Übersicht der aktuellen Plugin-Konfiguration und des Spielzustands aus.
+     * @param sender Empfänger der Status-Meldung
+     */
     public void showStatus(CommandSender sender) {
         sender.sendMessage(Messages.comp(sender, "cmd.status.header"));
         sender.sendMessage(line(Messages.str(sender, "cmd.status.state"), state.name()));
@@ -261,6 +311,11 @@ public class GameManager {
 
     // ── Spielstart ────────────────────────────────────────────────────────────
 
+    /**
+     * Startet den Countdown und wechselt in den Zustand {@link GameState#STARTING}.
+     * @param sender Befehlsabsender für Rückmeldungen
+     * @return {@code true} wenn der Start erfolgreich eingeleitet wurde
+     */
     public boolean startGame(CommandSender sender) {
         if (state == GameState.STARTING || state == GameState.RUNNING) {
             sender.sendMessage(Messages.comp(sender, "cmd.start.already-running"));
@@ -312,6 +367,10 @@ public class GameManager {
         return true;
     }
 
+    /**
+     * Wird nach Ablauf des Countdowns aufgerufen. Öffnet den Käfig, verteilt persönliche
+     * WorldBorders und startet Border-, Update- und (optional) PVP-Tasks.
+     */
     private void beginRace() {
         state = GameState.RUNNING;
         raceStartTime = System.currentTimeMillis();
@@ -393,6 +452,14 @@ public class GameManager {
 
     // ── WorldBorder ───────────────────────────────────────────────────────────
 
+    /**
+     * Weist einem Spieler eine persönliche WorldBorder zu (Paper-API).
+     * Bei fehlender Paper-API wird ein Warning geloggt und kein Fehler geworfen.
+     * @param pd der betroffene Spieler
+     * @param p  die Online-Instanz des Spielers
+     * @param sx X-Koordinate des Startpunkts
+     * @param sz Z-Koordinate des Startpunkts
+     */
     private void assignBorder(PlayerData pd, Player p, double sx, double sz) {
         try {
             // Erfordert Paper-API (Player.setWorldBorder + Bukkit.createWorldBorder)
@@ -413,6 +480,10 @@ public class GameManager {
         }
     }
 
+    /**
+     * Entfernt die persönliche WorldBorder eines Spielers (bei Tod, Disconnect oder Spielende).
+     * @param pd der betroffene Spieler
+     */
     private void clearBorder(PlayerData pd) {
         Player p = Bukkit.getPlayer(pd.getUuid());
         if (p != null) {
@@ -450,6 +521,10 @@ public class GameManager {
 
     // ── Endkontrolle ──────────────────────────────────────────────────────────
 
+    /**
+     * Prüft ob die Spielende-Bedingung erfüllt ist (alle Spieler tot oder
+     * letzter Überlebender hat alle anderen überholt) und ruft ggf. {@link #endGame()} auf.
+     */
     private void checkEndCondition() {
         if (state != GameState.RUNNING) return;
 
@@ -494,6 +569,10 @@ public class GameManager {
 
     // ── Spielende ─────────────────────────────────────────────────────────────
 
+    /**
+     * Beendet das Rennen, zeigt Ergebnisse an, startet den Lobby-Task
+     * und wechselt in {@link GameState#ENDED}.
+     */
     private void endGame() {
         if (state == GameState.ENDED) return;
         state = GameState.ENDED;
@@ -553,6 +632,11 @@ public class GameManager {
         startLobbyTask();
     }
 
+    /**
+     * Schaltet die Spielpause um. Im pausierten Zustand werden Spieler eingefroren
+     * und eine Action-Bar-Anzeige gestartet.
+     * @param sender Befehlsabsender für Rückmeldungen
+     */
     public void togglePause(CommandSender sender) {
         if (state != GameState.RUNNING) {
             sender.sendMessage(Messages.comp(sender, "cmd.pause.not-running"));
@@ -586,6 +670,10 @@ public class GameManager {
         }
     }
 
+    /**
+     * Bricht ein laufendes oder gestartetes Spiel ab.
+     * @param sender Befehlsabsender für Rückmeldungen
+     */
     public void stopGame(CommandSender sender) {
         if (state == GameState.IDLE) {
             sender.sendMessage(Messages.comp(sender, "cmd.stop.no-game"));
@@ -595,6 +683,10 @@ public class GameManager {
         sender.sendMessage(Messages.comp(sender, "cmd.stop.success"));
     }
 
+    /**
+     * Setzt das Plugin in den Ausgangszustand zurück (IDLE).
+     * Wird sowohl bei {@code /dr stop} als auch beim Plugin-Deaktivieren aufgerufen.
+     */
     public void forceStop() {
         // Tag-Nacht-Zyklus anhalten (IDLE/ENDED = immer eingefroren)
         setDayCycle(false);
@@ -622,6 +714,10 @@ public class GameManager {
 
     // ── Server öffnen / schließen ─────────────────────────────────────────────
 
+    /**
+     * Öffnet den Server für alle Spieler und sendet eine Broadcast-Nachricht.
+     * @param sender Befehlsabsender für Rückmeldungen
+     */
     public void openServer(CommandSender sender) {
         if (spawnLocation == null) {
             sender.sendMessage(Messages.comp(sender, "cmd.open.no-cage"));
@@ -632,11 +728,20 @@ public class GameManager {
         broadcast("cmd.open.broadcast");
     }
 
+    /**
+     * Schließt den Server für Nicht-Admins (Wartungsmodus).
+     * @param sender Befehlsabsender für Rückmeldungen
+     */
     public void closeServer(CommandSender sender) {
         serverOpen = false;
         sender.sendMessage(Messages.comp(sender, "cmd.close.success"));
     }
 
+    /**
+     * Teleportiert den Spieler zur letzten bekannten Position des Gewinners.
+     * Nur im Zustand {@link GameState#ENDED} verfügbar.
+     * @param player der Spieler, der den Befehl ausgeführt hat
+     */
     public void handleGoto(Player player) {
         if (state != GameState.ENDED || finalResults.isEmpty()) {
             player.sendMessage(Messages.comp(player, "cmd.goto.no-game"));
@@ -654,6 +759,10 @@ public class GameManager {
 
     // ── Lobby-Task ────────────────────────────────────────────────────────────
 
+    /**
+     * Startet den wiederkehrenden Lobby-Task, der Scoreboards im IDLE- und ENDED-Zustand aktualisiert.
+     * Bereits laufende Tasks werden zuerst abgebrochen.
+     */
     public void startLobbyTask() {
         if (!plugin.isEnabled()) return;
         setDayCycle(false); // Lobby/Ende = Zyklus eingefroren
@@ -713,6 +822,11 @@ public class GameManager {
 
     // ── Disconnect ────────────────────────────────────────────────────────────
 
+    /**
+     * Behandelt das Verlassen eines Spielers. Friert dessen Distanz ein und markiert ihn als
+     * disconnected (während RUNNING) oder entfernt ihn aus der Teilnehmerliste (während STARTING).
+     * @param player der Spieler, der den Server verlassen hat
+     */
     public void handleQuit(Player player) {
         PlayerData pd = players.get(player.getUniqueId());
         if (pd == null) return;
@@ -740,6 +854,11 @@ public class GameManager {
 
     // ── Hilfsmethoden ─────────────────────────────────────────────────────────
 
+    /**
+     * Gibt alle Teilnehmer absteigend nach ihrer Laufdistanz sortiert zurück.
+     * Aktualisiert dabei die gespeicherte Distanz für noch lebende Online-Spieler.
+     * @return sortierte Spielerliste
+     */
     List<PlayerData> getSorted() {
         // Lebende Spieler: aktuelle Position verwenden
         for (PlayerData pd : players.values()) {
@@ -756,6 +875,7 @@ public class GameManager {
             .collect(Collectors.toList());
     }
 
+    /** Bricht alle laufenden BukkitTasks (Countdown, Border, Update, ActionBar, PvP) ab. */
     private void cancelTasks() {
         if (countdownTask != null)  { countdownTask.cancel();  countdownTask = null; }
         if (borderTask != null)     { borderTask.cancel();     borderTask = null; }
@@ -837,6 +957,13 @@ public class GameManager {
             args);
     }
 
+    /**
+     * Zeigt allen aktuellen Teilnehmern einen Titel in ihrer jeweiligen Sprache.
+     * @param titleKey    Nachrichten-Schlüssel für den Haupttitel
+     * @param subtitleKey Nachrichten-Schlüssel für den Untertitel
+     * @param times       Einblenddauern
+     * @param args        Platzhalter-Werte für Titel und Untertitel
+     */
     private void showTitles(String titleKey, String subtitleKey, Title.Times times, Object... args) {
         for (UUID uuid : players.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
@@ -847,11 +974,19 @@ public class GameManager {
         }
     }
 
-    /** Sendet eine fertige Component an alle (für nicht-lokalisierbare Nachrichten). */
+    /**
+     * Sendet eine fertige Component an alle online Spieler (für nicht-lokalisierbare Nachrichten).
+     * @param msg zu sendende Nachricht
+     */
     private void broadcastRaw(Component msg) {
         Bukkit.broadcast(msg);
     }
 
+    /**
+     * Spielt einen Sound für alle Teilnehmer an ihrer jeweiligen Position ab.
+     * @param s     der abzuspielende Sound
+     * @param pitch Tonhöhe (1.0 = normal)
+     */
     private void sound(Sound s, float pitch) {
         for (UUID uuid : players.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
@@ -859,14 +994,22 @@ public class GameManager {
         }
     }
 
+    /** Formatiert eine Zahl ohne Nachkommastellen. */
     private String fmt(double d) {
         return String.format("%.0f", d);
     }
 
+    /** Formatiert eine {@link Location} als lesbaren Welt/X/Y/Z-String. */
     private String fmtLoc(Location l) {
         return l.getWorld().getName() + " " + l.getBlockX() + "/" + l.getBlockY() + "/" + l.getBlockZ();
     }
 
+    /**
+     * Erstellt eine formatierte Status-Zeile (Label grau, Wert weiß).
+     * @param label Bezeichnung
+     * @param val   anzuzeigender Wert
+     * @return fertige Component
+     */
     private Component line(String label, String val) {
         return Component.text("  " + label + ": ", NamedTextColor.GRAY)
             .append(Component.text(val, NamedTextColor.WHITE));
@@ -874,28 +1017,49 @@ public class GameManager {
 
     // ── Getter ────────────────────────────────────────────────────────────────
 
+    /** @return aktueller Spielzustand */
     public GameState getState()  { return state; }
+    /** @return {@code true} wenn das Spiel gerade pausiert ist */
     public boolean isPaused()       { return paused; }
+    /** @return {@code true} wenn PVP in der Konfiguration aktiviert ist */
     public boolean isPvpEnabled()   { return pvpEnabled; }
     /** PVP ist aktuell aktiv: nur während RUNNING, nach Ablauf des Delays, und nicht in der Pause. */
     public boolean isPvpActive()    { return pvpActive && !paused; }
+    /** @return {@code true} wenn ein maximales Zeitlimit konfiguriert ist */
     public boolean hasTimeLimit()   { return maxTimeSeconds > 0; }
+    /** @return konfiguriertes Zeitlimit in Sekunden (0 = unbegrenzt) */
     public int getMaxTimeSeconds()  { return maxTimeSeconds; }
 
+    /**
+     * Gibt die bisher vergangene Rennzeit in Sekunden zurück (Pausenzeiten werden abgezogen).
+     * @return vergangene Sekunden seit Rennstart
+     */
     public int getElapsedSeconds() {
         if (raceStartTime == 0) return 0;
         long pausedExtra = paused ? (System.currentTimeMillis() - pauseStartMs) : 0;
         return (int) ((System.currentTimeMillis() - raceStartTime - totalPausedMs - pausedExtra) / 1000);
     }
 
+    /**
+     * Gibt die verbleibende Zeit bis zum Zeitlimit zurück.
+     * @return verbleibende Sekunden (0 wenn kein Zeitlimit oder abgelaufen)
+     */
     public int getRemainingSeconds() {
         return Math.max(0, maxTimeSeconds - getElapsedSeconds());
     }
 
+    /** @return formatierter Timer-String für die Sidebar (Standardsprache) */
     public String getTimerDisplay() {
         return getTimerDisplay(null);
     }
 
+    /**
+     * Gibt den formatierten Timer-String für die Sidebar zurück.
+     * Bei Pause wird ein Pause-Text angezeigt; bei Zeitlimit die verbleibende Zeit (farbcodiert),
+     * sonst die vergangene Zeit.
+     * @param viewer Spieler, dessen Sprache verwendet wird (darf {@code null} sein)
+     * @return fertig formatierter Timer-String mit Farb-Codes
+     */
     public String getTimerDisplay(Player viewer) {
         if (paused) return viewer != null
             ? Messages.str(viewer, "sidebar.game.timer-pause")
@@ -907,16 +1071,32 @@ public class GameManager {
             : "§c";
         return color + String.format("%02d:%02d", secs / 60, secs % 60);
     }
+    /** @return Messpunkt an der Außenkante der Käfig-Startwand, oder {@code null} wenn nicht gesetzt */
     public Location getStartLocation()    { return startLocation; }
+    /** @return Spawn-Position in der Mitte des Käfigs, oder {@code null} wenn kein Käfig gebaut wurde */
     public Location getSpawnLocation()    { return spawnLocation; }
+    /** @return letzte bekannte Position des Gewinners nach Spielende, oder {@code null} */
     public Location getWinnerLocation()   { return winnerLocation; }
+    /** @return {@code true} wenn Nicht-Admin-Spieler beitreten dürfen */
     public boolean isServerOpen()         { return serverOpen; }
+    /** @return {@code true} wenn ein Käfig gebaut wurde (Spawn-Location vorhanden) */
     public boolean isCageBuilt()          { return spawnLocation != null; }
+    /** @return angezeigter Servername (für Scoreboard-Titel) */
     public String  getServerName()        { return serverName; }
+    /** @return Endergebnis-Liste, absteigend nach Distanz sortiert (leer wenn kein Spiel beendet) */
     public List<PlayerData> getResults()  { return finalResults; }
+    /** @return konfigurierte Laufrichtung */
     public RunDirection getDirection() { return direction; }
+    /** @return halbe WorldBorder-Breite in Blöcken */
     public int getCorridorWidth() { return corridorWidth; }
+    /** @return alle Teilnehmer des aktuellen Spiels (UUID → PlayerData) */
     public Map<UUID, PlayerData> getPlayers() { return players; }
+    /** @return alle geschützten Käfig-Blockpositionen */
     public Set<Location> getCageLocations() { return cageLocations; }
+    /**
+     * Prüft ob ein Spieler als Teilnehmer des aktuellen Spiels registriert ist.
+     * @param p der zu prüfende Spieler
+     * @return {@code true} wenn der Spieler in der Teilnehmerliste steht
+     */
     public boolean isInGame(Player p) { return players.containsKey(p.getUniqueId()); }
 }

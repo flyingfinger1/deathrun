@@ -39,6 +39,11 @@ public final class Messages {
 
     // ── Laden ─────────────────────────────────────────────────────────────────
 
+    /**
+     * Lädt die Sprachdatei(en) und initialisiert das Nachrichten-System.
+     * @param plugin   das Plugin, aus dessen JAR und Daten-Ordner geladen wird
+     * @param language Sprachcode (z.B. {@code "de"}, {@code "en"}) oder {@code "auto"}
+     */
     public static void load(Plugin plugin, String language) {
         autoMode = "auto".equalsIgnoreCase(language);
         cache.clear();
@@ -105,6 +110,13 @@ public final class Messages {
 
     // ── Sprachauflösung ───────────────────────────────────────────────────────
 
+    /**
+     * Gibt die geladene YAML-Konfiguration für den angegebenen Sprachcode zurück.
+     * Fällt über den Sprachpräfix (z.B. {@code "de_DE"} → {@code "de"}) und dann
+     * auf die Standardsprache zurück.
+     * @param language Sprachcode des Spielers
+     * @return passende YAML-Konfiguration
+     */
     private static YamlConfiguration getLang(String language) {
         YamlConfiguration cfg = cache.get(language);
         if (cfg != null) return cfg;
@@ -117,6 +129,12 @@ public final class Messages {
             cache.isEmpty() ? new YamlConfiguration() : cache.values().iterator().next());
     }
 
+    /**
+     * Gibt den Sprachcode des Spielers zurück (nur im Auto-Modus die Client-Locale,
+     * sonst die Standardsprache).
+     * @param player der anfragende Spieler
+     * @return Sprachcode (z.B. {@code "de"})
+     */
     private static String playerLang(Player player) {
         if (!autoMode) return defaultLang;
         return player.locale().getLanguage(); // z.B. "de", "en", "fr"
@@ -124,6 +142,13 @@ public final class Messages {
 
     // ── Interne Formatierung ──────────────────────────────────────────────────
 
+    /**
+     * Liest einen Schlüssel aus der Konfiguration und ersetzt Platzhalter ({0}, {1}, …).
+     * @param cfg  die Sprach-YAML-Konfiguration
+     * @param key  der Nachrichten-Schlüssel
+     * @param args Platzhalter-Werte in Reihenfolge
+     * @return fertig formatierter String (mit Legacy-Farb-Codes)
+     */
     private static String format(YamlConfiguration cfg, String key, Object... args) {
         String value = cfg.getString(key);
         if (value == null) value = "§c[?" + key + "]";
@@ -152,17 +177,38 @@ public final class Messages {
         return str(key, args);
     }
 
+    /**
+     * Gibt eine lokalisierte Nachricht als Adventure-Component zurück (Standardsprache).
+     * @param key  Nachrichten-Schlüssel
+     * @param args Platzhalter-Werte
+     * @return deserializierter Legacy-Component
+     */
     public static Component comp(String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(key, args));
     }
 
+    /**
+     * Gibt eine lokalisierte Nachricht als Adventure-Component zurück (Spieler-Sprache).
+     * @param player Spieler, dessen Sprache verwendet wird
+     * @param key    Nachrichten-Schlüssel
+     * @param args   Platzhalter-Werte
+     * @return deserializierter Legacy-Component
+     */
     public static Component comp(Player player, String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(player, key, args));
     }
 
+    /**
+     * Gibt eine lokalisierte Nachricht als Adventure-Component zurück (Sender-Sprache).
+     * @param sender Spieler oder Konsole als Empfänger
+     * @param key    Nachrichten-Schlüssel
+     * @param args   Platzhalter-Werte
+     * @return deserializierter Legacy-Component
+     */
     public static Component comp(CommandSender sender, String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(sender, key, args));
     }
 
+    /** @return {@code true} wenn pro Spieler die Client-Locale verwendet wird */
     public static boolean isAutoMode() { return autoMode; }
 }

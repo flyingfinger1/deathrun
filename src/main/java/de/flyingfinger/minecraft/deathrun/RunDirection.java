@@ -2,6 +2,10 @@ package de.flyingfinger.minecraft.deathrun;
 
 import org.bukkit.Material;
 
+/**
+ * Himmelsrichtung, in die die Spieler beim Deathrun laufen.
+ * Enthält Hilfsmethoden zur Distanz- und Positionsberechnung relativ zur Startlinie.
+ */
 public enum RunDirection {
     NORTH, SOUTH, EAST, WEST;
 
@@ -54,6 +58,7 @@ public enum RunDirection {
         return Material.LIME_STAINED_GLASS;
     }
 
+    /** Standardmaterial für alle nicht-indizierten Käfigwände (normales Glas). */
     public Material getWallMaterial() {
         return Material.GLASS;
     }
