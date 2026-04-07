@@ -36,7 +36,7 @@ public class TablistManager {
         int maxHearts = (int) Math.ceil(maxHealth / 2.0);
         // Farbe: grün > 6 Herzen, gelb 3-6, rot < 3
         String color = hearts > 6 ? "§a" : hearts > 3 ? "§e" : "§c";
-        return color + "❤ §f" + hearts + "§7/§f" + maxHearts;
+        return color + "♥ §f" + hearts + "§7/§f" + maxHearts;
     }
 
     public void reset(Collection<PlayerData> players) {
