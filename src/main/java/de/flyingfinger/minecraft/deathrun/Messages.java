@@ -13,16 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Lädt Sprachdateien und stellt lokalisierte Strings bereit.
+ * Loads language files and provides localized strings.
  *
- * Modus:
- *  - language: de / en / ...  → eine globale Sprache für alle
- *  - language: auto            → pro Spieler die Client-Sprache (player.locale())
- *                                 Konsole und Broadcasts nutzen "en" als Fallback
+ * Mode:
+ *  - language: de / en / ...  → one global language for everyone
+ *  - language: auto            → per-player client language (player.locale())
+ *                                 Console and broadcasts use "en" as fallback
  */
 public final class Messages {
 
-    /** Bekannte, mitgelieferte Sprachdateien (alle im JAR enthaltenen lang/*.yml) */
+    /** Known bundled language files (all lang/*.yml files included in the JAR) */
     private static final String[] BUNDLED = {
         "de", "en", "fr", "es", "pt", "it", "nl", "pl",
         "ru", "zh", "ja", "ko", "tr", "sv", "cs", "uk",
@@ -32,27 +32,27 @@ public final class Messages {
     private static boolean autoMode    = false;
     private static String  defaultLang = "de";
 
-    /** Cache: Sprachcode → geladene YamlConfiguration */
+    /** Cache: language code → loaded YamlConfiguration */
     private static final Map<String, YamlConfiguration> cache = new HashMap<>();
 
     private Messages() {}
 
-    // ── Laden ─────────────────────────────────────────────────────────────────
+    // ── Loading ─────────────────────────────────────────────────────────────────
 
     /**
-     * Lädt die Sprachdatei(en) und initialisiert das Nachrichten-System.
-     * @param plugin   das Plugin, aus dessen JAR und Daten-Ordner geladen wird
-     * @param language Sprachcode (z.B. {@code "de"}, {@code "en"}) oder {@code "auto"}
+     * Loads the language file(s) and initializes the message system.
+     * @param plugin   the plugin whose JAR and data folder is used for loading
+     * @param language language code (e.g. {@code "de"}, {@code "en"}) or {@code "auto"}
      */
     public static void load(Plugin plugin, String language) {
         autoMode = "auto".equalsIgnoreCase(language);
         cache.clear();
 
         if (autoMode) {
-            // Alle mitgelieferten Sprachen vorausladen
+            // Preload all bundled languages
             for (String lang : BUNDLED) extractAndLoad(plugin, lang);
 
-            // Zusätzliche Dateien im Plugin-Ordner einlesen
+            // Read additional files in the plugin folder
             File langDir = new File(plugin.getDataFolder(), "lang");
             if (langDir.isDirectory()) {
                 File[] files = langDir.listFiles((d, n) -> n.endsWith(".yml"));
@@ -63,7 +63,7 @@ public final class Messages {
                     }
                 }
             }
-            defaultLang = "en"; // Konsolen-Fallback im Auto-Modus
+            defaultLang = "en"; // console fallback in auto mode
         } else {
             if (extractAndLoad(plugin, language) == null) {
                 plugin.getLogger().warning("Sprache '" + language + "' nicht gefunden, nutze 'de'.");
@@ -75,12 +75,11 @@ public final class Messages {
     }
 
     /**
-     * Extrahiert lang/<language>.yml aus dem JAR und lädt sie.
+     * Extracts lang/<language>.yml from the JAR and loads it.
      *
-     * Bundled-Sprachen (im JAR enthalten) werden bei jedem Plugin-Start
-     * überschrieben, damit neue Keys (z.B. {4} in tablist.entry) auf dem
-     * Server immer aktuell sind. Eigene Dateien, die nicht im JAR liegen,
-     * werden nur angelegt, nie überschrieben.
+     * Bundled languages (included in the JAR) are overwritten on every plugin start
+     * so that new keys (e.g. {4} in tablist.entry) are always up to date on the server.
+     * Custom files not in the JAR are only created, never overwritten.
      */
     private static String extractAndLoad(Plugin plugin, String language) {
         File langDir  = new File(plugin.getDataFolder(), "lang");
@@ -90,7 +89,7 @@ public final class Messages {
         boolean isBundled = resource != null;
 
         if (isBundled) {
-            // Bundled-Datei immer aus dem JAR überschreiben (hält Keys aktuell)
+            // Always overwrite bundled file from the JAR (keeps keys up to date)
             langDir.mkdirs();
             try (InputStream in = resource; OutputStream out = new FileOutputStream(langFile)) {
                 in.transferTo(out);
@@ -99,7 +98,7 @@ public final class Messages {
                 return null;
             }
         } else if (!langFile.exists()) {
-            // Benutzerdefinierte Datei: nur anlegen, nie überschreiben
+            // Custom file: only create, never overwrite
             return null;
         }
 
@@ -108,19 +107,19 @@ public final class Messages {
         return language;
     }
 
-    // ── Sprachauflösung ───────────────────────────────────────────────────────
+    // ── Language resolution ───────────────────────────────────────────────────
 
     /**
-     * Gibt die geladene YAML-Konfiguration für den angegebenen Sprachcode zurück.
-     * Fällt über den Sprachpräfix (z.B. {@code "de_DE"} → {@code "de"}) und dann
-     * auf die Standardsprache zurück.
-     * @param language Sprachcode des Spielers
-     * @return passende YAML-Konfiguration
+     * Returns the loaded YAML configuration for the specified language code.
+     * Falls back via the language prefix (e.g. {@code "de_DE"} → {@code "de"}) and then
+     * to the default language.
+     * @param language the player's language code
+     * @return matching YAML configuration
      */
     private static YamlConfiguration getLang(String language) {
         YamlConfiguration cfg = cache.get(language);
         if (cfg != null) return cfg;
-        // Sprachpräfix prüfen: "de_DE" → "de"
+        // Check language prefix: "de_DE" → "de"
         if (language.length() > 2) {
             cfg = cache.get(language.substring(0, 2));
             if (cfg != null) return cfg;
@@ -130,24 +129,24 @@ public final class Messages {
     }
 
     /**
-     * Gibt den Sprachcode des Spielers zurück (nur im Auto-Modus die Client-Locale,
-     * sonst die Standardsprache).
-     * @param player der anfragende Spieler
-     * @return Sprachcode (z.B. {@code "de"})
+     * Returns the player's language code (client locale only in auto mode,
+     * otherwise the default language).
+     * @param player the requesting player
+     * @return language code (e.g. {@code "de"})
      */
     private static String playerLang(Player player) {
         if (!autoMode) return defaultLang;
-        return player.locale().getLanguage(); // z.B. "de", "en", "fr"
+        return player.locale().getLanguage(); // e.g. "de", "en", "fr"
     }
 
-    // ── Interne Formatierung ──────────────────────────────────────────────────
+    // ── Internal formatting ──────────────────────────────────────────────────
 
     /**
-     * Liest einen Schlüssel aus der Konfiguration und ersetzt Platzhalter ({0}, {1}, …).
-     * @param cfg  die Sprach-YAML-Konfiguration
-     * @param key  der Nachrichten-Schlüssel
-     * @param args Platzhalter-Werte in Reihenfolge
-     * @return fertig formatierter String (mit Legacy-Farb-Codes)
+     * Reads a key from the configuration and replaces placeholders ({0}, {1}, …).
+     * @param cfg  the language YAML configuration
+     * @param key  the message key
+     * @param args placeholder values in order
+     * @return fully formatted string (with legacy color codes)
      */
     private static String format(YamlConfiguration cfg, String key, Object... args) {
         String value = cfg.getString(key);
@@ -158,57 +157,57 @@ public final class Messages {
         return value;
     }
 
-    // ── Öffentliche API ───────────────────────────────────────────────────────
+    // ── Public API ───────────────────────────────────────────────────────
 
-    /** Standardsprache – für Broadcasts, Konsole und non-player Kontexte. */
+    /** Default language – for broadcasts, console, and non-player contexts. */
     public static String str(String key, Object... args) {
         return format(getLang(defaultLang), key, args);
     }
 
-    /** Spieler-spezifische Sprache (Client-Locale bei auto, sonst Standardsprache). */
+    /** Player-specific language (client locale in auto mode, otherwise default language). */
     public static String str(Player player, String key, Object... args) {
         if (player == null) return str(key, args);
         return format(getLang(playerLang(player)), key, args);
     }
 
-    /** CommandSender: Spieler-Locale falls verfügbar, sonst Standardsprache. */
+    /** CommandSender: player locale if available, otherwise default language. */
     public static String str(CommandSender sender, String key, Object... args) {
         if (sender instanceof Player p) return str(p, key, args);
         return str(key, args);
     }
 
     /**
-     * Gibt eine lokalisierte Nachricht als Adventure-Component zurück (Standardsprache).
-     * @param key  Nachrichten-Schlüssel
-     * @param args Platzhalter-Werte
-     * @return deserializierter Legacy-Component
+     * Returns a localized message as an Adventure component (default language).
+     * @param key  message key
+     * @param args placeholder values
+     * @return deserialized legacy component
      */
     public static Component comp(String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(key, args));
     }
 
     /**
-     * Gibt eine lokalisierte Nachricht als Adventure-Component zurück (Spieler-Sprache).
-     * @param player Spieler, dessen Sprache verwendet wird
-     * @param key    Nachrichten-Schlüssel
-     * @param args   Platzhalter-Werte
-     * @return deserializierter Legacy-Component
+     * Returns a localized message as an Adventure component (player language).
+     * @param player player whose language is used
+     * @param key    message key
+     * @param args   placeholder values
+     * @return deserialized legacy component
      */
     public static Component comp(Player player, String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(player, key, args));
     }
 
     /**
-     * Gibt eine lokalisierte Nachricht als Adventure-Component zurück (Sender-Sprache).
-     * @param sender Spieler oder Konsole als Empfänger
-     * @param key    Nachrichten-Schlüssel
-     * @param args   Platzhalter-Werte
-     * @return deserializierter Legacy-Component
+     * Returns a localized message as an Adventure component (sender language).
+     * @param sender player or console as recipient
+     * @param key    message key
+     * @param args   placeholder values
+     * @return deserialized legacy component
      */
     public static Component comp(CommandSender sender, String key, Object... args) {
         return LegacyComponentSerializer.legacySection().deserialize(str(sender, key, args));
     }
 
-    /** @return {@code true} wenn pro Spieler die Client-Locale verwendet wird */
+    /** @return {@code true} if the client locale is used per player */
     public static boolean isAutoMode() { return autoMode; }
 }

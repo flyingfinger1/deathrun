@@ -16,37 +16,37 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Erstellt, öffnet, schließt und entfernt den Glas-Startkäfig in der Spielwelt.
- * Speichert einen Block-Snapshot vor dem Bau, damit die ursprüngliche Welt
- * bei {@link #removeCage(java.util.Set)} wiederhergestellt werden kann.
+ * Creates, opens, closes, and removes the glass start cage in the game world.
+ * Saves a block snapshot before building so the original world
+ * can be restored by {@link #removeCage(java.util.Set)}.
  */
 public class CageBuilder {
 
-    private static final int FLOOR_DEPTH  = 3; // Boden-Tiefe in Blöcken
-    private static final int CAGE_SCALE   = 3; // Käfig ist 3x so breit wie cage-radius
+    private static final int FLOOR_DEPTH  = 3; // floor depth in blocks
+    private static final int CAGE_SCALE   = 3; // cage is 3x as wide as cage-radius
 
-    /** Effektiver Radius in Blöcken (für externe Berechnung des Messpunkts). */
+    /** Effective radius in blocks (for external calculation of the measurement point). */
     public static int getEffectiveRadius(int baseRadius) { return baseRadius * CAGE_SCALE; }
 
     private final Set<Location>           builtLocations       = new HashSet<>();
     private final Set<Location>           indicatorLocations   = new HashSet<>();
     private final Set<Location>           lastRemovedLocations = new HashSet<>();
-    /** Snapshot der Welt-Blöcke vor dem Bau – für Restaurierung bei removeCage. */
+    /** Snapshot of world blocks before building – used for restoration in removeCage. */
     private final Map<Location, BlockData> snapshot            = new HashMap<>();
-    /** Spieler-Fußlevel (cy) – für den Fallback bei removeCage ohne Snapshot. */
+    /** Player foot level (cy) – used as fallback in removeCage without snapshot. */
     private int cageBaseY = 0;
 
-    /** Gibt die beim letzten openCage()-Aufruf entfernten Blöcke zurück. */
+    /** Returns the blocks removed during the last openCage() call. */
     public Set<Location> getLastRemovedLocations() { return new HashSet<>(lastRemovedLocations); }
 
     /**
-     * Baut einen Glaskäfig an der Startposition.
-     * - Snapshot der bestehenden Blöcke wird vorab gespeichert (für /dr removecage).
-     * - Boden: Reinforced Deepslate, 3 Blöcke tief
-     * - Wände: normales Glas
-     * - Wand in Laufrichtung: Lime-Glas
-     * - Decke: normales Glas
-     * Gibt alle verbauten Block-Positionen zurück (für Schutz).
+     * Builds a glass cage at the start position.
+     * - Snapshot of existing blocks is saved beforehand (for /dr removecage).
+     * - Floor: Reinforced Deepslate, 3 blocks deep
+     * - Walls: plain glass
+     * - Wall in run direction: lime glass
+     * - Ceiling: plain glass
+     * Returns all built block positions (for protection).
      */
     public Set<Location> buildCage(Location center, int radius, RunDirection dir) {
         builtLocations.clear();
@@ -55,13 +55,13 @@ public class CageBuilder {
 
         World world  = center.getWorld();
         int   cx     = center.getBlockX();
-        int   cy     = center.getBlockY(); // Spieler-Füße-Level
+        int   cy     = center.getBlockY(); // player foot level
         int   cz     = center.getBlockZ();
-        int   r      = radius * CAGE_SCALE; // 3x breiter
-        int   height = 4;                   // Innenhöhe
+        int   r      = radius * CAGE_SCALE; // 3x wider
+        int   height = 4;                   // inner height
         cageBaseY = cy;
 
-        // 0. Snapshot aller betroffenen Blöcke speichern (vor jeder Veränderung)
+        // 0. Save snapshot of all affected blocks (before any changes)
         snapshot.clear();
         for (int y = cy + height + 1; y >= cy - FLOOR_DEPTH; y--) {
             for (int x = cx - r; x <= cx + r; x++) {
@@ -72,8 +72,8 @@ public class CageBuilder {
             }
         }
 
-        // 1. Gesamtes Volumen vorab von oben nach unten mit Air füllen (keine Physics),
-        //    damit Vegetation (Gras, Blumen, etc.) nicht als Drop verschwindet.
+        // 1. Fill entire volume top-to-bottom with air first (no physics),
+        //    so vegetation (grass, flowers, etc.) does not disappear as a drop.
         for (int y = cy + height + 1; y >= cy - FLOOR_DEPTH; y--) {
             for (int x = cx - r; x <= cx + r; x++) {
                 for (int z = cz - r; z <= cz + r; z++) {
@@ -82,26 +82,26 @@ public class CageBuilder {
             }
         }
 
-        // 2. Item-Drops und Mobs im Bereich entfernen
+        // 2. Remove item drops and mobs in the area
         Location areaCenter = new Location(world, cx + 0.5, cy + height / 2.0, cz + 0.5);
         for (Entity e : world.getNearbyEntities(areaCenter, r + 2, height + 4, r + 2)) {
             if (e instanceof Item) { e.remove(); continue; }
             if (e instanceof LivingEntity && !(e instanceof Player)) e.remove();
         }
 
-        // 3. Käfig aufbauen
-        // Boden: FLOOR_DEPTH Blöcke tief, Reinforced Deepslate
+        // 3. Build cage
+        // Floor: FLOOR_DEPTH blocks deep, Reinforced Deepslate
         for (int x = cx - r; x <= cx + r; x++) {
             for (int z = cz - r; z <= cz + r; z++) {
                 for (int dy = 1; dy <= FLOOR_DEPTH; dy++) {
                     setBlock(world, x, cy - dy, z, Material.REINFORCED_DEEPSLATE);
                 }
-                // Decke
+                // Ceiling
                 setBlock(world, x, cy + height, z, Material.GLASS);
             }
         }
 
-        // Wände (nur Rand, volle Höhe von cy bis cy+height-1)
+        // Walls (border only, full height from cy to cy+height-1)
         for (int y = cy; y < cy + height; y++) {
             for (int x = cx - r; x <= cx + r; x++) {
                 for (int z = cz - r; z <= cz + r; z++) {
@@ -115,11 +115,10 @@ public class CageBuilder {
         return new HashSet<>(builtLocations);
     }
 
-    /** Bestimmt das Material für eine Wand, je nachdem ob sie in Laufrichtung liegt. */
     /**
-     * Bestimmt das Material für eine Wandposition.
-     * Die Wand in Laufrichtung erhält das Richtungs-Indikatormaterial (Lime-Glas),
-     * alle anderen Wände normales Glas.
+     * Determines the material for a wall position.
+     * The wall in the run direction receives the direction indicator material (lime glass),
+     * all other walls use plain glass.
      */
     private Material getWallMaterial(int x, int z, int cx, int cz, int radius, RunDirection dir) {
         boolean isIndicator = switch (dir) {
@@ -132,8 +131,8 @@ public class CageBuilder {
     }
 
     /**
-     * Setzt einen Block in der Welt, registriert ihn in {@code builtLocations}
-     * und bei Bedarf in {@code indicatorLocations}.
+     * Sets a block in the world, registers it in {@code builtLocations}
+     * and in {@code indicatorLocations} if needed.
      */
     private void setBlock(World world, int x, int y, int z, Material mat) {
         Block b = world.getBlockAt(x, y, z);
@@ -143,7 +142,7 @@ public class CageBuilder {
         if (mat == Material.LIME_STAINED_GLASS) indicatorLocations.add(loc);
     }
 
-    /** Entfernt die Lime-Glas-Wand (Startrichtungsanzeige), damit Spieler loslaufen können. */
+    /** Removes the lime glass wall (start direction indicator) so players can begin running. */
     public void openCage() {
         lastRemovedLocations.clear();
         lastRemovedLocations.addAll(indicatorLocations);
@@ -154,7 +153,7 @@ public class CageBuilder {
         indicatorLocations.clear();
     }
 
-    /** Stellt die Lime-Glas-Wand wieder her (nach /dr stop). */
+    /** Restores the lime glass wall (after /dr stop). */
     public void closeCage() {
         for (Location loc : lastRemovedLocations) {
             if (loc.getWorld() != null) loc.getBlock().setType(Material.LIME_STAINED_GLASS);
@@ -164,9 +163,9 @@ public class CageBuilder {
     }
 
     /**
-     * Ändert die Richtungsanzeige (Lime-Glas-Wand) auf eine neue Richtung,
-     * ohne den gesamten Käfig neu zu bauen.
-     * Wird nach /dr setdirection aufgerufen, wenn der Käfig bereits steht.
+     * Changes the direction indicator (lime glass wall) to a new direction,
+     * without rebuilding the entire cage.
+     * Called after /dr setdirection when the cage is already built.
      */
     public void changeDirection(int cx, int cy, int cz, int radius, RunDirection newDir) {
         if (builtLocations.isEmpty()) return;
@@ -177,14 +176,14 @@ public class CageBuilder {
         int r      = radius * CAGE_SCALE;
         int height = 4;
 
-        // Alte Indicator-Wand → normales Glas
+        // Old indicator wall → plain glass
         for (Location loc : indicatorLocations) {
             if (loc.getWorld() != null) loc.getBlock().setType(Material.GLASS);
         }
         builtLocations.removeAll(indicatorLocations);
         indicatorLocations.clear();
 
-        // Neue Indicator-Wand → Lime-Glas
+        // New indicator wall → lime glass
         for (int y = cy; y < cy + height; y++) {
             for (int x = cx - r; x <= cx + r; x++) {
                 for (int z = cz - r; z <= cz + r; z++) {
@@ -206,16 +205,16 @@ public class CageBuilder {
             }
         }
 
-        // lastRemovedLocations zurücksetzen, da die neue Wand jetzt die aktuelle ist
+        // Reset lastRemovedLocations since the new wall is now the current one
         lastRemovedLocations.clear();
         lastRemovedLocations.addAll(indicatorLocations);
     }
 
     /**
-     * Stellt den internen Zustand nach einem Server-Neustart wieder her.
-     * Die Blöcke existieren bereits in der Welt – es werden nur die Location-Sets
-     * neu berechnet, ohne irgendetwas am Weltinhalt zu ändern.
-     * Kein Snapshot verfügbar nach Neustart → removeCage() fällt auf AIR-Fallback zurück.
+     * Restores the internal state after a server restart.
+     * The blocks already exist in the world – only the location sets
+     * are recalculated, without changing any world content.
+     * No snapshot available after restart → removeCage() falls back to AIR fallback.
      */
     public Set<Location> restoreState(Location spawnCenter, int radius, RunDirection dir) {
         builtLocations.clear();
@@ -233,7 +232,7 @@ public class CageBuilder {
         int height = 4;
         cageBaseY  = cy;
 
-        // Boden + Decke
+        // Floor + ceiling
         for (int x = cx - r; x <= cx + r; x++) {
             for (int z = cz - r; z <= cz + r; z++) {
                 for (int dy = 1; dy <= FLOOR_DEPTH; dy++) {
@@ -243,7 +242,7 @@ public class CageBuilder {
             }
         }
 
-        // Wände (nur Rand)
+        // Walls (border only)
         for (int y = cy; y < cy + height; y++) {
             for (int x = cx - r; x <= cx + r; x++) {
                 for (int z = cz - r; z <= cz + r; z++) {
@@ -261,18 +260,18 @@ public class CageBuilder {
             }
         }
 
-        // lastRemovedLocations = aktuelle Indicator-Positionen (für closeCage nach Stop)
+        // lastRemovedLocations = current indicator positions (for closeCage after stop)
         lastRemovedLocations.addAll(indicatorLocations);
         return new HashSet<>(builtLocations);
     }
 
     /**
-     * Entfernt alle vom Plugin gebauten Blöcke und restauriert die ursprüngliche Welt.
-     * Wenn ein Snapshot vorhanden ist, werden die Originalblöcke wiederhergestellt.
+     * Removes all blocks built by the plugin and restores the original world.
+     * If a snapshot is available, the original blocks are restored.
      */
     public void removeCage(Set<Location> locations) {
         if (!snapshot.isEmpty()) {
-            // Originalzustand wiederherstellen
+            // Restore original state
             for (Map.Entry<Location, BlockData> entry : snapshot.entrySet()) {
                 Location loc = entry.getKey();
                 if (loc.getWorld() != null) {
@@ -281,15 +280,15 @@ public class CageBuilder {
             }
             snapshot.clear();
         } else {
-            // Fallback (kein Snapshot nach Neustart):
-            // Boden → Gras/Erde, alles andere → Luft
+            // Fallback (no snapshot after restart):
+            // Floor → grass/dirt, everything else → air
             for (Location loc : locations) {
                 if (loc.getWorld() == null) continue;
-                int dy = cageBaseY - loc.getBlockY(); // >0 = unterhalb Spielerlevel
+                int dy = cageBaseY - loc.getBlockY(); // >0 = below player level
                 Material mat = switch (dy) {
-                    case 1  -> Material.GRASS_BLOCK; // direkt unter Spielerlevel
-                    case 2, 3 -> Material.DIRT;      // darunter
-                    default -> Material.AIR;          // Wände, Decke, Innenraum
+                    case 1  -> Material.GRASS_BLOCK; // directly below player level
+                    case 2, 3 -> Material.DIRT;      // below that
+                    default -> Material.AIR;          // walls, ceiling, interior
                 };
                 loc.getBlock().setType(mat, false);
             }

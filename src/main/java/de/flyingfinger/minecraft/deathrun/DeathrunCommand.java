@@ -11,27 +11,27 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * Verarbeitet alle Unterbefehle des {@code /dr}-Befehls und stellt
- * Tab-Vervollständigung bereit. Befehle ohne Admin-Berechtigung sind auf
- * {@code /dr goto} beschränkt.
+ * Processes all subcommands of the {@code /dr} command and provides
+ * tab completion. Commands without admin permission are restricted to
+ * {@code /dr goto}.
  */
 public class DeathrunCommand implements CommandExecutor, TabCompleter {
 
     private final GameManager gm;
 
     /**
-     * @param gm die zentrale GameManager-Instanz, an die Befehle delegiert werden
+     * @param gm the central GameManager instance to which commands are delegated
      */
     public DeathrunCommand(GameManager gm) {
         this.gm = gm;
     }
 
-    /** Verteilt eingehende {@code /dr}-Befehle auf die entsprechenden GameManager-Methoden. */
+    /** Dispatches incoming {@code /dr} commands to the corresponding GameManager methods. */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         String sub = args.length > 0 ? args[0].toLowerCase() : "";
 
-        // /dr goto ist für alle Spieler erlaubt (kein Admin nötig)
+        // /dr goto is allowed for all players (no admin required)
         if (sub.equals("goto")) {
             if (!(sender instanceof Player player)) {
                 sender.sendMessage(Messages.comp("cmd.goto.player-only"));
@@ -41,7 +41,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // Alle anderen Befehle erfordern deathrun.admin (Konsole hat immer Zugriff)
+        // All other commands require deathrun.admin (console always has access)
         if (sender instanceof Player player && !player.hasPermission("deathrun.admin")) {
             player.sendMessage(Messages.comp(player, "cmd.no-permission"));
             return true;
@@ -54,7 +54,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
 
         switch (sub) {
 
-            // ── Nur für Spieler (braucht Position) ───────────────────────────
+            // ── Players only (requires position) ───────────────────────────
             case "buildcage", "removecage" -> {
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage(Messages.comp("cmd.player-only"));
@@ -64,7 +64,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
                 else                                        gm.removeCage(player);
             }
 
-            // ── Konsole & Spieler ─────────────────────────────────────────────
+            // ── Console & players ─────────────────────────────────────────────
             case "open"   -> gm.openServer(sender);
             case "close"  -> gm.closeServer(sender);
             case "start"  -> gm.startGame(sender);
@@ -104,8 +104,8 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
     }
 
     /**
-     * Gibt die vollständige Befehlshilfe an den Absender aus.
-     * @param s Empfänger der Hilfe-Nachricht
+     * Sends the full command help to the sender.
+     * @param s recipient of the help message
      */
     private void sendHelp(CommandSender s) {
         s.sendMessage(Component.text(Messages.str(s, "cmd.help.header"), NamedTextColor.GOLD));
@@ -124,17 +124,17 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
     }
 
     /**
-     * Sendet eine einzelne formatierte Hilfszeile.
-     * @param s    Empfänger
-     * @param cmd  Befehl (gelb)
-     * @param desc Beschreibung (grau)
+     * Sends a single formatted help line.
+     * @param s    recipient
+     * @param cmd  command (yellow)
+     * @param desc description (gray)
      */
     private void help(CommandSender s, String cmd, String desc) {
         s.sendMessage(Component.text("  " + cmd, NamedTextColor.YELLOW)
             .append(Component.text(" – " + desc, NamedTextColor.GRAY)));
     }
 
-    /** Liefert Tab-Vorschläge für Unterbefehl und Richtungsargument. */
+    /** Provides tab completion suggestions for subcommand and direction argument. */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length == 1) {

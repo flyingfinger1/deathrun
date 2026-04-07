@@ -6,14 +6,14 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Haupt-Plugin-Klasse. Initialisiert alle Subsysteme, registriert
- * den Befehlshandler sowie den Event-Listener und startet den Lobby-Task.
+ * Main plugin class. Initializes all subsystems, registers
+ * the command handler and event listener, and starts the lobby task.
  */
 public class DeathrunPlugin extends JavaPlugin implements Listener {
 
     private GameManager gameManager;
 
-    /** Wird beim Aktivieren des Plugins aufgerufen. Lädt Konfiguration und startet alle Subsysteme. */
+    /** Called when the plugin is enabled. Loads configuration and starts all subsystems. */
     @Override
     public void onEnable() {
         saveDefaultConfig();
@@ -30,13 +30,13 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new GameListener(gameManager, this), this);
         getServer().getPluginManager().registerEvents(this, this);
 
-        // Lobby-Scoreboard starten (1 Tick verzögert, damit alle Systeme bereit sind)
+        // Start lobby scoreboard (delayed by 1 tick so all systems are ready)
         getServer().getScheduler().runTask(this, gameManager::startLobbyTask);
 
         getLogger().info("Deathrun Plugin aktiviert.");
     }
 
-    /** Wird beim Deaktivieren des Plugins aufgerufen. Stoppt laufende Tasks sauber. */
+    /** Called when the plugin is disabled. Cleanly stops running tasks. */
     @Override
     public void onDisable() {
         if (gameManager != null) gameManager.forceStop();
@@ -44,8 +44,8 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
     }
 
     /**
-     * Setzt die MOTD der Server-Liste abhängig vom aktuellen Spielzustand.
-     * @param event das Ping-Event des Clients
+     * Sets the server list MOTD based on the current game state.
+     * @param event the client ping event
      */
     @EventHandler
     public void onPing(ServerListPingEvent event) {
@@ -62,6 +62,6 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    /** @return die zentrale {@link GameManager}-Instanz dieses Plugins */
+    /** @return the central {@link GameManager} instance of this plugin */
     public GameManager getGameManager() { return gameManager; }
 }

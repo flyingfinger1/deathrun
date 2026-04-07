@@ -3,23 +3,23 @@ package de.flyingfinger.minecraft.deathrun;
 import org.bukkit.Material;
 
 /**
- * Himmelsrichtung, in die die Spieler beim Deathrun laufen.
- * Enthält Hilfsmethoden zur Distanz- und Positionsberechnung relativ zur Startlinie.
+ * Cardinal direction in which players run during the deathrun.
+ * Contains helper methods for distance and position calculation relative to the start line.
  */
 public enum RunDirection {
     NORTH, SOUTH, EAST, WEST;
 
-    /** Wie viele Blöcke der Spieler in Laufrichtung vom Start entfernt ist (positiv = vorwärts). */
+    /** How many blocks the player is from the start in the run direction (positive = forward). */
     public double getForwardDistance(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
-            case NORTH -> startZ - curZ;  // -Z = Norden
-            case SOUTH -> curZ - startZ;  // +Z = Süden
-            case EAST  -> curX - startX;  // +X = Osten
-            case WEST  -> startX - curX;  // -X = Westen
+            case NORTH -> startZ - curZ;  // -Z = north
+            case SOUTH -> curZ - startZ;  // +Z = south
+            case EAST  -> curX - startX;  // +X = east
+            case WEST  -> startX - curX;  // -X = west
         };
     }
 
-    /** Seitliche Abweichung vom Korridor-Zentrum (positiv = rechts, negativ = links). */
+    /** Lateral deviation from the corridor center (positive = right, negative = left). */
     public double getLateralDeviation(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH, SOUTH -> curX - startX;
@@ -27,7 +27,7 @@ public enum RunDirection {
         };
     }
 
-    /** WorldBorder-Zentrum-X für diesen Spieler (folgt in Vorwärtsrichtung). */
+    /** WorldBorder center X for this player (follows in the forward direction). */
     public double getBorderCenterX(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH, SOUTH -> startX;
@@ -35,7 +35,7 @@ public enum RunDirection {
         };
     }
 
-    /** WorldBorder-Zentrum-Z für diesen Spieler (folgt in Vorwärtsrichtung). */
+    /** WorldBorder center Z for this player (follows in the forward direction). */
     public double getBorderCenterZ(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH, SOUTH -> curZ;
@@ -43,7 +43,7 @@ public enum RunDirection {
         };
     }
 
-    /** Lang-Key für die lokalisierte Richtungsbezeichnung. */
+    /** Lang key for the localized direction name. */
     public String getLangKey() {
         return switch (this) {
             case NORTH -> "direction.north";
@@ -53,12 +53,12 @@ public enum RunDirection {
         };
     }
 
-    /** Glasfarbe für die Käfig-Wand in Laufrichtung. */
+    /** Glass color for the cage wall in the run direction. */
     public Material getIndicatorMaterial() {
         return Material.LIME_STAINED_GLASS;
     }
 
-    /** Standardmaterial für alle nicht-indizierten Käfigwände (normales Glas). */
+    /** Default material for all non-indicator cage walls (plain glass). */
     public Material getWallMaterial() {
         return Material.GLASS;
     }

@@ -1,12 +1,12 @@
 package de.flyingfinger.minecraft.deathrun;
 
 /**
- * Beschreibt den aktuellen Zustand eines Deathrun-Spiels.
+ * Describes the current state of a deathrun game.
  * <ul>
- *   <li>{@link #IDLE}     – kein aktives Spiel, Lobby läuft</li>
- *   <li>{@link #STARTING} – Countdown läuft, Spieler stehen im Käfig</li>
- *   <li>{@link #RUNNING}  – Rennen ist aktiv</li>
- *   <li>{@link #ENDED}    – Spiel beendet, Ergebnisse werden angezeigt</li>
+ *   <li>{@link #IDLE}     – no active game, lobby is running</li>
+ *   <li>{@link #STARTING} – countdown is running, players are standing in the cage</li>
+ *   <li>{@link #RUNNING}  – race is active</li>
+ *   <li>{@link #ENDED}    – game finished, results are being displayed</li>
  * </ul>
  */
 public enum GameState {

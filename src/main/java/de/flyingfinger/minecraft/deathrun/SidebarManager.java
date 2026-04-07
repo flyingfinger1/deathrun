@@ -11,9 +11,9 @@ import org.bukkit.scoreboard.*;
 import java.util.*;
 
 /**
- * Pro Spieler ein eigenes Scoreboard:
- *  - SIDEBAR:      Servername, Top-5, eigener Rang/Distanz/EW
- *  - PLAYER_LIST:  Scores für Tab-Sortierung (alle Spieler auf jedem Board)
+ * One individual scoreboard per player:
+ *  - SIDEBAR:      server name, top 5, own rank/distance/lateral deviation
+ *  - PLAYER_LIST:  scores for tab sorting (all players on every board)
  */
 public class SidebarManager {
 
@@ -25,11 +25,11 @@ public class SidebarManager {
     private final Map<UUID, Objective>  sidebarObjs  = new HashMap<>();
     private final Map<UUID, Objective>  tabObjs       = new HashMap<>();
 
-    // Lobby-Boards (IDLE / ENDED) – getrennt von den Spiel-Boards
+    // Lobby boards (IDLE / ENDED) – separate from the game boards
     private final Map<UUID, Scoreboard> lobbyBoards = new HashMap<>();
     private final Map<UUID, Objective>  lobbyObjs   = new HashMap<>();
 
-    /** Erstellt oder recycelt pro Spieler ein Scoreboard (für STARTING + RUNNING). */
+    /** Creates or recycles a scoreboard per player (for STARTING + RUNNING). */
     private Scoreboard getOrCreateBoard(PlayerData pd, Player p) {
         return boards.computeIfAbsent(pd.getUuid(), k -> {
             Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -38,7 +38,7 @@ public class SidebarManager {
         });
     }
 
-    /** Initialisiert die Scoreboards für die Startphase (Countdown). */
+    /** Initializes the scoreboards for the starting phase (countdown). */
     public void setupStarting(Collection<PlayerData> players, String serverName) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -56,7 +56,7 @@ public class SidebarManager {
         }
     }
 
-    /** Aktualisiert den Countdown-Scoreboard (STARTING-Phase). */
+    /** Updates the countdown scoreboard (STARTING phase). */
     public void updateStarting(Collection<PlayerData> players, int remainingSeconds) {
         for (PlayerData pd : players) {
             Player viewer = Bukkit.getPlayer(pd.getUuid());
@@ -84,7 +84,7 @@ public class SidebarManager {
         }
     }
 
-    /** Initialisiert die Spieler-Scoreboards für alle Teilnehmer zu Beginn des Rennens. */
+    /** Initializes the player scoreboards for all participants at the start of the race. */
     public void setup(Collection<PlayerData> players, String serverName) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -93,16 +93,16 @@ public class SidebarManager {
         }
     }
 
-    /** Richtet das Scoreboard für einen einzelnen Spieler ein (auch für Late-Joiner). */
+    /** Sets up the scoreboard for a single player (also for late joiners). */
     public void setupPlayerBoard(PlayerData pd, Player p, String serverName) {
         Scoreboard sb = getOrCreateBoard(pd, p);
         p.setScoreboard(sb);
 
-        // Alle l-Teams aus der STARTING-Phase entfernen
+        // Remove all l-teams from the STARTING phase
         for (Team t : new ArrayList<>(sb.getTeams())) t.unregister();
         for (String e : sb.getEntries()) sb.resetScores(e);
 
-        // Alte Objectives entfernen und neu registrieren
+        // Remove old objectives and re-register them
         Objective oldSide = sb.getObjective("dr_side");
         if (oldSide != null) oldSide.unregister();
         Objective oldTab = sb.getObjective("dr_tab");
@@ -120,10 +120,10 @@ public class SidebarManager {
     }
 
     /**
-     * Aktualisiert Sidebar und Tab-Scores für alle Spieler während des laufenden Rennens.
-     * @param sorted     Spielerliste, absteigend nach Distanz sortiert
-     * @param allPlayers alle Teilnehmer (UUID → PlayerData)
-     * @param gm         Referenz auf den GameManager für Live-Positionen und Timer
+     * Updates sidebar and tab scores for all players during the running race.
+     * @param sorted     player list sorted descending by distance
+     * @param allPlayers all participants (UUID → PlayerData)
+     * @param gm         reference to the GameManager for live positions and timer
      */
     public void update(List<PlayerData> sorted, Map<UUID, PlayerData> allPlayers, GameManager gm) {
         for (PlayerData viewerData : allPlayers.values()) {
@@ -135,9 +135,9 @@ public class SidebarManager {
             Objective  tab = tabObjs.get(viewerData.getUuid());
             if (sb == null || obj == null) continue;
 
-            // ── Sidebar neu aufbauen ──────────────────────────────────────────
+            // ── Rebuild sidebar ──────────────────────────────────────────
 
-            // Nur Sidebar-Teams entfernen (Präfix "l"), Tab-Scores bleiben
+            // Remove only sidebar teams (prefix "l"), tab scores remain
             for (Team t : new ArrayList<>(sb.getTeams())) {
                 if (t.getName().startsWith("l")) t.unregister();
             }
@@ -169,23 +169,23 @@ public class SidebarManager {
             line = setLine(sb, obj, line, Messages.str(viewer, "sidebar.game.ew", fmtDev(ewDev)));
             setLine(sb, obj, line,        Messages.str(viewer, "sidebar.game.time", gm.getTimerDisplay(viewer)));
 
-            // ── Tab-Scores: alle Spieler auf diesem Board aktualisieren ───────
+            // ── Tab scores: update all players on this board ───────
             if (tab != null) {
                 for (int i = 0; i < sorted.size(); i++) {
                     PlayerData pd = sorted.get(i);
-                    // Score = Distanz; höher = weiter oben in der Tabliste
+                    // Score = distance; higher = further up in the tab list
                     tab.getScore(pd.getName()).setScore((int) Math.max(0, pd.getFinalDistance()));
                 }
             }
         }
     }
 
-    // ── Lobby-Board (IDLE) ────────────────────────────────────────────────────
+    // ── Lobby board (IDLE) ────────────────────────────────────────────────────
 
     /**
-     * Aktualisiert die Lobby-Scoreboards für alle aktuell online befindlichen Spieler.
-     * Zeigt Setup-Hinweise (Käfig bauen, Server öffnen) oder den Wartestatus.
-     * @param gm Referenz auf den GameManager für Käfig- und Serverstatus
+     * Updates the lobby scoreboards for all currently online players.
+     * Shows setup hints (build cage, open server) or the waiting status.
+     * @param gm reference to the GameManager for cage and server status
      */
     public void updateLobby(GameManager gm) {
         boolean cageBuilt  = gm.isCageBuilt();
@@ -240,11 +240,11 @@ public class SidebarManager {
         }
     }
 
-    // ── End-Board (ENDED) ─────────────────────────────────────────────────────
+    // ── End board (ENDED) ─────────────────────────────────────────────────────
 
-    /** Einmalig aufgerufen wenn das Spiel endet – baut die End-Boards auf. */
+    /** Called once when the game ends – builds the end boards. */
     public void setupEnded(List<PlayerData> sorted, Map<UUID, PlayerData> allPlayers, String serverName) {
-        // Game-Boards in End-Boards umwandeln
+        // Convert game boards into end boards
         for (PlayerData pd : allPlayers.values()) {
             Player p = Bukkit.getPlayer(pd.getUuid());
             if (p == null) continue;
@@ -252,7 +252,7 @@ public class SidebarManager {
         }
     }
 
-    /** Wird vom Lobby-Task aufgerufen um End-Boards aktuell zu halten. */
+    /** Called by the lobby task to keep end boards up to date. */
     public void updateEnded(List<PlayerData> sorted, Map<UUID, PlayerData> allPlayers, GameManager gm) {
         String winnerName = sorted.isEmpty() ? "?" : sorted.get(0).getName();
 
@@ -295,7 +295,7 @@ public class SidebarManager {
         }
     }
 
-    /** Setzt alle Spieler auf das Haupt-Scoreboard zurück und verwirft die Lobby-Boards. */
+    /** Resets all players to the main scoreboard and discards the lobby boards. */
     public void clearLobbyBoards() {
         for (Map.Entry<UUID, Scoreboard> e : lobbyBoards.entrySet()) {
             Player p = Bukkit.getPlayer(e.getKey());
@@ -305,7 +305,7 @@ public class SidebarManager {
         lobbyObjs.clear();
     }
 
-    /** Entfernt einen einzelnen Spieler aus dem Scoreboard-System (z.B. Disconnect im Countdown). */
+    /** Removes a single player from the scoreboard system (e.g. disconnect during countdown). */
     public void removePlayer(PlayerData pd) {
         boards.remove(pd.getUuid());
         sidebarObjs.remove(pd.getUuid());
@@ -313,9 +313,9 @@ public class SidebarManager {
     }
 
     /**
-     * Setzt alle angegebenen Spieler auf das Haupt-Scoreboard zurück
-     * und leert alle internen Scoreboard-Maps.
-     * @param players die zu entfernenden Spieler
+     * Resets all specified players to the main scoreboard
+     * and clears all internal scoreboard maps.
+     * @param players the players to remove
      */
     public void removeAll(Collection<PlayerData> players) {
         for (PlayerData pd : players) {
@@ -327,15 +327,15 @@ public class SidebarManager {
         tabObjs.clear();
     }
 
-    // ── Hilfsmethoden ─────────────────────────────────────────────────────────
+    // ── Helper methods ─────────────────────────────────────────────────────────
 
     /**
-     * Schreibt eine Zeile in die Sidebar mithilfe eines Team-Präfixes.
-     * @param sb      das Scoreboard des Betrachters
-     * @param obj     das Sidebar-Objective
-     * @param score   Zeilennummer (von oben: höher = weiter oben)
-     * @param content anzuzeigender Text
-     * @return {@code score - 1} für die nächste Zeile
+     * Writes a line into the sidebar using a team prefix.
+     * @param sb      the viewer's scoreboard
+     * @param obj     the sidebar objective
+     * @param score   line number (from top: higher = further up)
+     * @param content text to display
+     * @return {@code score - 1} for the next line
      */
     private int setLine(Scoreboard sb, Objective obj, int score, String content) {
         String entry = SLOTS[score];
@@ -347,10 +347,10 @@ public class SidebarManager {
     }
 
     /**
-     * Gibt den 1-basierten Rang eines Spielers in der sortierten Liste zurück.
-     * @param sorted nach Distanz sortierte Spielerliste
-     * @param uuid   UUID des gesuchten Spielers
-     * @return Rang (1 = Führender), oder {@code sorted.size()} falls nicht gefunden
+     * Returns the 1-based rank of a player in the sorted list.
+     * @param sorted player list sorted by distance
+     * @param uuid   UUID of the player to look up
+     * @return rank (1 = leader), or {@code sorted.size()} if not found
      */
     private int getRank(List<PlayerData> sorted, UUID uuid) {
         for (int i = 0; i < sorted.size(); i++) {
@@ -360,8 +360,8 @@ public class SidebarManager {
     }
 
     /**
-     * Berechnet die aktuelle Vorwärtsdistanz eines lebenden Spielers zur Startlinie.
-     * Fällt auf {@link PlayerData#getFinalDistance()} zurück, falls der Spieler offline ist.
+     * Calculates the current forward distance of a living player from the start line.
+     * Falls back to {@link PlayerData#getFinalDistance()} if the player is offline.
      */
     private double liveDistance(PlayerData pd, GameManager gm) {
         Player p = Bukkit.getPlayer(pd.getUuid());
@@ -371,10 +371,10 @@ public class SidebarManager {
             p.getLocation().getX(),       p.getLocation().getZ());
     }
 
-    /** Formatiert eine Distanz ohne Nachkommastellen (Minimum 0). */
+    /** Formats a distance with no decimal places (minimum 0). */
     private String fmt(double d)     { return String.format("%.0f", Math.max(0, d)); }
-    /** Formatiert eine seitliche Abweichung mit Vorzeichen. */
+    /** Formats a lateral deviation with sign. */
     private String fmtDev(double d)  { return (d >= 0 ? "+" : "") + String.format("%.0f", d); }
-    /** Kürzt einen String auf {@code max} Zeichen und hängt „…" an falls nötig. */
+    /** Truncates a string to {@code max} characters and appends "…" if necessary. */
     private String truncate(String s, int max) { return s.length() > max ? s.substring(0, max) + "…" : s; }
 }

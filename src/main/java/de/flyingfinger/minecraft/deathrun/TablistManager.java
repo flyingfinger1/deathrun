@@ -10,16 +10,16 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 /**
- * Aktualisiert nur den angezeigten Namen in der Tabliste (playerListName).
- * Sortierung läuft über das PLAYER_LIST-Objective im SidebarManager.
+ * Updates only the displayed name in the tab list (playerListName).
+ * Sorting is handled via the PLAYER_LIST objective in SidebarManager.
  */
 public class TablistManager {
 
     /**
-     * Aktualisiert den {@code playerListName} aller Teilnehmer in der Tabliste.
-     * Zeigt Rang, Name, Distanz, Status-Icon und Herzanzeige.
-     * @param sorted nach Distanz sortierte Spielerliste
-     * @param gm     Referenz auf den GameManager für Live-Positionen
+     * Updates the {@code playerListName} of all participants in the tab list.
+     * Shows rank, name, distance, status icon, and heart display.
+     * @param sorted player list sorted by distance
+     * @param gm     reference to the GameManager for live positions
      */
     public void update(List<PlayerData> sorted, GameManager gm) {
         for (int i = 0; i < sorted.size(); i++) {
@@ -30,12 +30,12 @@ public class TablistManager {
             double dist   = pd.isAlive() ? liveDistance(pd, gm) : pd.getFinalDistance();
             String status = Messages.str(p, pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
 
-            // Haupteintrag (Rang, Name, Distanz, Status-Icon) per Legacy-Serializer
+            // Main entry (rank, name, distance, status icon) via legacy serializer
             Component entry = LegacyComponentSerializer.legacySection().deserialize(
                 Messages.str(p, "tablist.entry", i + 1, p.getName(), fmt(dist), status)
             );
 
-            // Herzen als echtes Adventure-Component anhängen (♥ via Unicode, kein Legacy-Font-Problem)
+            // Append hearts as real Adventure component (♥ via Unicode, no legacy font issue)
             if (pd.isAlive()) {
                 entry = entry.append(heartsComponent(p));
             }
@@ -45,10 +45,10 @@ public class TablistManager {
     }
 
     /**
-     * Baut die Herzanzeige als Adventure-Component.
-     * Fehlende Herzen erscheinen als hohle ♡ (dunkelgrau), vorhandene als ♥ (farbig).
-     * Beispiel bei 8/10 Herzen: ♡♡♥♥♥♥♥♥♥♥
-     * Farbe der vollen Herzen: grün > 6, gelb 3–6, rot ≤ 3.
+     * Builds the heart display as an Adventure component.
+     * Missing hearts appear as hollow ♡ (dark gray), present ones as ♥ (colored).
+     * Example at 8/10 hearts: ♡♡♥♥♥♥♥♥♥♥
+     * Color of full hearts: green > 6, yellow 3–6, red ≤ 3.
      */
     private Component heartsComponent(Player p) {
         double health    = p.getHealth();
@@ -68,8 +68,8 @@ public class TablistManager {
     }
 
     /**
-     * Setzt den {@code playerListName} aller angegebenen Spieler auf den Standard zurück.
-     * @param players die zurückzusetzenden Teilnehmer
+     * Resets the {@code playerListName} of all specified players to the default.
+     * @param players the participants to reset
      */
     public void reset(Collection<PlayerData> players) {
         for (PlayerData pd : players) {
@@ -79,8 +79,8 @@ public class TablistManager {
     }
 
     /**
-     * Berechnet die aktuelle Vorwärtsdistanz eines Spielers zur Startlinie.
-     * Gibt 0 zurück, falls der Spieler offline ist oder kein Startpunkt gesetzt wurde.
+     * Calculates the current forward distance of a player from the start line.
+     * Returns 0 if the player is offline or no start point has been set.
      */
     private double liveDistance(PlayerData pd, GameManager gm) {
         Player p = Bukkit.getPlayer(pd.getUuid());
@@ -90,6 +90,6 @@ public class TablistManager {
             p.getLocation().getX(),       p.getLocation().getZ());
     }
 
-    /** Formatiert eine Distanz ohne Nachkommastellen (Minimum 0). */
+    /** Formats a distance with no decimal places (minimum 0). */
     private String fmt(double d) { return String.format("%.0f", Math.max(0, d)); }
 }
