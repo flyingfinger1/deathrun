@@ -10,6 +10,9 @@ target/
 # Server folder (JAR, world, logs, etc.)
 server/
 
+# Local build convenience script (references local server/ path)
+build.ps1
+
 # IDE
 .idea/
 *.iml

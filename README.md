@@ -10,15 +10,28 @@ All players start inside a glass cage. When the countdown ends, the lime-glass f
 
 - Paper 1.21.8
 - Java 21
-- Maven (auto-downloaded by `build.ps1` if not installed)
+- Maven 3.6+
 
 ## Building
 
-```powershell
-.\build.ps1
+```bash
+mvn clean package
 ```
 
-The script downloads Maven 3.9.9 on first run, compiles the plugin, and copies the JAR to `server\plugins\` if that folder exists.
+The compiled JAR is placed in `target/Deathrun.jar`. Copy it to your server's `plugins/` folder.
+
+If you don't have Maven installed, you can download it from [maven.apache.org](https://maven.apache.org/download.cgi) or install it via a package manager:
+
+```bash
+# macOS (Homebrew)
+brew install maven
+
+# Windows (Chocolatey)
+choco install maven
+
+# Debian / Ubuntu
+sudo apt install maven
+```
 
 ## Setup Workflow
 
@@ -123,7 +136,7 @@ The day/night cycle is controlled automatically:
 
 ## Multilingual Support
 
-The plugin ships with 19 languages. All language files are extracted to `plugins/Deathrun/lang/` on first start and can be freely edited.
+The plugin ships with 19 languages. All bundled language files are extracted to `plugins/Deathrun/lang/` and **overwritten on every server start** to keep them up to date. If you want to customise a bundled language, create a new file with a different code (e.g. `en_custom.yml`) — those are never overwritten.
 
 | Code | Language | Code | Language |
 |------|----------|------|----------|
