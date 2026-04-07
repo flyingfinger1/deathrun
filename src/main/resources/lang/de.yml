@@ -132,7 +132,7 @@ sidebar:
     icon-dead:   "§c✦"
     rank:        "§7Rang: §f#{0}"
     dist:        "§7Dist: §f{0}m"
-    ew:          "§7EW:   §f{0}m"
+    ew:          "§7L/R:  §f{0}m"
     time:        "§7Zeit: {0}"
     timer-pause: "§e⏸ PAUSE"
   end:

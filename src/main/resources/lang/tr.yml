@@ -128,7 +128,7 @@ sidebar:
     icon-dead:   "§c✦"
     rank:        "§7Sıra: §f#{0}"
     dist:        "§7Mes: §f{0}m"
-    ew:          "§7S/Sağ: §f{0}m"
+    ew:          "§7L/R:  §f{0}m"
     time:        "§7Süre: {0}"
     timer-pause: "§e⏸ DURAKLATILDI"
   end:
