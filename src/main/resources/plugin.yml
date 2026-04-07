@@ -2,19 +2,19 @@ name: Deathrun
 version: '1.0'
 main: de.flyingfinger.minecraft.deathrun.DeathrunPlugin
 api-version: '1.21.8'
-description: Deathrun Minigame – Wettlauf mit permanentem Lebensverlust
+description: Deathrun Minigame – Race with permanent health loss
 authors:
   - Du
 
 commands:
   dr:
-    description: Deathrun Hauptbefehl
-    usage: /dr <subbefehl>
+    description: Deathrun main command
+    usage: /dr <subcommand>
 
 permissions:
   deathrun.admin:
-    description: Voller Zugriff auf alle Deathrun-Befehle
+    description: Full access to all Deathrun commands
     default: op
   deathrun.goto:
-    description: Teleportation zum Gewinner-Ort nach dem Spiel
+    description: Teleport to the winner's location after the game
     default: true

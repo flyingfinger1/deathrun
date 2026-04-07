@@ -1,13 +1,13 @@
 # Maven build output
 target/
 
-# Heruntergeladenes Maven (wird automatisch neu geladen)
+# Downloaded Maven (re-downloaded automatically if missing)
 .maven/
 
 # Maven wrapper
 .mvn/
 
-# Server-Ordner (JAR, Welt, Logs usw.)
+# Server folder (JAR, world, logs, etc.)
 server/
 
 # IDE

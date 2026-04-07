@@ -1,57 +1,57 @@
-# Sprache / Language
-#   de, en       – globale Sprache für alle Spieler
-#   auto         – jeder Spieler sieht Texte in seiner Minecraft-Client-Sprache
-#                  (Fallback auf Englisch wenn die Sprache nicht verfügbar ist)
-# Eigene Dateien in plugins/Deathrun/lang/ möglich
+# Language / Sprache
+#   de, en       – global language for all players
+#   auto         – each player sees text in their Minecraft client language
+#                  (falls back to English if the language is not available)
+# Custom files can be placed in plugins/Deathrun/lang/
 language: de
 
-# Maximale Abweichung in Blöcken nach Ost/West vom Startpunkt
+# Maximum deviation in blocks east/west from the start point
 corridor-width: 30
 
-# Countdown in Sekunden vor dem Start
+# Countdown in seconds before the race starts
 countdown: 10
 
-# Name der im Scoreboard-Titel angezeigt wird
+# Name displayed in the scoreboard title
 server-name: "DeathRun"
 
-# Laufrichtung: NORTH, SOUTH, EAST oder WEST
+# Run direction: NORTH, SOUTH, EAST or WEST
 direction: NORTH
 
-# PVP zwischen Spielern erlauben (false = kein Spieler-gegen-Spieler-Schaden)
+# Allow PVP between players (false = no player-vs-player damage)
 pvp: false
 
-# Sekunden nach Rennstart, bevor PVP aktiviert wird (0 = sofort beim Start)
+# Seconds after race start before PVP is activated (0 = immediately at start)
 pvp-delay: 30
 
-# Sekunden des Countdowns, der am Ende des PVP-Delays eingeblendet wird
-# Beispiel: pvp-delay=30, pvp-countdown=5 → bei Sekunde 25 startet der 5s-Countdown
+# Seconds of countdown shown at the end of the PVP delay
+# Example: pvp-delay=30, pvp-countdown=5 → countdown starts at second 25
 pvp-countdown: 5
 
-# Maximale Spielzeit in Sekunden (0 = kein Limit, Timer zählt nur hoch)
+# Maximum race time in seconds (0 = no limit, timer only counts up)
 max-time: 0
 
-# Schaden pro Block Entfernung außerhalb der Border, pro Sekunde
+# Damage per block outside the border, per second
 border-damage-per-block: 0.5
-# Ab wie vielen Blöcken außerhalb der Border Schaden beginnt (0 = sofort)
+# How many blocks outside the border before damage begins (0 = immediately)
 border-damage-buffer: 0.0
 
-# Mess-Startpunkt (Außenkante der Käfigwand in Laufrichtung – wird automatisch gesetzt)
+# Measurement start point (outer edge of cage wall in run direction – set automatically)
 start:
   world: ""
   x: 0
   y: 64
   z: 0
 
-# Spawn-Mitte des Käfigs (wird automatisch gesetzt)
+# Spawn centre of the cage (set automatically)
 spawn:
   world: ""
   x: 0
   y: 64
   z: 0
 
-# Käfig-Einstellungen
+# Cage settings
 cage:
-  # Radius des Glaskäfigs (in Blöcken, effektive Breite = radius * 3)
+  # Radius of the glass cage (in blocks, effective width = radius * 3)
   radius: 3
-  # Wird automatisch gesetzt – true wenn ein Käfig im Spiel steht
+  # Set automatically – true when a cage is present in the world
   built: false
