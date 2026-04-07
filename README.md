@@ -57,11 +57,11 @@ Most commands require the `deathrun.admin` permission (default: OP). `/dr goto` 
 
 ```yaml
 # Language / Sprache
-#   de, en, fr, es, ...  – one language for all players
-#   auto                  – each player sees their Minecraft client language
+#   de, en, fr, es, ...        – one language for all players
+#   auto                       – each player sees their Minecraft client language
 language: de
 
-server-name: "DeathRun"       # Scoreboard title
+server-name: "DeathRun"        # Scoreboard title
 direction: NORTH               # Run direction
 corridor-width: 30             # WorldBorder half-width (blocks left/right)
 countdown: 10                  # Countdown in seconds before race start
@@ -93,9 +93,6 @@ spawn:
   z: 0.5
   yaw: 180.0
 ```
-
-> **Note:** If you previously used `cage-radius` (flat key), rename it to `cage.radius` under the `cage:` block.
-
 ## Cage Behaviour
 
 - **Building:** `/dr buildcage` clears the area (no item/plant drops), removes all mobs and animals in the zone, and builds the cage with a lime-glass wall facing the run direction.
