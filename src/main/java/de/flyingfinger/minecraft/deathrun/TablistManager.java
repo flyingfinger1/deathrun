@@ -20,10 +20,23 @@ public class TablistManager {
 
             double dist   = pd.isAlive() ? liveDistance(pd, gm) : pd.getFinalDistance();
             String status = Messages.str(p, pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
+            String hearts = pd.isAlive() ? heartsDisplay(p) : "";
             p.playerListName(LegacyComponentSerializer.legacySection().deserialize(
-                Messages.str(p, "tablist.entry", i + 1, p.getName(), fmt(dist), status)
+                Messages.str(p, "tablist.entry", i + 1, p.getName(), fmt(dist), status, hearts)
             ));
         }
+    }
+
+    /** Formatiert die aktuelle Herzanzahl des Spielers als farbigen String. */
+    private String heartsDisplay(Player p) {
+        double health = p.getHealth();
+        double maxHealth = p.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH) != null
+            ? p.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue() : 20.0;
+        int hearts    = (int) Math.ceil(health / 2.0);
+        int maxHearts = (int) Math.ceil(maxHealth / 2.0);
+        // Farbe: grün > 6 Herzen, gelb 3-6, rot < 3
+        String color = hearts > 6 ? "§a" : hearts > 3 ? "§e" : "§c";
+        return color + "❤ §f" + hearts + "§7/§f" + maxHearts;
     }
 
     public void reset(Collection<PlayerData> players) {
