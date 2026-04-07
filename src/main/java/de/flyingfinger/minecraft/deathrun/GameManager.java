@@ -570,7 +570,7 @@ public class GameManager {
     }
 
     public void handleGoto(Player player) {
-        if (finalResults.isEmpty()) {
+        if (state != GameState.ENDED || finalResults.isEmpty()) {
             player.sendMessage(Messages.comp(player, "cmd.goto.no-game"));
             return;
         }

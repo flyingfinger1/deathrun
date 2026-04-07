@@ -40,7 +40,7 @@ cmd:
     usage:     "§cNutzung: /dr settime <Minuten> (0 = kein Limit)"
   goto:
     success:     "§aTeleportiert zum Gewinner-Ort!"
-    no-game:     "§cKein abgeschlossenes Spiel verfügbar."
+    no-game:     "§cNur nach einem abgeschlossenen Spiel verfügbar."
     no-location: "§cZielposition nicht verfügbar."
     player-only: "§cDieser Befehl erfordert einen Spieler."
   start:
