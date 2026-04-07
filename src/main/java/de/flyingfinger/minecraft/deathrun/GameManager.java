@@ -134,7 +134,7 @@ public class GameManager {
         // World-Spawn setzen
         center.getWorld().setSpawnLocation(spawnLocation);
 
-        sender.sendMessage(Messages.comp(sender, "cmd.buildcage.success", direction.getDisplayName()));
+        sender.sendMessage(Messages.comp(sender, "cmd.buildcage.success", Messages.str(sender, direction.getLangKey())));
     }
 
     private float spawnYaw(RunDirection dir) {
@@ -177,7 +177,7 @@ public class GameManager {
             direction = RunDirection.valueOf(arg.toUpperCase());
             plugin.getConfig().set("direction", direction.name());
             plugin.saveConfig();
-            sender.sendMessage(Messages.comp(sender, "cmd.setdirection.success", direction.getDisplayName()));
+            sender.sendMessage(Messages.comp(sender, "cmd.setdirection.success", Messages.str(sender, direction.getLangKey())));
 
             // Wenn Käfig bereits steht: Tür auf neue Seite umbauen & Messpunkt aktualisieren
             if (!cageLocations.isEmpty() && spawnLocation != null) {
@@ -230,7 +230,7 @@ public class GameManager {
             spawnLocation == null ? Messages.str(sender, "cmd.status.not-set") : fmtLoc(spawnLocation)));
         sender.sendMessage(line(Messages.str(sender, "cmd.status.start"),
             startLocation == null ? Messages.str(sender, "cmd.status.not-set") : fmtLoc(startLocation)));
-        sender.sendMessage(line(Messages.str(sender, "cmd.status.direction"), direction.getDisplayName()));
+        sender.sendMessage(line(Messages.str(sender, "cmd.status.direction"), Messages.str(sender, direction.getLangKey())));
         sender.sendMessage(line(Messages.str(sender, "cmd.status.corridor"),
             Messages.str(sender, "cmd.status.corridor-value", corridorWidth)));
         sender.sendMessage(line(Messages.str(sender, "cmd.status.countdown"),
@@ -357,7 +357,11 @@ public class GameManager {
             }
         }.runTaskTimer(plugin, 20L, 20L);
 
-        broadcast("game.countdown.go", direction.getDisplayName());
+        // "GO!"-Nachricht pro Spieler in dessen Sprache senden
+        for (UUID uuid : players.keySet()) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) p.sendMessage(Messages.comp(p, "game.countdown.go", Messages.str(p, direction.getLangKey())));
+        }
         sound(Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1f);
     }
 

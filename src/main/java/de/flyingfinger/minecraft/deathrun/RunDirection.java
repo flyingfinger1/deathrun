@@ -39,12 +39,13 @@ public enum RunDirection {
         };
     }
 
-    public String getDisplayName() {
+    /** Lang-Key für die lokalisierte Richtungsbezeichnung. */
+    public String getLangKey() {
         return switch (this) {
-            case NORTH -> "Norden";
-            case SOUTH -> "Süden";
-            case EAST  -> "Osten";
-            case WEST  -> "Westen";
+            case NORTH -> "direction.north";
+            case SOUTH -> "direction.south";
+            case EAST  -> "direction.east";
+            case WEST  -> "direction.west";
         };
     }
 

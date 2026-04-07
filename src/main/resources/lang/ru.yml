@@ -140,3 +140,9 @@ sidebar:
 
 tablist:
   entry: "§7#{0} §f{1} §8- §7{2}м {3} {4}"
+
+direction:
+  north: "Север"
+  south: "Юг"
+  east:  "Восток"
+  west:  "Запад"
