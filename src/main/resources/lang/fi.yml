@@ -1,0 +1,142 @@
+# Finnish (Suomi)
+motd:
+  maintenance:  "§c[Huolto] §7DeathRun asennetaan..."
+  countdown:    "§e[Lähtölaskenta] §7DeathRun alkaa pian..."
+  running:      "§a[Käynnissä] §7DeathRun on käynnissä!"
+  ended:        "§6[Päättynyt] §7DeathRun päättyi – tulokset saatavilla"
+
+login:
+  maintenance:  "§cServeri on huoltotilassa. Odota hetki."
+  game-running: "§cDeathRun on parhaillaan käynnissä. Odota sen päättymistä."
+
+cmd:
+  no-permission:  "§cEi oikeuksia."
+  player-only:    "§cTämä komento vaatii pelaajan pelissä."
+  invalid-number: "§cVirheellinen numero."
+  buildcage:
+    success: "§a✔ Häkki rakennettu | Spawn ja mittauspiste asetettu | Suunta: §f{0}"
+  removecage:
+    success: "§a✔ Häkki poistettu."
+  open:
+    no-cage:   "§cHäkki on rakennettava ensin! /dr buildcage"
+    success:   "§a✔ Serveri on nyt auki kaikille!"
+    broadcast: "§a§l🟢 Serveri on nyt auki kaikille pelaajille!"
+  close:
+    success: "§e✔ Serveri lukittu (vain OPit)."
+  setcorridor:
+    success: "§a✔ Käytävän leveys: ±{0} lohkoa."
+    invalid: "§cLeveyden on oltava 5–500 välillä."
+    usage:   "§cKäyttö: /dr setcorridor <lohkot>"
+  setdirection:
+    success: "§a✔ Juoksusuunta: §f{0}"
+    invalid: "§cTuntematon suunta. Käytä NORTH, SOUTH, EAST tai WEST."
+    usage:   "§cKäyttö: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Enimmäispeliaikasi: §f{0}"
+    unlimited: "ei rajoitusta"
+    minutes:   "{0} min."
+    invalid:   "§cAjan on oltava >= 0 (0 = ei rajoitusta)."
+    usage:     "§cKäyttö: /dr settime <minuutit> (0 = ei rajoitusta)"
+  goto:
+    success:     "§aTeleportattu voittajan sijaintiin!"
+    no-game:     "§cEi valmista peliä saatavilla."
+    no-location: "§cKohdesijainti ei ole saatavilla."
+    player-only: "§cTämä komento vaatii pelaajan."
+  start:
+    already-running: "§cPeli on jo käynnissä!"
+    no-cage:         "§cHäkkiä ei ole asetettu! Käytä /dr buildcage"
+    no-players:      "§cEi pelaajia verkossa!"
+  stop:
+    no-game: "§cEi aktiivista peliä!"
+    success: "§a✔ Peli nollattu."
+  pause:
+    not-running: "§cTauko on mahdollinen vain aktiivisen pelin aikana."
+  status:
+    header:    "§6§l── Deathrun Tila ──"
+    state:     "Tila"
+    spawn:     "Spawn (häkin keskus)"
+    start:     "Mittauspiste"
+    direction: "Suunta"
+    corridor:  "Käytävä"
+    countdown: "Lähtölaskenta"
+    maxtime:   "Maks. aika"
+    online:    "Pelaajia verkossa"
+    not-set:   "ei asetettu"
+    corridor-value:   "±{0} lohkoa"
+    countdown-value:  "{0}s"
+    time-unlimited:   "ei rajoitusta"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Deathrun Komennot ──"
+    buildcage:    "Rakentaa häkin ja asettaa spawn/mittauspisteen [Pelaaja]"
+    removecage:   "Poistaa häkin [Pelaaja]"
+    open:         "Avaa serverin kaikille pelaajille"
+    close:        "Lukitsee serverin (vain OPit)"
+    setcorridor:  "Asettaa käytävän puolileveyden lohkoissa"
+    setdirection: "Juoksusuunta: NORTH/SOUTH/EAST/WEST"
+    settime:      "Enimmäispeliaikasi minuutteina (0 = ei rajoitusta)"
+    start:        "Käynnistää Deathrunnin"
+    stop:         "Keskeyttää pelin / nollaa lopun jälkeen"
+    pause:        "Keskeyttää/jatkaa peliä"
+    goto:         "Teleporttaa voittajan sijaintiin [Pelaaja]"
+    status:       "Näyttää nykyisen kokoonpanon"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun alkaa §e{0} §6§lsekunnin kuluttua!"
+    tick:     "§eAlkaa §f{0}§e sekunnin kuluttua…"
+    go:       "§a§lJUOKSE! Suuntaa kohti §f{0}§a§l!"
+  death:      "§c☠ §f{0} §ckuoli! Etäisyys: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7katkaisi yhteyden. (§f{1}m§7) §8[voi palata]"
+  reconnect:  "§a▶ §f{0} §aon liittynyt takaisin!"
+  time-limit: "§c§l⏱ Aika loppui! Kilpailu on ohi."
+  pause:
+    on:        "§e§l⏸ Peli tauolla."
+    off:       "§a§l▶ Peli jatkuu."
+    actionbar: "§e§l⏸  TAUKO  ⏸"
+  end:
+    header:      "§6§l══════ TULOKSET ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleporttaa voittajan sijaintiin]"
+    goto-hover:  "§aKlikkaa teleportattuaksesi!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServeri lukittu"
+    step-label:  "§7Vaihe 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Aseta häkki"
+    cage-ok:     "§a✔ Häkki asetettu"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Avaa serveri"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Poista häkki"
+    server-open: "§aServeri auki"
+    waiting:     "§7Odotetaan alkua..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Verkossa: §f{0}"
+  starting:
+    countdown: "§eAlkaa §f{0}s§e kuluttua..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... lisää"
+    ready:     "§7{0} pelaajaa valmiina"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Sija: §f#{0}"
+    dist:        "§7Etäis: §f{0}m"
+    ew:          "§7V/O:  §f{0}m"
+    time:        "§7Aika: {0}"
+    timer-pause: "§e⏸ TAUKO"
+  end:
+    winner-label: "§6🏆 §eVoittaja:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Sija: §f#{0}"
+    dist:         "§7Etäis: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

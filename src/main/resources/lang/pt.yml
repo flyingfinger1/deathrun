@@ -1,0 +1,142 @@
+# Portuguese / Brazilian (Português)
+motd:
+  maintenance:  "§c[Manutenção] §7DeathRun está sendo configurado..."
+  countdown:    "§e[Contagem] §7DeathRun começa em breve..."
+  running:      "§a[Em andamento] §7DeathRun está em progresso!"
+  ended:        "§6[Finalizado] §7DeathRun terminou – resultados disponíveis"
+
+login:
+  maintenance:  "§cO servidor está em modo de manutenção. Por favor, aguarde."
+  game-running: "§cUm Deathrun está em andamento. Aguarde o fim."
+
+cmd:
+  no-permission:  "§cSem permissão."
+  player-only:    "§cEste comando requer um jogador no jogo."
+  invalid-number: "§cNúmero inválido."
+  buildcage:
+    success: "§a✔ Gaiola construída | Spawn e ponto de medição definidos | Direção: §f{0}"
+  removecage:
+    success: "§a✔ Gaiola removida."
+  open:
+    no-cage:   "§cA gaiola deve ser construída primeiro! /dr buildcage"
+    success:   "§a✔ O servidor agora está aberto para todos!"
+    broadcast: "§a§l🟢 O servidor agora está aberto para todos os jogadores!"
+  close:
+    success: "§e✔ Servidor bloqueado (apenas OPs)."
+  setcorridor:
+    success: "§a✔ Largura do corredor: ±{0} blocos."
+    invalid: "§cA largura deve estar entre 5 e 500."
+    usage:   "§cUso: /dr setcorridor <blocos>"
+  setdirection:
+    success: "§a✔ Direção de corrida: §f{0}"
+    invalid: "§cDireção desconhecida. Use NORTH, SOUTH, EAST ou WEST."
+    usage:   "§cUso: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Tempo máximo de jogo: §f{0}"
+    unlimited: "sem limite"
+    minutes:   "{0} min."
+    invalid:   "§cO tempo deve ser >= 0 (0 = sem limite)."
+    usage:     "§cUso: /dr settime <minutos> (0 = sem limite)"
+  goto:
+    success:     "§aTeletransportado para a localização do vencedor!"
+    no-game:     "§cNenhuma partida finalizada disponível."
+    no-location: "§cLocalização alvo não disponível."
+    player-only: "§cEste comando requer um jogador."
+  start:
+    already-running: "§cA partida já está em andamento!"
+    no-cage:         "§cNenhuma gaiola definida! Use /dr buildcage"
+    no-players:      "§cNenhum jogador online!"
+  stop:
+    no-game: "§cNenhuma partida ativa!"
+    success: "§a✔ Partida reiniciada."
+  pause:
+    not-running: "§cA pausa só é possível durante uma partida ativa."
+  status:
+    header:    "§6§l── Status Deathrun ──"
+    state:     "Estado"
+    spawn:     "Spawn (centro da gaiola)"
+    start:     "Ponto de medição"
+    direction: "Direção"
+    corridor:  "Corredor"
+    countdown: "Contagem"
+    maxtime:   "Tempo máx"
+    online:    "Jogadores online"
+    not-set:   "não definido"
+    corridor-value:   "±{0} blocos"
+    countdown-value:  "{0}s"
+    time-unlimited:   "sem limite"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Comandos Deathrun ──"
+    buildcage:    "Constrói a gaiola e define spawn/ponto de medição [Jogador]"
+    removecage:   "Remove a gaiola [Jogador]"
+    open:         "Abre o servidor para todos os jogadores"
+    close:        "Bloqueia o servidor (apenas OPs)"
+    setcorridor:  "Define a meia-largura do corredor em blocos"
+    setdirection: "Direção de corrida: NORTH/SOUTH/EAST/WEST"
+    settime:      "Tempo máximo de jogo em minutos (0 = sem limite)"
+    start:        "Inicia o Deathrun"
+    stop:         "Cancela a partida / reinicia após o fim"
+    pause:        "Pausa/retoma a partida"
+    goto:         "Teletransportar para a localização do vencedor [Jogador]"
+    status:       "Exibe a configuração atual"
+
+game:
+  countdown:
+    announce: "§6§lO Deathrun começa em §e{0} §6§lsegundos!"
+    tick:     "§eIniciando em §f{0}§e…"
+    go:       "§a§lVAI! Corra em direção a §f{0}§a§l!"
+  death:      "§c☠ §f{0} §cmorreu! Distância: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7desconectou. (§f{1}m§7) §8[pode voltar]"
+  reconnect:  "§a▶ §f{0} §avoltou ao jogo!"
+  time-limit: "§c§l⏱ Tempo esgotado! A corrida acabou."
+  pause:
+    on:        "§e§l⏸ Partida pausada."
+    off:       "§a§l▶ Partida retomada."
+    actionbar: "§e§l⏸  PAUSADO  ⏸"
+  end:
+    header:      "§6§l══════ RESULTADOS ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teletransportar para a localização do vencedor]"
+    goto-hover:  "§aClique para se teletransportar!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServidor bloqueado"
+    step-label:  "§7Passo 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Colocar a gaiola"
+    cage-ok:     "§a✔ Gaiola colocada"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Abrir servidor"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Remover gaiola"
+    server-open: "§aServidor aberto"
+    waiting:     "§7Aguardando início..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eIniciando em §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... mais"
+    ready:     "§7{0} jogadores prontos"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Rank: §f#{0}"
+    dist:        "§7Dist: §f{0}m"
+    ew:          "§7E/D:  §f{0}m"
+    time:        "§7Tempo: {0}"
+    timer-pause: "§e⏸ PAUSADO"
+  end:
+    winner-label: "§6🏆 §eVencedor:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Rank: §f#{0}"
+    dist:         "§7Dist: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

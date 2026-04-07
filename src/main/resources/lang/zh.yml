@@ -1,0 +1,142 @@
+# Chinese Simplified (简体中文)
+motd:
+  maintenance:  "§c[维护中] §7DeathRun 正在设置..."
+  countdown:    "§e[倒计时] §7DeathRun 即将开始..."
+  running:      "§a[进行中] §7DeathRun 正在进行！"
+  ended:        "§6[已结束] §7DeathRun 已完成 – 结果已可查看"
+
+login:
+  maintenance:  "§c服务器正在维护中，请稍候。"
+  game-running: "§cDeathRun 正在进行中，请等待结束。"
+
+cmd:
+  no-permission:  "§c无权限。"
+  player-only:    "§c此命令需要游戏中的玩家执行。"
+  invalid-number: "§c无效的数字。"
+  buildcage:
+    success: "§a✔ 笼子已建造 | 出生点和测量点已设置 | 方向：§f{0}"
+  removecage:
+    success: "§a✔ 笼子已移除。"
+  open:
+    no-cage:   "§c必须先建造笼子！/dr buildcage"
+    success:   "§a✔ 服务器现已对所有人开放！"
+    broadcast: "§a§l🟢 服务器现已对所有玩家开放！"
+  close:
+    success: "§e✔ 服务器已锁定（仅限OP）。"
+  setcorridor:
+    success: "§a✔ 走廊宽度：±{0} 个方块。"
+    invalid: "§c宽度必须在 5 到 500 之间。"
+    usage:   "§c用法：/dr setcorridor <方块数>"
+  setdirection:
+    success: "§a✔ 跑步方向：§f{0}"
+    invalid: "§c未知方向。请使用 NORTH、SOUTH、EAST 或 WEST。"
+    usage:   "§c用法：/dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ 最大游戏时间：§f{0}"
+    unlimited: "无限制"
+    minutes:   "{0} 分钟"
+    invalid:   "§c时间必须 >= 0（0 = 无限制）。"
+    usage:     "§c用法：/dr settime <分钟> (0 = 无限制)"
+  goto:
+    success:     "§a已传送至获胜者的位置！"
+    no-game:     "§c没有已完成的游戏。"
+    no-location: "§c目标位置不可用。"
+    player-only: "§c此命令需要玩家执行。"
+  start:
+    already-running: "§c游戏已在进行中！"
+    no-cage:         "§c未设置笼子！使用 /dr buildcage"
+    no-players:      "§c没有玩家在线！"
+  stop:
+    no-game: "§c没有活跃的游戏！"
+    success: "§a✔ 游戏已重置。"
+  pause:
+    not-running: "§c只有在游戏进行中才能暂停。"
+  status:
+    header:    "§6§l── Deathrun 状态 ──"
+    state:     "状态"
+    spawn:     "出生点（笼子中心）"
+    start:     "测量点"
+    direction: "方向"
+    corridor:  "走廊"
+    countdown: "倒计时"
+    maxtime:   "最大时间"
+    online:    "在线玩家"
+    not-set:   "未设置"
+    corridor-value:   "±{0} 个方块"
+    countdown-value:  "{0}秒"
+    time-unlimited:   "无限制"
+    time-minutes:     "{0} 分钟"
+  help:
+    header:       "── Deathrun 命令 ──"
+    buildcage:    "建造笼子并设置出生点/测量点 [玩家]"
+    removecage:   "移除笼子 [玩家]"
+    open:         "向所有玩家开放服务器"
+    close:        "锁定服务器（仅限OP）"
+    setcorridor:  "以方块为单位设置走廊半宽"
+    setdirection: "跑步方向：NORTH/SOUTH/EAST/WEST"
+    settime:      "最大游戏时间（分钟）（0 = 无限制）"
+    start:        "开始 Deathrun"
+    stop:         "中止游戏 / 结束后重置"
+    pause:        "暂停/继续游戏"
+    goto:         "传送至获胜者位置 [玩家]"
+    status:       "显示当前配置"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun 将在 §e{0} §6§l秒后开始！"
+    tick:     "§e{0}§e 秒后开始…"
+    go:       "§a§l出发！跑向 §f{0}§a§l！"
+  death:      "§c☠ §f{0} §c死亡！距离：§6{1}m"
+  disconnect: "§7⚡ §f{0} §7已断开连接。(§f{1}m§7) §8[可重新加入]"
+  reconnect:  "§a▶ §f{0} §a已重新加入！"
+  time-limit: "§c§l⏱ 时间到！比赛结束。"
+  pause:
+    on:        "§e§l⏸ 游戏已暂停。"
+    off:       "§a§l▶ 游戏已恢复。"
+    actionbar: "§e§l⏸  已暂停  ⏸"
+  end:
+    header:      "§6§l══════ 结果 ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[传送至获胜者位置]"
+    goto-hover:  "§a点击传送！"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§c服务器已锁定"
+    step-label:  "§7第 1 步："
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7放置笼子"
+    cage-ok:     "§a✔ 笼子已放置"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7开放服务器"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7移除笼子"
+    server-open: "§a服务器已开放"
+    waiting:     "§7等待开始..."
+    start-cmd:   "§f/dr start"
+    online:      "§7在线：§f{0}"
+  starting:
+    countdown: "§e§f{0}s§e 后开始..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... 更多"
+    ready:     "§7{0} 位玩家就绪"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7名次：§f#{0}"
+    dist:        "§7距离：§f{0}m"
+    ew:          "§7左/右：§f{0}m"
+    time:        "§7时间：{0}"
+    timer-pause: "§e⏸ 已暂停"
+  end:
+    winner-label: "§6🏆 §e获胜者："
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7名次：§f#{0}"
+    dist:         "§7距离：§f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

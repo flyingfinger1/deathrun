@@ -1,0 +1,142 @@
+# Turkish (Türkçe)
+motd:
+  maintenance:  "§c[Bakım] §7DeathRun ayarlanıyor..."
+  countdown:    "§e[Geri Sayım] §7DeathRun yakında başlıyor..."
+  running:      "§a[Devam Ediyor] §7DeathRun sürüyor!"
+  ended:        "§6[Bitti] §7DeathRun tamamlandı – sonuçlar mevcut"
+
+login:
+  maintenance:  "§cSunucu bakım modunda. Lütfen bekleyin."
+  game-running: "§cŞu anda bir Deathrun oynanıyor. Bitene kadar bekleyin."
+
+cmd:
+  no-permission:  "§cİzin yok."
+  player-only:    "§cBu komut oyunda bir oyuncu gerektirir."
+  invalid-number: "§cGeçersiz sayı."
+  buildcage:
+    success: "§a✔ Kafes inşa edildi | Spavn ve ölçüm noktası ayarlandı | Yön: §f{0}"
+  removecage:
+    success: "§a✔ Kafes kaldırıldı."
+  open:
+    no-cage:   "§cÖnce kafes inşa edilmeli! /dr buildcage"
+    success:   "§a✔ Sunucu artık herkese açık!"
+    broadcast: "§a§l🟢 Sunucu artık tüm oyunculara açık!"
+  close:
+    success: "§e✔ Sunucu kilitlendi (yalnızca OP'ler)."
+  setcorridor:
+    success: "§a✔ Koridor genişliği: ±{0} blok."
+    invalid: "§cGenişlik 5 ile 500 arasında olmalıdır."
+    usage:   "§cKullanım: /dr setcorridor <blok>"
+  setdirection:
+    success: "§a✔ Koşu yönü: §f{0}"
+    invalid: "§cBilinmeyen yön. NORTH, SOUTH, EAST veya WEST kullanın."
+    usage:   "§cKullanım: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maksimum oyun süresi: §f{0}"
+    unlimited: "sınırsız"
+    minutes:   "{0} dk."
+    invalid:   "§cSüre >= 0 olmalıdır (0 = sınırsız)."
+    usage:     "§cKullanım: /dr settime <dakika> (0 = sınırsız)"
+  goto:
+    success:     "§aKazananın konumuna ışınlandınız!"
+    no-game:     "§cBitmiş oyun bulunamadı."
+    no-location: "§cHedef konum mevcut değil."
+    player-only: "§cBu komut bir oyuncu gerektirir."
+  start:
+    already-running: "§cOyun zaten devam ediyor!"
+    no-cage:         "§cKafes ayarlanmadı! /dr buildcage kullanın"
+    no-players:      "§cÇevrimiçi oyuncu yok!"
+  stop:
+    no-game: "§cAktif oyun yok!"
+    success: "§a✔ Oyun sıfırlandı."
+  pause:
+    not-running: "§cDuraklama yalnızca aktif bir oyun sırasında mümkündür."
+  status:
+    header:    "§6§l── Deathrun Durumu ──"
+    state:     "Durum"
+    spawn:     "Spavn (kafes merkezi)"
+    start:     "Ölçüm noktası"
+    direction: "Yön"
+    corridor:  "Koridor"
+    countdown: "Geri sayım"
+    maxtime:   "Maks. süre"
+    online:    "Çevrimiçi oyuncular"
+    not-set:   "ayarlanmadı"
+    corridor-value:   "±{0} blok"
+    countdown-value:  "{0}s"
+    time-unlimited:   "sınırsız"
+    time-minutes:     "{0} dk."
+  help:
+    header:       "── Deathrun Komutları ──"
+    buildcage:    "Kafes inşa eder ve spavn/ölçüm noktası ayarlar [Oyuncu]"
+    removecage:   "Kafesi kaldırır [Oyuncu]"
+    open:         "Sunucuyu tüm oyunculara açar"
+    close:        "Sunucuyu kilitler (yalnızca OP'ler)"
+    setcorridor:  "Koridor yarı genişliğini blok olarak ayarlar"
+    setdirection: "Koşu yönü: NORTH/SOUTH/EAST/WEST"
+    settime:      "Maksimum oyun süresi dakika cinsinden (0 = sınırsız)"
+    start:        "Deathrun'u başlatır"
+    stop:         "Oyunu iptal eder / bitişten sonra sıfırlar"
+    pause:        "Oyunu duraklatır/devam ettirir"
+    goto:         "Kazananın konumuna ışınlan [Oyuncu]"
+    status:       "Mevcut yapılandırmayı gösterir"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun §e{0} §6§lsaniye sonra başlıyor!"
+    tick:     "§e§f{0}§e saniye sonra başlıyor…"
+    go:       "§a§lHAYDI! §f{0}§a§l yönüne koş!"
+  death:      "§c☠ §f{0} §cöldü! Mesafe: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7bağlantısı kesildi. (§f{1}m§7) §8[yeniden katılabilir]"
+  reconnect:  "§a▶ §f{0} §ayeniden katıldı!"
+  time-limit: "§c§l⏱ Süre doldu! Yarış bitti."
+  pause:
+    on:        "§e§l⏸ Oyun duraklatıldı."
+    off:       "§a§l▶ Oyun devam ediyor."
+    actionbar: "§e§l⏸  DURAKLATILDI  ⏸"
+  end:
+    header:      "§6§l══════ SONUÇLAR ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Kazananın konumuna ışınlan]"
+    goto-hover:  "§aIşınlanmak için tıklayın!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cSunucu kilitli"
+    step-label:  "§7Adım 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Kafesi yerleştir"
+    cage-ok:     "§a✔ Kafes yerleştirildi"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Sunucuyu aç"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Kafesi kaldır"
+    server-open: "§aSunucu açık"
+    waiting:     "§7Başlangıç bekleniyor..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Çevrimiçi: §f{0}"
+  starting:
+    countdown: "§e§f{0}s§e sonra başlıyor..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... daha fazla"
+    ready:     "§7{0} oyuncu hazır"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Sıra: §f#{0}"
+    dist:        "§7Mes: §f{0}m"
+    ew:          "§7S/Sağ: §f{0}m"
+    time:        "§7Süre: {0}"
+    timer-pause: "§e⏸ DURAKLATILDI"
+  end:
+    winner-label: "§6🏆 §eKazanan:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Sıra: §f#{0}"
+    dist:         "§7Mes: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

@@ -1,0 +1,142 @@
+# Dutch (Nederlands)
+motd:
+  maintenance:  "§c[Onderhoud] §7DeathRun wordt ingesteld..."
+  countdown:    "§e[Aftellen] §7DeathRun begint binnenkort..."
+  running:      "§a[Bezig] §7DeathRun is in uitvoering!"
+  ended:        "§6[Beëindigd] §7DeathRun afgelopen – resultaten beschikbaar"
+
+login:
+  maintenance:  "§cDe server is in onderhoudsmodus. Wacht even."
+  game-running: "§cEr is een Deathrun bezig. Wacht tot het voorbij is."
+
+cmd:
+  no-permission:  "§cGeen toestemming."
+  player-only:    "§cDit commando vereist een speler in het spel."
+  invalid-number: "§cOngeldig getal."
+  buildcage:
+    success: "§a✔ Kooi gebouwd | Spawn en meetpunt ingesteld | Richting: §f{0}"
+  removecage:
+    success: "§a✔ Kooi verwijderd."
+  open:
+    no-cage:   "§cDe kooi moet eerst gebouwd worden! /dr buildcage"
+    success:   "§a✔ De server is nu open voor iedereen!"
+    broadcast: "§a§l🟢 De server is nu open voor alle spelers!"
+  close:
+    success: "§e✔ Server vergrendeld (alleen OPs)."
+  setcorridor:
+    success: "§a✔ Corridorbreedte: ±{0} blokken."
+    invalid: "§cDe breedte moet tussen 5 en 500 zijn."
+    usage:   "§cGebruik: /dr setcorridor <blokken>"
+  setdirection:
+    success: "§a✔ Looprichting: §f{0}"
+    invalid: "§cOnbekende richting. Gebruik NORTH, SOUTH, EAST of WEST."
+    usage:   "§cGebruik: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maximale speeltijd: §f{0}"
+    unlimited: "geen limiet"
+    minutes:   "{0} min."
+    invalid:   "§cTijd moet >= 0 zijn (0 = geen limiet)."
+    usage:     "§cGebruik: /dr settime <minuten> (0 = geen limiet)"
+  goto:
+    success:     "§aGeteleporteerd naar de locatie van de winnaar!"
+    no-game:     "§cGeen voltooide game beschikbaar."
+    no-location: "§cDoellocatie niet beschikbaar."
+    player-only: "§cDit commando vereist een speler."
+  start:
+    already-running: "§cHet spel is al bezig!"
+    no-cage:         "§cGeen kooi ingesteld! Gebruik /dr buildcage"
+    no-players:      "§cGeen spelers online!"
+  stop:
+    no-game: "§cGeen actief spel!"
+    success: "§a✔ Spel gereset."
+  pause:
+    not-running: "§cPauze is alleen mogelijk tijdens een actief spel."
+  status:
+    header:    "§6§l── Deathrun Status ──"
+    state:     "Status"
+    spawn:     "Spawn (kooicentrum)"
+    start:     "Meetpunt"
+    direction: "Richting"
+    corridor:  "Corridor"
+    countdown: "Aftellen"
+    maxtime:   "Max tijd"
+    online:    "Spelers online"
+    not-set:   "niet ingesteld"
+    corridor-value:   "±{0} blokken"
+    countdown-value:  "{0}s"
+    time-unlimited:   "geen limiet"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Deathrun Commando's ──"
+    buildcage:    "Bouwt de kooi en stelt spawn/meetpunt in [Speler]"
+    removecage:   "Verwijdert de kooi [Speler]"
+    open:         "Opent de server voor alle spelers"
+    close:        "Vergrendelt de server (alleen OPs)"
+    setcorridor:  "Stelt de halve corridorbreedte in blokken in"
+    setdirection: "Looprichting: NORTH/SOUTH/EAST/WEST"
+    settime:      "Maximale speeltijd in minuten (0 = geen limiet)"
+    start:        "Start de Deathrun"
+    stop:         "Breekt het spel af / reset na afloop"
+    pause:        "Pauzeert/hervat het spel"
+    goto:         "Teleporteer naar de locatie van de winnaar [Speler]"
+    status:       "Toont huidige configuratie"
+
+game:
+  countdown:
+    announce: "§6§lDe Deathrun begint over §e{0} §6§lseconden!"
+    tick:     "§eStarten over §f{0}§e…"
+    go:       "§a§lGA! Loop naar §f{0}§a§l!"
+  death:      "§c☠ §f{0} §cis gestorven! Afstand: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7verbinding verbroken. (§f{1}m§7) §8[kan terugkomen]"
+  reconnect:  "§a▶ §f{0} §ais teruggekomen!"
+  time-limit: "§c§l⏱ Tijd op! De race is voorbij."
+  pause:
+    on:        "§e§l⏸ Spel gepauzeerd."
+    off:       "§a§l▶ Spel hervat."
+    actionbar: "§e§l⏸  GEPAUZEERD  ⏸"
+  end:
+    header:      "§6§l══════ RESULTATEN ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleporteer naar de locatie van de winnaar]"
+    goto-hover:  "§aKlik om te teleporteren!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServer vergrendeld"
+    step-label:  "§7Stap 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Kooi plaatsen"
+    cage-ok:     "§a✔ Kooi geplaatst"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Server openen"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Kooi verwijderen"
+    server-open: "§aServer open"
+    waiting:     "§7Wachten op start..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eStarten over §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... meer"
+    ready:     "§7{0} spelers klaar"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Rang: §f#{0}"
+    dist:        "§7Afst: §f{0}m"
+    ew:          "§7L/R:  §f{0}m"
+    time:        "§7Tijd: {0}"
+    timer-pause: "§e⏸ GEPAUZEERD"
+  end:
+    winner-label: "§6🏆 §eWinnaar:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Rang: §f#{0}"
+    dist:         "§7Afst: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

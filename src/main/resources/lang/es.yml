@@ -1,0 +1,142 @@
+# Spanish (Español)
+motd:
+  maintenance:  "§c[Mantenimiento] §7DeathRun se está configurando..."
+  countdown:    "§e[Cuenta atrás] §7DeathRun comienza pronto..."
+  running:      "§a[En curso] §7¡DeathRun está en progreso!"
+  ended:        "§6[Finalizado] §7DeathRun terminado – resultados disponibles"
+
+login:
+  maintenance:  "§cEl servidor está en modo mantenimiento. Por favor espera."
+  game-running: "§cHay un Deathrun en curso. Por favor espera a que termine."
+
+cmd:
+  no-permission:  "§cSin permiso."
+  player-only:    "§cEste comando requiere un jugador en el juego."
+  invalid-number: "§cNúmero inválido."
+  buildcage:
+    success: "§a✔ Jaula construida | Spawn y punto de medición establecidos | Dirección: §f{0}"
+  removecage:
+    success: "§a✔ Jaula eliminada."
+  open:
+    no-cage:   "§c¡La jaula debe construirse primero! /dr buildcage"
+    success:   "§a✔ ¡El servidor ahora está abierto para todos!"
+    broadcast: "§a§l🟢 ¡El servidor ahora está abierto para todos los jugadores!"
+  close:
+    success: "§e✔ Servidor bloqueado (solo OPs)."
+  setcorridor:
+    success: "§a✔ Ancho del corredor: ±{0} bloques."
+    invalid: "§cEl ancho debe estar entre 5 y 500."
+    usage:   "§cUso: /dr setcorridor <bloques>"
+  setdirection:
+    success: "§a✔ Dirección de carrera: §f{0}"
+    invalid: "§cDirección desconocida. Usa NORTH, SOUTH, EAST o WEST."
+    usage:   "§cUso: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Tiempo máximo de juego: §f{0}"
+    unlimited: "sin límite"
+    minutes:   "{0} min."
+    invalid:   "§cEl tiempo debe ser >= 0 (0 = sin límite)."
+    usage:     "§cUso: /dr settime <minutos> (0 = sin límite)"
+  goto:
+    success:     "§a¡Teletransportado a la ubicación del ganador!"
+    no-game:     "§cNo hay ninguna partida terminada disponible."
+    no-location: "§cUbicación de destino no disponible."
+    player-only: "§cEste comando requiere un jugador."
+  start:
+    already-running: "§c¡La partida ya está en curso!"
+    no-cage:         "§c¡No hay jaula configurada! Usa /dr buildcage"
+    no-players:      "§c¡No hay jugadores en línea!"
+  stop:
+    no-game: "§c¡No hay partida activa!"
+    success: "§a✔ Partida reiniciada."
+  pause:
+    not-running: "§cLa pausa solo es posible durante una partida activa."
+  status:
+    header:    "§6§l── Estado de Deathrun ──"
+    state:     "Estado"
+    spawn:     "Spawn (centro de jaula)"
+    start:     "Punto de medición"
+    direction: "Dirección"
+    corridor:  "Corredor"
+    countdown: "Cuenta atrás"
+    maxtime:   "Tiempo máx"
+    online:    "Jugadores en línea"
+    not-set:   "no configurado"
+    corridor-value:   "±{0} bloques"
+    countdown-value:  "{0}s"
+    time-unlimited:   "sin límite"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Comandos Deathrun ──"
+    buildcage:    "Construye la jaula y establece spawn/punto de medición [Jugador]"
+    removecage:   "Elimina la jaula [Jugador]"
+    open:         "Abre el servidor para todos los jugadores"
+    close:        "Bloquea el servidor (solo OPs)"
+    setcorridor:  "Establece la semiancho del corredor en bloques"
+    setdirection: "Dirección de carrera: NORTH/SOUTH/EAST/WEST"
+    settime:      "Tiempo máximo de juego en minutos (0 = sin límite)"
+    start:        "Inicia el Deathrun"
+    stop:         "Cancela la partida / reinicia tras el fin"
+    pause:        "Pausa/reanuda la partida"
+    goto:         "Teleportar a la ubicación del ganador [Jugador]"
+    status:       "Muestra la configuración actual"
+
+game:
+  countdown:
+    announce: "§6§l¡El Deathrun comienza en §e{0} §6§lsegundos!"
+    tick:     "§eComenzando en §f{0}§e…"
+    go:       "§a§l¡CORRE! Dirígete hacia §f{0}§a§l!"
+  death:      "§c☠ §f{0} §cmurió. Distancia: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7se desconectó. (§f{1}m§7) §8[puede volver]"
+  reconnect:  "§a▶ §f{0} §aha vuelto a unirse!"
+  time-limit: "§c§l⏱ ¡Tiempo agotado! La carrera ha terminado."
+  pause:
+    on:        "§e§l⏸ Partida pausada."
+    off:       "§a§l▶ Partida reanudada."
+    actionbar: "§e§l⏸  EN PAUSA  ⏸"
+  end:
+    header:      "§6§l══════ RESULTADOS ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleportar a la ubicación del ganador]"
+    goto-hover:  "§a¡Haz clic para teleportarte!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServidor bloqueado"
+    step-label:  "§7Paso 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Colocar la jaula"
+    cage-ok:     "§a✔ Jaula colocada"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Abrir servidor"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Eliminar jaula"
+    server-open: "§aServidor abierto"
+    waiting:     "§7Esperando inicio..."
+    start-cmd:   "§f/dr start"
+    online:      "§7En línea: §f{0}"
+  starting:
+    countdown: "§eComenzando en §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... más"
+    ready:     "§7{0} jugadores listos"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Rango: §f#{0}"
+    dist:        "§7Dist: §f{0}m"
+    ew:          "§7I/D:  §f{0}m"
+    time:        "§7Tiempo: {0}"
+    timer-pause: "§e⏸ EN PAUSA"
+  end:
+    winner-label: "§6🏆 §eGanador:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Rango: §f#{0}"
+    dist:         "§7Dist: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

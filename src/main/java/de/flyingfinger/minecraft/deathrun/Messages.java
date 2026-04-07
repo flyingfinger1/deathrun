@@ -22,8 +22,12 @@ import java.util.Map;
  */
 public final class Messages {
 
-    /** Bekannte, mitgelieferte Sprachdateien */
-    private static final String[] BUNDLED = {"de", "en"};
+    /** Bekannte, mitgelieferte Sprachdateien (alle im JAR enthaltenen lang/*.yml) */
+    private static final String[] BUNDLED = {
+        "de", "en", "fr", "es", "pt", "it", "nl", "pl",
+        "ru", "zh", "ja", "ko", "tr", "sv", "cs", "uk",
+        "hu", "ro", "fi"
+    };
 
     private static boolean autoMode    = false;
     private static String  defaultLang = "de";

@@ -1,0 +1,142 @@
+# Hungarian (Magyar)
+motd:
+  maintenance:  "§c[Karbantartás] §7DeathRun beállítás alatt..."
+  countdown:    "§e[Visszaszámlálás] §7DeathRun hamarosan kezdődik..."
+  running:      "§a[Folyamatban] §7DeathRun folyamatban van!"
+  ended:        "§6[Vége] §7DeathRun befejeződött – eredmények elérhetők"
+
+login:
+  maintenance:  "§cA szerver karbantartás alatt áll. Kérjük, várjon."
+  game-running: "§cEgy Deathrun már folyamatban van. Várja meg a végét."
+
+cmd:
+  no-permission:  "§cNincs jogosultságod."
+  player-only:    "§cEz a parancs játékost igényel."
+  invalid-number: "§cÉrvénytelen szám."
+  buildcage:
+    success: "§a✔ Ketrec felépítve | Spawn és mérési pont beállítva | Irány: §f{0}"
+  removecage:
+    success: "§a✔ Ketrec eltávolítva."
+  open:
+    no-cage:   "§cElőször fel kell építeni a ketrecet! /dr buildcage"
+    success:   "§a✔ A szerver most mindenki számára nyitva van!"
+    broadcast: "§a§l🟢 A szerver most minden játékos számára nyitva van!"
+  close:
+    success: "§e✔ Szerver zárolva (csak OP-ok)."
+  setcorridor:
+    success: "§a✔ Folyosó szélessége: ±{0} blokk."
+    invalid: "§cA szélességnek 5 és 500 között kell lennie."
+    usage:   "§cHasználat: /dr setcorridor <blokkok>"
+  setdirection:
+    success: "§a✔ Futási irány: §f{0}"
+    invalid: "§cIsmeretlen irány. Használd: NORTH, SOUTH, EAST vagy WEST."
+    usage:   "§cHasználat: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maximális játékidő: §f{0}"
+    unlimited: "korlátlan"
+    minutes:   "{0} perc"
+    invalid:   "§cAz idő >= 0 kell legyen (0 = korlátlan)."
+    usage:     "§cHasználat: /dr settime <percek> (0 = korlátlan)"
+  goto:
+    success:     "§aTeleportálva a győztes helyére!"
+    no-game:     "§cNincs befejezett játék."
+    no-location: "§cA cél helyszín nem elérhető."
+    player-only: "§cEz a parancs játékost igényel."
+  start:
+    already-running: "§cA játék már folyamatban van!"
+    no-cage:         "§cNincs ketrec beállítva! Használd: /dr buildcage"
+    no-players:      "§cNincs online játékos!"
+  stop:
+    no-game: "§cNincs aktív játék!"
+    success: "§a✔ Játék visszaállítva."
+  pause:
+    not-running: "§cSzünet csak aktív játék közben lehetséges."
+  status:
+    header:    "§6§l── Deathrun Állapot ──"
+    state:     "Állapot"
+    spawn:     "Spawn (ketrec közepe)"
+    start:     "Mérési pont"
+    direction: "Irány"
+    corridor:  "Folyosó"
+    countdown: "Visszaszámlálás"
+    maxtime:   "Max idő"
+    online:    "Online játékosok"
+    not-set:   "nincs beállítva"
+    corridor-value:   "±{0} blokk"
+    countdown-value:  "{0}s"
+    time-unlimited:   "korlátlan"
+    time-minutes:     "{0} perc"
+  help:
+    header:       "── Deathrun Parancsok ──"
+    buildcage:    "Ketrecet épít és spawn/mérési pontot állít be [Játékos]"
+    removecage:   "Eltávolítja a ketrecet [Játékos]"
+    open:         "Megnyitja a szervert minden játékos számára"
+    close:        "Lezárja a szervert (csak OP-ok)"
+    setcorridor:  "Beállítja a folyosó félszélességét blokkban"
+    setdirection: "Futási irány: NORTH/SOUTH/EAST/WEST"
+    settime:      "Maximális játékidő percben (0 = korlátlan)"
+    start:        "Elindítja a Deathrun-t"
+    stop:         "Megszakítja a játékot / visszaállítás a végén"
+    pause:        "Szünetelteti/folytatja a játékot"
+    goto:         "Teleportálás a győztes helyére [Játékos]"
+    status:       "Megjeleníti az aktuális konfigurációt"
+
+game:
+  countdown:
+    announce: "§6§lA DeathRun §e{0} §6§lmásodperc múlva kezdődik!"
+    tick:     "§eIndulás §f{0}§e mp múlva…"
+    go:       "§a§lRAJT! Fuss §f{0}§a§l felé!"
+  death:      "§c☠ §f{0} §cmeghalt! Távolság: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7kilépett. (§f{1}m§7) §8[visszaléphet]"
+  reconnect:  "§a▶ §f{0} §avisszatért!"
+  time-limit: "§c§l⏱ Lejárt az idő! A verseny véget ért."
+  pause:
+    on:        "§e§l⏸ Játék szüneteltetve."
+    off:       "§a§l▶ Játék folytatva."
+    actionbar: "§e§l⏸  SZÜNET  ⏸"
+  end:
+    header:      "§6§l══════ EREDMÉNYEK ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleportálás a győztes helyére]"
+    goto-hover:  "§aKattints a teleportáláshoz!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cSzerver zárolva"
+    step-label:  "§71. lépés:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Ketrec elhelyezése"
+    cage-ok:     "§a✔ Ketrec elhelyezve"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Szerver megnyitása"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Ketrec eltávolítása"
+    server-open: "§aSzerver nyitva"
+    waiting:     "§7Indulásra vár..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eIndulás §f{0}s§e múlva..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... több"
+    ready:     "§7{0} játékos készen áll"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Helyezés: §f#{0}"
+    dist:        "§7Táv: §f{0}m"
+    ew:          "§7B/J:  §f{0}m"
+    time:        "§7Idő: {0}"
+    timer-pause: "§e⏸ SZÜNET"
+  end:
+    winner-label: "§6🏆 §eGyőztes:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Helyezés: §f#{0}"
+    dist:         "§7Táv: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

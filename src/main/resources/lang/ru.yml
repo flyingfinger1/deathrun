@@ -1,0 +1,142 @@
+# Russian (Русский)
+motd:
+  maintenance:  "§c[Обслуживание] §7DeathRun настраивается..."
+  countdown:    "§e[Обратный отсчёт] §7DeathRun скоро начнётся..."
+  running:      "§a[Идёт] §7DeathRun в процессе!"
+  ended:        "§6[Завершён] §7DeathRun окончен – результаты доступны"
+
+login:
+  maintenance:  "§cСервер находится на техобслуживании. Пожалуйста, подождите."
+  game-running: "§cDeathRun уже идёт. Подождите окончания."
+
+cmd:
+  no-permission:  "§cНет прав."
+  player-only:    "§cЭта команда требует игрока в игре."
+  invalid-number: "§cНеверное число."
+  buildcage:
+    success: "§a✔ Клетка построена | Спавн и точка отсчёта установлены | Направление: §f{0}"
+  removecage:
+    success: "§a✔ Клетка удалена."
+  open:
+    no-cage:   "§cСначала постройте клетку! /dr buildcage"
+    success:   "§a✔ Сервер теперь открыт для всех!"
+    broadcast: "§a§l🟢 Сервер теперь открыт для всех игроков!"
+  close:
+    success: "§e✔ Сервер заблокирован (только ОПы)."
+  setcorridor:
+    success: "§a✔ Ширина коридора: ±{0} блоков."
+    invalid: "§cШирина должна быть от 5 до 500."
+    usage:   "§cИспользование: /dr setcorridor <блоки>"
+  setdirection:
+    success: "§a✔ Направление бега: §f{0}"
+    invalid: "§cНеизвестное направление. Используйте NORTH, SOUTH, EAST или WEST."
+    usage:   "§cИспользование: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Максимальное время игры: §f{0}"
+    unlimited: "без ограничений"
+    minutes:   "{0} мин."
+    invalid:   "§cВремя должно быть >= 0 (0 = без ограничений)."
+    usage:     "§cИспользование: /dr settime <минуты> (0 = без ограничений)"
+  goto:
+    success:     "§aТелепортирован к месту победителя!"
+    no-game:     "§cНет завершённой игры."
+    no-location: "§cЦелевое местоположение недоступно."
+    player-only: "§cЭта команда требует игрока."
+  start:
+    already-running: "§cИгра уже идёт!"
+    no-cage:         "§cКлетка не установлена! Используйте /dr buildcage"
+    no-players:      "§cНет игроков онлайн!"
+  stop:
+    no-game: "§cНет активной игры!"
+    success: "§a✔ Игра сброшена."
+  pause:
+    not-running: "§cПауза возможна только во время активной игры."
+  status:
+    header:    "§6§l── Статус Deathrun ──"
+    state:     "Состояние"
+    spawn:     "Спавн (центр клетки)"
+    start:     "Точка отсчёта"
+    direction: "Направление"
+    corridor:  "Коридор"
+    countdown: "Обратный отсчёт"
+    maxtime:   "Макс. время"
+    online:    "Игроки онлайн"
+    not-set:   "не установлено"
+    corridor-value:   "±{0} блоков"
+    countdown-value:  "{0}с"
+    time-unlimited:   "без ограничений"
+    time-minutes:     "{0} мин."
+  help:
+    header:       "── Команды Deathrun ──"
+    buildcage:    "Строит клетку и устанавливает спавн/точку отсчёта [Игрок]"
+    removecage:   "Удаляет клетку [Игрок]"
+    open:         "Открывает сервер для всех игроков"
+    close:        "Блокирует сервер (только ОПы)"
+    setcorridor:  "Устанавливает полуширину коридора в блоках"
+    setdirection: "Направление бега: NORTH/SOUTH/EAST/WEST"
+    settime:      "Максимальное время игры в минутах (0 = без ограничений)"
+    start:        "Запускает Deathrun"
+    stop:         "Прерывает игру / сброс после окончания"
+    pause:        "Пауза/возобновление игры"
+    goto:         "Телепорт к месту победителя [Игрок]"
+    status:       "Показывает текущую конфигурацию"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun начинается через §e{0} §6§lсекунд!"
+    tick:     "§eСтарт через §f{0}§e…"
+    go:       "§a§lВПЕРЁД! Бегите к §f{0}§a§l!"
+  death:      "§c☠ §f{0} §cпогиб! Расстояние: §6{1}м"
+  disconnect: "§7⚡ §f{0} §7отключился. (§f{1}м§7) §8[может вернуться]"
+  reconnect:  "§a▶ §f{0} §aвернулся в игру!"
+  time-limit: "§c§l⏱ Время вышло! Забег окончен."
+  pause:
+    on:        "§e§l⏸ Игра на паузе."
+    off:       "§a§l▶ Игра возобновлена."
+    actionbar: "§e§l⏸  ПАУЗА  ⏸"
+  end:
+    header:      "§6§l══════ РЕЗУЛЬТАТЫ ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}м"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Телепортироваться к месту победителя]"
+    goto-hover:  "§aНажмите для телепортации!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cСервер заблокирован"
+    step-label:  "§7Шаг 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Поставьте клетку"
+    cage-ok:     "§a✔ Клетка поставлена"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Открыть сервер"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Убрать клетку"
+    server-open: "§aСервер открыт"
+    waiting:     "§7Ожидание старта..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Онлайн: §f{0}"
+  starting:
+    countdown: "§eСтарт через §f{0}с§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... ещё"
+    ready:     "§7{0} игроков готово"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}м {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Место: §f#{0}"
+    dist:        "§7Дист: §f{0}м"
+    ew:          "§7Л/П:  §f{0}м"
+    time:        "§7Время: {0}"
+    timer-pause: "§e⏸ ПАУЗА"
+  end:
+    winner-label: "§6🏆 §eПобедитель:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}м"
+    rank:         "§7Место: §f#{0}"
+    dist:         "§7Дист: §f{0}м"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}м {3}"

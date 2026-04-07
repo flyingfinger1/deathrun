@@ -1,0 +1,142 @@
+# Korean (한국어)
+motd:
+  maintenance:  "§c[점검 중] §7DeathRun 을 설정하는 중..."
+  countdown:    "§e[카운트다운] §7DeathRun 이 곧 시작됩니다..."
+  running:      "§a[진행 중] §7DeathRun 이 진행 중입니다!"
+  ended:        "§6[종료] §7DeathRun 종료 – 결과 확인 가능"
+
+login:
+  maintenance:  "§c서버가 점검 중입니다. 잠시만 기다려 주세요."
+  game-running: "§cDeathRun 이 진행 중입니다. 종료될 때까지 기다려 주세요."
+
+cmd:
+  no-permission:  "§c권한이 없습니다."
+  player-only:    "§c이 명령어는 게임 내 플레이어가 필요합니다."
+  invalid-number: "§c잘못된 숫자입니다."
+  buildcage:
+    success: "§a✔ 케이지 건설 완료 | 스폰 및 측정 지점 설정 | 방향: §f{0}"
+  removecage:
+    success: "§a✔ 케이지가 제거되었습니다."
+  open:
+    no-cage:   "§c먼저 케이지를 건설해야 합니다! /dr buildcage"
+    success:   "§a✔ 서버가 모두에게 열렸습니다!"
+    broadcast: "§a§l🟢 서버가 모든 플레이어에게 열렸습니다!"
+  close:
+    success: "§e✔ 서버가 잠겼습니다 (OP 전용)."
+  setcorridor:
+    success: "§a✔ 통로 너비: ±{0} 블록."
+    invalid: "§c너비는 5에서 500 사이여야 합니다."
+    usage:   "§c사용법: /dr setcorridor <블록>"
+  setdirection:
+    success: "§a✔ 달리기 방향: §f{0}"
+    invalid: "§c알 수 없는 방향입니다. NORTH, SOUTH, EAST 또는 WEST를 사용하세요."
+    usage:   "§c사용법: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ 최대 플레이 시간: §f{0}"
+    unlimited: "제한 없음"
+    minutes:   "{0}분"
+    invalid:   "§c시간은 >= 0이어야 합니다 (0 = 제한 없음)."
+    usage:     "§c사용법: /dr settime <분> (0 = 제한 없음)"
+  goto:
+    success:     "§a우승자 위치로 이동했습니다!"
+    no-game:     "§c완료된 게임이 없습니다."
+    no-location: "§c대상 위치를 사용할 수 없습니다."
+    player-only: "§c이 명령어는 플레이어가 필요합니다."
+  start:
+    already-running: "§c게임이 이미 진행 중입니다!"
+    no-cage:         "§c케이지가 설정되지 않았습니다! /dr buildcage 사용"
+    no-players:      "§c온라인 플레이어가 없습니다!"
+  stop:
+    no-game: "§c활성화된 게임이 없습니다!"
+    success: "§a✔ 게임이 초기화되었습니다."
+  pause:
+    not-running: "§c일시 정지는 활성 게임 중에만 가능합니다."
+  status:
+    header:    "§6§l── Deathrun 상태 ──"
+    state:     "상태"
+    spawn:     "스폰 (케이지 중심)"
+    start:     "측정 지점"
+    direction: "방향"
+    corridor:  "통로"
+    countdown: "카운트다운"
+    maxtime:   "최대 시간"
+    online:    "온라인 플레이어"
+    not-set:   "설정 안 됨"
+    corridor-value:   "±{0} 블록"
+    countdown-value:  "{0}초"
+    time-unlimited:   "제한 없음"
+    time-minutes:     "{0}분"
+  help:
+    header:       "── Deathrun 명령어 ──"
+    buildcage:    "케이지 건설 및 스폰/측정 지점 설정 [플레이어]"
+    removecage:   "케이지 제거 [플레이어]"
+    open:         "모든 플레이어에게 서버 개방"
+    close:        "서버 잠금 (OP 전용)"
+    setcorridor:  "블록 단위로 통로 반너비 설정"
+    setdirection: "달리기 방향: NORTH/SOUTH/EAST/WEST"
+    settime:      "최대 플레이 시간(분) (0 = 제한 없음)"
+    start:        "Deathrun 시작"
+    stop:         "게임 중단 / 종료 후 초기화"
+    pause:        "게임 일시 정지/재개"
+    goto:         "우승자 위치로 이동 [플레이어]"
+    status:       "현재 설정 표시"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun이 §e{0}§6§l초 후에 시작됩니다!"
+    tick:     "§e§f{0}§e초 후 시작…"
+    go:       "§a§l출발! §f{0}§a§l을 향해 달려라!"
+  death:      "§c☠ §f{0} §c사망! 거리: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7연결 끊김. (§f{1}m§7) §8[재접속 가능]"
+  reconnect:  "§a▶ §f{0} §a재접속했습니다!"
+  time-limit: "§c§l⏱ 시간 초과! 경주가 종료되었습니다."
+  pause:
+    on:        "§e§l⏸ 게임 일시 정지."
+    off:       "§a§l▶ 게임 재개."
+    actionbar: "§e§l⏸  일시 정지  ⏸"
+  end:
+    header:      "§6§l══════ 결과 ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[우승자 위치로 이동]"
+    goto-hover:  "§a클릭하여 이동!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§c서버 잠김"
+    step-label:  "§7단계 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7케이지 배치"
+    cage-ok:     "§a✔ 케이지 배치됨"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7서버 개방"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7케이지 제거"
+    server-open: "§a서버 개방 중"
+    waiting:     "§7시작 대기 중..."
+    start-cmd:   "§f/dr start"
+    online:      "§7온라인: §f{0}"
+  starting:
+    countdown: "§e§f{0}s§e 후 시작..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... 더보기"
+    ready:     "§7{0}명 준비 완료"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7순위: §f#{0}"
+    dist:        "§7거리: §f{0}m"
+    ew:          "§7좌/우: §f{0}m"
+    time:        "§7시간: {0}"
+    timer-pause: "§e⏸ 일시 정지"
+  end:
+    winner-label: "§6🏆 §e우승자:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7순위: §f#{0}"
+    dist:         "§7거리: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

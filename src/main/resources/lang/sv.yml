@@ -1,0 +1,142 @@
+# Swedish (Svenska)
+motd:
+  maintenance:  "§c[Underhåll] §7DeathRun konfigureras..."
+  countdown:    "§e[Nedräkning] §7DeathRun börjar snart..."
+  running:      "§a[Pågår] §7DeathRun är igång!"
+  ended:        "§6[Avslutat] §7DeathRun klart – resultat tillgängliga"
+
+login:
+  maintenance:  "§cServern är i underhållsläge. Vänta."
+  game-running: "§cEtt Deathrun pågår. Vänta tills det är över."
+
+cmd:
+  no-permission:  "§cIngen behörighet."
+  player-only:    "§cDetta kommando kräver en spelare i spelet."
+  invalid-number: "§cOgiltigt tal."
+  buildcage:
+    success: "§a✔ Bur byggd | Spawn och mätpunkt satta | Riktning: §f{0}"
+  removecage:
+    success: "§a✔ Bur borttagen."
+  open:
+    no-cage:   "§cBuren måste byggas först! /dr buildcage"
+    success:   "§a✔ Servern är nu öppen för alla!"
+    broadcast: "§a§l🟢 Servern är nu öppen för alla spelare!"
+  close:
+    success: "§e✔ Servern låst (bara OPs)."
+  setcorridor:
+    success: "§a✔ Korridorbredd: ±{0} block."
+    invalid: "§cBredden måste vara mellan 5 och 500."
+    usage:   "§cAnvändning: /dr setcorridor <block>"
+  setdirection:
+    success: "§a✔ Löpriktning: §f{0}"
+    invalid: "§cOkänd riktning. Använd NORTH, SOUTH, EAST eller WEST."
+    usage:   "§cAnvändning: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maximal speltid: §f{0}"
+    unlimited: "ingen gräns"
+    minutes:   "{0} min."
+    invalid:   "§cTiden måste vara >= 0 (0 = ingen gräns)."
+    usage:     "§cAnvändning: /dr settime <minuter> (0 = ingen gräns)"
+  goto:
+    success:     "§aTeleporterad till vinnaren!"
+    no-game:     "§cInget avslutat spel tillgängligt."
+    no-location: "§cMålposition ej tillgänglig."
+    player-only: "§cDetta kommando kräver en spelare."
+  start:
+    already-running: "§cSpelet är redan igång!"
+    no-cage:         "§cIngen bur inställd! Använd /dr buildcage"
+    no-players:      "§cInga spelare online!"
+  stop:
+    no-game: "§cInget aktivt spel!"
+    success: "§a✔ Spel återställt."
+  pause:
+    not-running: "§cPaus är bara möjlig under ett aktivt spel."
+  status:
+    header:    "§6§l── Deathrun Status ──"
+    state:     "Status"
+    spawn:     "Spawn (burcenter)"
+    start:     "Mätpunkt"
+    direction: "Riktning"
+    corridor:  "Korridor"
+    countdown: "Nedräkning"
+    maxtime:   "Maxtid"
+    online:    "Spelare online"
+    not-set:   "ej satt"
+    corridor-value:   "±{0} block"
+    countdown-value:  "{0}s"
+    time-unlimited:   "ingen gräns"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Deathrun Kommandon ──"
+    buildcage:    "Bygger buren och sätter spawn/mätpunkt [Spelare]"
+    removecage:   "Tar bort buren [Spelare]"
+    open:         "Öppnar servern för alla spelare"
+    close:        "Låser servern (bara OPs)"
+    setcorridor:  "Ställer in halv korridorbredd i block"
+    setdirection: "Löpriktning: NORTH/SOUTH/EAST/WEST"
+    settime:      "Maximal speltid i minuter (0 = ingen gräns)"
+    start:        "Startar Deathrun"
+    stop:         "Avbryter spelet / återställ efter slut"
+    pause:        "Pausar/återupptar spelet"
+    goto:         "Teleportera till vinnaren [Spelare]"
+    status:       "Visar aktuell konfiguration"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun startar om §e{0} §6§lsekunder!"
+    tick:     "§eStartar om §f{0}§e…"
+    go:       "§a§lSPRING! Kör mot §f{0}§a§l!"
+  death:      "§c☠ §f{0} §cdog! Avstånd: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7kopplade från. (§f{1}m§7) §8[kan återansluta]"
+  reconnect:  "§a▶ §f{0} §ahar återanslutit!"
+  time-limit: "§c§l⏱ Tiden ute! Loppet är över."
+  pause:
+    on:        "§e§l⏸ Spel pausat."
+    off:       "§a§l▶ Spel återupptaget."
+    actionbar: "§e§l⏸  PAUSAT  ⏸"
+  end:
+    header:      "§6§l══════ RESULTAT ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleportera till vinnaren]"
+    goto-hover:  "§aKlicka för att teleportera!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServer låst"
+    step-label:  "§7Steg 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Placera buren"
+    cage-ok:     "§a✔ Bur placerad"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Öppna server"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Ta bort bur"
+    server-open: "§aServer öppen"
+    waiting:     "§7Väntar på start..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eStartar om §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... fler"
+    ready:     "§7{0} spelare redo"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Plats: §f#{0}"
+    dist:        "§7Avst: §f{0}m"
+    ew:          "§7V/H:  §f{0}m"
+    time:        "§7Tid: {0}"
+    timer-pause: "§e⏸ PAUSAT"
+  end:
+    winner-label: "§6🏆 §eVinnare:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Plats: §f#{0}"
+    dist:         "§7Avst: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

@@ -1,0 +1,142 @@
+# Romanian (Română)
+motd:
+  maintenance:  "§c[Mentenanță] §7DeathRun se configurează..."
+  countdown:    "§e[Numărătoare inversă] §7DeathRun începe în curând..."
+  running:      "§a[În desfășurare] §7DeathRun este în progres!"
+  ended:        "§6[Încheiat] §7DeathRun s-a terminat – rezultatele sunt disponibile"
+
+login:
+  maintenance:  "§cServerul este în modul de mentenanță. Te rugăm să aștepți."
+  game-running: "§cUn Deathrun este în desfășurare. Așteaptă până se termină."
+
+cmd:
+  no-permission:  "§cNu ai permisiune."
+  player-only:    "§cAceastă comandă necesită un jucător în joc."
+  invalid-number: "§cNumăr invalid."
+  buildcage:
+    success: "§a✔ Cușcă construită | Spawn și punct de măsurare setate | Direcție: §f{0}"
+  removecage:
+    success: "§a✔ Cușcă eliminată."
+  open:
+    no-cage:   "§cCușca trebuie construită mai întâi! /dr buildcage"
+    success:   "§a✔ Serverul este acum deschis pentru toată lumea!"
+    broadcast: "§a§l🟢 Serverul este acum deschis pentru toți jucătorii!"
+  close:
+    success: "§e✔ Server blocat (doar OP-uri)."
+  setcorridor:
+    success: "§a✔ Lățimea coridorului: ±{0} blocuri."
+    invalid: "§cLățimea trebuie să fie între 5 și 500."
+    usage:   "§cUtilizare: /dr setcorridor <blocuri>"
+  setdirection:
+    success: "§a✔ Direcția de alergare: §f{0}"
+    invalid: "§cDirecție necunoscută. Folosește NORTH, SOUTH, EAST sau WEST."
+    usage:   "§cUtilizare: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Timp maxim de joc: §f{0}"
+    unlimited: "fără limită"
+    minutes:   "{0} min."
+    invalid:   "§cTimpul trebuie să fie >= 0 (0 = fără limită)."
+    usage:     "§cUtilizare: /dr settime <minute> (0 = fără limită)"
+  goto:
+    success:     "§aTeleportat la locația câștigătorului!"
+    no-game:     "§cNu există niciun joc terminat disponibil."
+    no-location: "§cLocația țintă nu este disponibilă."
+    player-only: "§cAceastă comandă necesită un jucător."
+  start:
+    already-running: "§cJocul este deja în desfășurare!"
+    no-cage:         "§cNicio cușcă setată! Folosește /dr buildcage"
+    no-players:      "§cNiciun jucător online!"
+  stop:
+    no-game: "§cNiciun joc activ!"
+    success: "§a✔ Joc resetat."
+  pause:
+    not-running: "§cPauza este posibilă doar în timpul unui joc activ."
+  status:
+    header:    "§6§l── Stare Deathrun ──"
+    state:     "Stare"
+    spawn:     "Spawn (centrul cușcii)"
+    start:     "Punct de măsurare"
+    direction: "Direcție"
+    corridor:  "Coridor"
+    countdown: "Numărătoare inversă"
+    maxtime:   "Timp maxim"
+    online:    "Jucători online"
+    not-set:   "nesetat"
+    corridor-value:   "±{0} blocuri"
+    countdown-value:  "{0}s"
+    time-unlimited:   "fără limită"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Comenzi Deathrun ──"
+    buildcage:    "Construiește cușca și setează spawn/punct de măsurare [Jucător]"
+    removecage:   "Elimină cușca [Jucător]"
+    open:         "Deschide serverul pentru toți jucătorii"
+    close:        "Blochează serverul (doar OP-uri)"
+    setcorridor:  "Setează jumătatea lățimii coridorului în blocuri"
+    setdirection: "Direcția de alergare: NORTH/SOUTH/EAST/WEST"
+    settime:      "Timp maxim de joc în minute (0 = fără limită)"
+    start:        "Pornește Deathrun"
+    stop:         "Anulează jocul / resetare după final"
+    pause:        "Pune pe pauză/reia jocul"
+    goto:         "Teleportare la locația câștigătorului [Jucător]"
+    status:       "Afișează configurația actuală"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun începe în §e{0} §6§lsecunde!"
+    tick:     "§eStart în §f{0}§e…"
+    go:       "§a§lALERGAȚI! Fugiți spre §f{0}§a§l!"
+  death:      "§c☠ §f{0} §ca murit! Distanță: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7s-a deconectat. (§f{1}m§7) §8[poate reveni]"
+  reconnect:  "§a▶ §f{0} §as-a reconectat!"
+  time-limit: "§c§l⏱ Timp expirat! Cursa s-a terminat."
+  pause:
+    on:        "§e§l⏸ Joc pus pe pauză."
+    off:       "§a§l▶ Joc reluat."
+    actionbar: "§e§l⏸  PAUZĂ  ⏸"
+  end:
+    header:      "§6§l══════ REZULTATE ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleportare la locația câștigătorului]"
+    goto-hover:  "§aClick pentru teleportare!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServer blocat"
+    step-label:  "§7Pasul 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Plasează cușca"
+    cage-ok:     "§a✔ Cușcă plasată"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Deschide serverul"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Elimină cușca"
+    server-open: "§aServer deschis"
+    waiting:     "§7Așteptând startul..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eStart în §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... mai mulți"
+    ready:     "§7{0} jucători gata"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Loc: §f#{0}"
+    dist:        "§7Dist: §f{0}m"
+    ew:          "§7S/D:  §f{0}m"
+    time:        "§7Timp: {0}"
+    timer-pause: "§e⏸ PAUZĂ"
+  end:
+    winner-label: "§6🏆 §eCâștigător:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Loc: §f#{0}"
+    dist:         "§7Dist: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

@@ -1,0 +1,142 @@
+# French (Français)
+motd:
+  maintenance:  "§c[Maintenance] §7DeathRun est en cours de configuration..."
+  countdown:    "§e[Compte à rebours] §7DeathRun commence bientôt..."
+  running:      "§a[En cours] §7DeathRun est en progression !"
+  ended:        "§6[Terminé] §7DeathRun terminé – résultats disponibles"
+
+login:
+  maintenance:  "§cLe serveur est en mode maintenance. Veuillez patienter."
+  game-running: "§cUn Deathrun est en cours. Veuillez attendre la fin."
+
+cmd:
+  no-permission:  "§cPermission refusée."
+  player-only:    "§cCette commande nécessite un joueur en jeu."
+  invalid-number: "§cNombre invalide."
+  buildcage:
+    success: "§a✔ Cage construite | Spawn et point de mesure définis | Direction : §f{0}"
+  removecage:
+    success: "§a✔ Cage supprimée."
+  open:
+    no-cage:   "§cLa cage doit être construite d'abord ! /dr buildcage"
+    success:   "§a✔ Le serveur est maintenant ouvert à tous !"
+    broadcast: "§a§l🟢 Le serveur est maintenant ouvert à tous les joueurs !"
+  close:
+    success: "§e✔ Serveur verrouillé (OPs seulement)."
+  setcorridor:
+    success: "§a✔ Largeur du couloir : ±{0} blocs."
+    invalid: "§cLa largeur doit être comprise entre 5 et 500."
+    usage:   "§cUsage : /dr setcorridor <blocs>"
+  setdirection:
+    success: "§a✔ Direction de course : §f{0}"
+    invalid: "§cDirection inconnue. Utilisez NORTH, SOUTH, EAST ou WEST."
+    usage:   "§cUsage : /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Temps de jeu maximum : §f{0}"
+    unlimited: "sans limite"
+    minutes:   "{0} min."
+    invalid:   "§cLe temps doit être >= 0 (0 = sans limite)."
+    usage:     "§cUsage : /dr settime <minutes> (0 = sans limite)"
+  goto:
+    success:     "§aTélétransporté à la position du gagnant !"
+    no-game:     "§cAucune partie terminée disponible."
+    no-location: "§cPosition cible non disponible."
+    player-only: "§cCette commande nécessite un joueur."
+  start:
+    already-running: "§cLa partie est déjà en cours !"
+    no-cage:         "§cAucune cage définie ! Utilisez /dr buildcage"
+    no-players:      "§cAucun joueur en ligne !"
+  stop:
+    no-game: "§cAucune partie active !"
+    success: "§a✔ Partie réinitialisée."
+  pause:
+    not-running: "§cLa pause n'est possible que pendant une partie active."
+  status:
+    header:    "§6§l── Statut Deathrun ──"
+    state:     "État"
+    spawn:     "Spawn (centre cage)"
+    start:     "Point de mesure"
+    direction: "Direction"
+    corridor:  "Couloir"
+    countdown: "Compte à rebours"
+    maxtime:   "Temps max"
+    online:    "Joueurs en ligne"
+    not-set:   "non défini"
+    corridor-value:   "±{0} blocs"
+    countdown-value:  "{0}s"
+    time-unlimited:   "sans limite"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Commandes Deathrun ──"
+    buildcage:    "Construit la cage & définit spawn/point de mesure [Joueur]"
+    removecage:   "Supprime la cage [Joueur]"
+    open:         "Ouvre le serveur à tous les joueurs"
+    close:        "Verrouille le serveur (OPs seulement)"
+    setcorridor:  "Définit la demi-largeur du couloir en blocs"
+    setdirection: "Direction de course : NORTH/SOUTH/EAST/WEST"
+    settime:      "Temps de jeu maximum en minutes (0 = sans limite)"
+    start:        "Lance le Deathrun"
+    stop:         "Abandonne la partie / réinitialise après la fin"
+    pause:        "Met en pause/reprend la partie"
+    goto:         "Téléporte à la position du gagnant [Joueur]"
+    status:       "Affiche la configuration actuelle"
+
+game:
+  countdown:
+    announce: "§6§lLe Deathrun commence dans §e{0} §6§lsecondes !"
+    tick:     "§eDémarrage dans §f{0}§e…"
+    go:       "§a§lPARTEZ ! Courez vers §f{0}§a§l !"
+  death:      "§c☠ §f{0} §cest mort ! Distance : §6{1}m"
+  disconnect: "§7⚡ §f{0} §7s'est déconnecté. (§f{1}m§7) §8[peut rejoindre]"
+  reconnect:  "§a▶ §f{0} §aa rejoint la partie !"
+  time-limit: "§c§l⏱ Temps écoulé ! La course est terminée."
+  pause:
+    on:        "§e§l⏸ Partie en pause."
+    off:       "§a§l▶ Partie reprise."
+    actionbar: "§e§l⏸  EN PAUSE  ⏸"
+  end:
+    header:      "§6§l══════ RÉSULTATS ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Téléporter à la position du gagnant]"
+    goto-hover:  "§aCliquez pour vous téléporter !"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServeur verrouillé"
+    step-label:  "§7Étape 1 :"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Placer la cage"
+    cage-ok:     "§a✔ Cage placée"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Ouvrir le serveur"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Supprimer la cage"
+    server-open: "§aServeur ouvert"
+    waiting:     "§7En attente du démarrage..."
+    start-cmd:   "§f/dr start"
+    online:      "§7En ligne : §f{0}"
+  starting:
+    countdown: "§eDémarrage dans §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... plus"
+    ready:     "§7{0} joueurs prêts"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Rang : §f#{0}"
+    dist:        "§7Dist : §f{0}m"
+    ew:          "§7G/D :  §f{0}m"
+    time:        "§7Temps : {0}"
+    timer-pause: "§e⏸ EN PAUSE"
+  end:
+    winner-label: "§6🏆 §eGagnant :"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Rang : §f#{0}"
+    dist:         "§7Dist : §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

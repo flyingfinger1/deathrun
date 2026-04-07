@@ -1,0 +1,142 @@
+# Czech (Čeština)
+motd:
+  maintenance:  "§c[Údržba] §7DeathRun se nastavuje..."
+  countdown:    "§e[Odpočet] §7DeathRun brzy začne..."
+  running:      "§a[Probíhá] §7DeathRun probíhá!"
+  ended:        "§6[Ukončen] §7DeathRun skončil – výsledky jsou k dispozici"
+
+login:
+  maintenance:  "§cServer je v režimu údržby. Čekejte prosím."
+  game-running: "§cPrávě probíhá Deathrun. Počkejte, až skončí."
+
+cmd:
+  no-permission:  "§cNemáte oprávnění."
+  player-only:    "§cTento příkaz vyžaduje hráče ve hře."
+  invalid-number: "§cNeplatné číslo."
+  buildcage:
+    success: "§a✔ Klec postavena | Spawn a měřící bod nastaveny | Směr: §f{0}"
+  removecage:
+    success: "§a✔ Klec odstraněna."
+  open:
+    no-cage:   "§cNejprve musí být postavena klec! /dr buildcage"
+    success:   "§a✔ Server je nyní otevřen pro všechny!"
+    broadcast: "§a§l🟢 Server je nyní otevřen pro všechny hráče!"
+  close:
+    success: "§e✔ Server uzamčen (pouze OPové)."
+  setcorridor:
+    success: "§a✔ Šířka koridoru: ±{0} bloků."
+    invalid: "§cŠířka musí být mezi 5 a 500."
+    usage:   "§cPoužití: /dr setcorridor <bloky>"
+  setdirection:
+    success: "§a✔ Směr běhu: §f{0}"
+    invalid: "§cNeznámý směr. Použijte NORTH, SOUTH, EAST nebo WEST."
+    usage:   "§cPoužití: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maximální herní čas: §f{0}"
+    unlimited: "bez limitu"
+    minutes:   "{0} min."
+    invalid:   "§cČas musí být >= 0 (0 = bez limitu)."
+    usage:     "§cPoužití: /dr settime <minuty> (0 = bez limitu)"
+  goto:
+    success:     "§aTeleportováni na místo vítěze!"
+    no-game:     "§cŽádná dokončená hra k dispozici."
+    no-location: "§cCílová poloha není k dispozici."
+    player-only: "§cTento příkaz vyžaduje hráče."
+  start:
+    already-running: "§cHra již probíhá!"
+    no-cage:         "§cKlec není nastavena! Použijte /dr buildcage"
+    no-players:      "§cŽádní hráči online!"
+  stop:
+    no-game: "§cŽádná aktivní hra!"
+    success: "§a✔ Hra resetována."
+  pause:
+    not-running: "§cPauza je možná pouze při aktivní hře."
+  status:
+    header:    "§6§l── Stav Deathrun ──"
+    state:     "Stav"
+    spawn:     "Spawn (střed klece)"
+    start:     "Měřící bod"
+    direction: "Směr"
+    corridor:  "Koridor"
+    countdown: "Odpočet"
+    maxtime:   "Max čas"
+    online:    "Hráči online"
+    not-set:   "nenastaveno"
+    corridor-value:   "±{0} bloků"
+    countdown-value:  "{0}s"
+    time-unlimited:   "bez limitu"
+    time-minutes:     "{0} min."
+  help:
+    header:       "── Příkazy Deathrun ──"
+    buildcage:    "Postaví klec a nastaví spawn/měřící bod [Hráč]"
+    removecage:   "Odstraní klec [Hráč]"
+    open:         "Otevře server pro všechny hráče"
+    close:        "Uzamkne server (pouze OPové)"
+    setcorridor:  "Nastaví poloměr koridoru v blocích"
+    setdirection: "Směr běhu: NORTH/SOUTH/EAST/WEST"
+    settime:      "Maximální herní čas v minutách (0 = bez limitu)"
+    start:        "Spustí Deathrun"
+    stop:         "Přeruší hru / reset po konci"
+    pause:        "Pozastaví/obnoví hru"
+    goto:         "Teleportace na místo vítěze [Hráč]"
+    status:       "Zobrazí aktuální konfiguraci"
+
+game:
+  countdown:
+    announce: "§6§lDeathRun začíná za §e{0} §6§lvteřin!"
+    tick:     "§eStart za §f{0}§e…"
+    go:       "§a§lBĚŽ! Běž směrem k §f{0}§a§l!"
+  death:      "§c☠ §f{0} §czahynul! Vzdálenost: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7se odpojil. (§f{1}m§7) §8[může se vrátit]"
+  reconnect:  "§a▶ §f{0} §ase vrátil!"
+  time-limit: "§c§l⏱ Čas vypršel! Závod skončil."
+  pause:
+    on:        "§e§l⏸ Hra pozastavena."
+    off:       "§a§l▶ Hra obnovena."
+    actionbar: "§e§l⏸  PAUZA  ⏸"
+  end:
+    header:      "§6§l══════ VÝSLEDKY ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleportovat se na místo vítěze]"
+    goto-hover:  "§aKlikni pro teleportaci!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServer uzamčen"
+    step-label:  "§7Krok 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Umístit klec"
+    cage-ok:     "§a✔ Klec umístěna"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Otevřít server"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Odstranit klec"
+    server-open: "§aServer otevřen"
+    waiting:     "§7Čekání na start..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eStart za §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... více"
+    ready:     "§7{0} hráčů připraveno"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Pořadí: §f#{0}"
+    dist:        "§7Vzd: §f{0}m"
+    ew:          "§7L/P:  §f{0}m"
+    time:        "§7Čas: {0}"
+    timer-pause: "§e⏸ PAUZA"
+  end:
+    winner-label: "§6🏆 §eVítěz:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Pořadí: §f#{0}"
+    dist:         "§7Vzd: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"
