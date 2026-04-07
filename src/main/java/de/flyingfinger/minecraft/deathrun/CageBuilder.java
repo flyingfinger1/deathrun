@@ -4,6 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,6 +36,7 @@ public class CageBuilder {
     public Set<Location> buildCage(Location center, int radius, RunDirection dir) {
         builtLocations.clear();
         indicatorLocations.clear();
+        lastRemovedLocations.clear();
 
         World world  = center.getWorld();
         int   cx     = center.getBlockX();
@@ -42,6 +45,23 @@ public class CageBuilder {
         int   r      = radius * CAGE_SCALE; // 3x breiter
         int   height = 4;                   // Innenhöhe
 
+        // 1. Gesamtes Volumen vorab von oben nach unten mit Air füllen (keine Physics),
+        //    damit Vegetation (Gras, Blumen, etc.) nicht als Drop verschwindet.
+        for (int y = cy + height + 1; y >= cy - FLOOR_DEPTH; y--) {
+            for (int x = cx - r; x <= cx + r; x++) {
+                for (int z = cz - r; z <= cz + r; z++) {
+                    world.getBlockAt(x, y, z).setType(Material.AIR, false);
+                }
+            }
+        }
+
+        // 2. Item-Drops im Bereich entfernen
+        Location areaCenter = new Location(world, cx + 0.5, cy + height / 2.0, cz + 0.5);
+        for (Entity e : world.getNearbyEntities(areaCenter, r + 2, height + 4, r + 2)) {
+            if (e instanceof Item) e.remove();
+        }
+
+        // 3. Käfig aufbauen
         // Boden: FLOOR_DEPTH Blöcke tief, Reinforced Deepslate
         for (int x = cx - r; x <= cx + r; x++) {
             for (int z = cz - r; z <= cz + r; z++) {
@@ -59,17 +79,7 @@ public class CageBuilder {
                 for (int z = cz - r; z <= cz + r; z++) {
                     if (x != cx - r && x != cx + r &&
                         z != cz - r && z != cz + r) continue;
-
                     setBlock(world, x, y, z, getWallMaterial(x, z, cx, cz, r, dir));
-                }
-            }
-        }
-
-        // Innenraum leeren
-        for (int y = cy; y < cy + height; y++) {
-            for (int x = cx - r + 1; x <= cx + r - 1; x++) {
-                for (int z = cz - r + 1; z <= cz + r - 1; z++) {
-                    world.getBlockAt(x, y, z).setType(Material.AIR);
                 }
             }
         }
@@ -105,6 +115,15 @@ public class CageBuilder {
         }
         builtLocations.removeAll(indicatorLocations);
         indicatorLocations.clear();
+    }
+
+    /** Stellt die Lime-Glas-Wand wieder her (nach /dr stop). */
+    public void closeCage() {
+        for (Location loc : lastRemovedLocations) {
+            if (loc.getWorld() != null) loc.getBlock().setType(Material.LIME_STAINED_GLASS);
+        }
+        indicatorLocations.addAll(lastRemovedLocations);
+        builtLocations.addAll(lastRemovedLocations);
     }
 
     /** Entfernt alle vom Plugin gebauten Blöcke. */

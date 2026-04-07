@@ -483,7 +483,10 @@ public class GameManager {
             }
         }
 
-        // End-Scoreboard aufbauen und Lobby-Task starten
+        // Tag-Nacht-Zyklus anhalten & End-Scoreboard aufbauen
+        if (spawnLocation != null) {
+            spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        }
         sidebar.setupEnded(finalResults, players, serverName);
         startLobbyTask();
     }
@@ -531,7 +534,8 @@ public class GameManager {
     }
 
     public void forceStop() {
-        if (paused && spawnLocation != null) {
+        // Tag-Nacht-Zyklus immer wiederherstellen (egal ob durch Pause oder Spielende angehalten)
+        if (spawnLocation != null) {
             spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         }
         paused = false;
@@ -549,6 +553,9 @@ public class GameManager {
         finalResults = List.of();
         winnerLocation = null;
         state = GameState.IDLE;
+        // Käfigtür wieder schließen
+        cageBuilder.closeCage();
+        cageLocations.addAll(cageBuilder.getLastRemovedLocations());
         startLobbyTask();
     }
 
