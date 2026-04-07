@@ -178,6 +178,32 @@ public class GameManager {
             plugin.getConfig().set("direction", direction.name());
             plugin.saveConfig();
             sender.sendMessage(Messages.comp(sender, "cmd.setdirection.success", direction.getDisplayName()));
+
+            // Wenn Käfig bereits steht: Tür auf neue Seite umbauen & Messpunkt aktualisieren
+            if (!cageLocations.isEmpty() && spawnLocation != null) {
+                int cx = spawnLocation.getBlockX();
+                int cy = spawnLocation.getBlockY();
+                int cz = spawnLocation.getBlockZ();
+                int r  = CageBuilder.getEffectiveRadius(cageRadius);
+
+                cageBuilder.changeDirection(cx, cy, cz, cageRadius, direction);
+
+                // Messpunkt = Außenfläche der neuen Indicator-Wand
+                startLocation = spawnLocation.clone();
+                switch (direction) {
+                    case NORTH -> startLocation.setZ(cz - r);
+                    case SOUTH -> startLocation.setZ(cz + r + 1);
+                    case EAST  -> startLocation.setX(cx + r + 1);
+                    case WEST  -> startLocation.setX(cx - r);
+                }
+                saveLocCfg("start", startLocation);
+                plugin.saveConfig();
+
+                // Spawn-Blickrichtung anpassen
+                spawnLocation.setYaw(spawnYaw(direction));
+                saveLocCfg("spawn", spawnLocation);
+                plugin.saveConfig();
+            }
         } catch (IllegalArgumentException e) {
             sender.sendMessage(Messages.comp(sender, "cmd.setdirection.invalid"));
         }

@@ -4,12 +4,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class CageBuilder {
@@ -20,15 +23,18 @@ public class CageBuilder {
     /** Effektiver Radius in Blöcken (für externe Berechnung des Messpunkts). */
     public static int getEffectiveRadius(int baseRadius) { return baseRadius * CAGE_SCALE; }
 
-    private final Set<Location> builtLocations    = new HashSet<>();
-    private final Set<Location> indicatorLocations = new HashSet<>();
-    private final Set<Location> lastRemovedLocations = new HashSet<>();
+    private final Set<Location>           builtLocations       = new HashSet<>();
+    private final Set<Location>           indicatorLocations   = new HashSet<>();
+    private final Set<Location>           lastRemovedLocations = new HashSet<>();
+    /** Snapshot der Welt-Blöcke vor dem Bau – für Restaurierung bei removeCage. */
+    private final Map<Location, BlockData> snapshot            = new HashMap<>();
 
     /** Gibt die beim letzten openCage()-Aufruf entfernten Blöcke zurück. */
     public Set<Location> getLastRemovedLocations() { return new HashSet<>(lastRemovedLocations); }
 
     /**
      * Baut einen Glaskäfig an der Startposition.
+     * - Snapshot der bestehenden Blöcke wird vorab gespeichert (für /dr removecage).
      * - Boden: Reinforced Deepslate, 3 Blöcke tief
      * - Wände: normales Glas
      * - Wand in Laufrichtung: Lime-Glas
@@ -47,6 +53,17 @@ public class CageBuilder {
         int   r      = radius * CAGE_SCALE; // 3x breiter
         int   height = 4;                   // Innenhöhe
 
+        // 0. Snapshot aller betroffenen Blöcke speichern (vor jeder Veränderung)
+        snapshot.clear();
+        for (int y = cy + height + 1; y >= cy - FLOOR_DEPTH; y--) {
+            for (int x = cx - r; x <= cx + r; x++) {
+                for (int z = cz - r; z <= cz + r; z++) {
+                    Block b = world.getBlockAt(x, y, z);
+                    snapshot.put(b.getLocation(), b.getBlockData().clone());
+                }
+            }
+        }
+
         // 1. Gesamtes Volumen vorab von oben nach unten mit Air füllen (keine Physics),
         //    damit Vegetation (Gras, Blumen, etc.) nicht als Drop verschwindet.
         for (int y = cy + height + 1; y >= cy - FLOOR_DEPTH; y--) {
@@ -57,7 +74,7 @@ public class CageBuilder {
             }
         }
 
-        // 2. Item-Drops im Bereich entfernen
+        // 2. Item-Drops und Mobs im Bereich entfernen
         Location areaCenter = new Location(world, cx + 0.5, cy + height / 2.0, cz + 0.5);
         for (Entity e : world.getNearbyEntities(areaCenter, r + 2, height + 4, r + 2)) {
             if (e instanceof Item) { e.remove(); continue; }
@@ -129,13 +146,78 @@ public class CageBuilder {
         builtLocations.addAll(lastRemovedLocations);
     }
 
-    /** Entfernt alle vom Plugin gebauten Blöcke. */
+    /**
+     * Ändert die Richtungsanzeige (Lime-Glas-Wand) auf eine neue Richtung,
+     * ohne den gesamten Käfig neu zu bauen.
+     * Wird nach /dr setdirection aufgerufen, wenn der Käfig bereits steht.
+     */
+    public void changeDirection(int cx, int cy, int cz, int radius, RunDirection newDir) {
+        if (builtLocations.isEmpty()) return;
+
+        World world = builtLocations.iterator().next().getWorld();
+        if (world == null) return;
+
+        int r      = radius * CAGE_SCALE;
+        int height = 4;
+
+        // Alte Indicator-Wand → normales Glas
+        for (Location loc : indicatorLocations) {
+            if (loc.getWorld() != null) loc.getBlock().setType(Material.GLASS);
+        }
+        builtLocations.removeAll(indicatorLocations);
+        indicatorLocations.clear();
+
+        // Neue Indicator-Wand → Lime-Glas
+        for (int y = cy; y < cy + height; y++) {
+            for (int x = cx - r; x <= cx + r; x++) {
+                for (int z = cz - r; z <= cz + r; z++) {
+                    if (x != cx - r && x != cx + r && z != cz - r && z != cz + r) continue;
+                    boolean isIndicator = switch (newDir) {
+                        case NORTH -> z == cz - r;
+                        case SOUTH -> z == cz + r;
+                        case EAST  -> x == cx + r;
+                        case WEST  -> x == cx - r;
+                    };
+                    if (isIndicator) {
+                        Block b = world.getBlockAt(x, y, z);
+                        b.setType(newDir.getIndicatorMaterial());
+                        Location loc = b.getLocation();
+                        indicatorLocations.add(loc);
+                        builtLocations.add(loc);
+                    }
+                }
+            }
+        }
+
+        // lastRemovedLocations zurücksetzen, da die neue Wand jetzt die aktuelle ist
+        lastRemovedLocations.clear();
+        lastRemovedLocations.addAll(indicatorLocations);
+    }
+
+    /**
+     * Entfernt alle vom Plugin gebauten Blöcke und restauriert die ursprüngliche Welt.
+     * Wenn ein Snapshot vorhanden ist, werden die Originalblöcke wiederhergestellt.
+     */
     public void removeCage(Set<Location> locations) {
-        for (Location loc : locations) {
-            if (loc.getWorld() != null) {
-                loc.getBlock().setType(Material.AIR);
+        if (!snapshot.isEmpty()) {
+            // Originalzustand wiederherstellen
+            for (Map.Entry<Location, BlockData> entry : snapshot.entrySet()) {
+                Location loc = entry.getKey();
+                if (loc.getWorld() != null) {
+                    loc.getBlock().setBlockData(entry.getValue(), false);
+                }
+            }
+            snapshot.clear();
+        } else {
+            // Fallback: alles auf Air setzen
+            for (Location loc : locations) {
+                if (loc.getWorld() != null) {
+                    loc.getBlock().setType(Material.AIR);
+                }
             }
         }
         builtLocations.clear();
+        indicatorLocations.clear();
+        lastRemovedLocations.clear();
     }
 }

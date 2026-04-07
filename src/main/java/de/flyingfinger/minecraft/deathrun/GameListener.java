@@ -104,6 +104,11 @@ public class GameListener implements Listener {
         // Käfigblöcke immer schützen (für alle Spieler, jederzeit)
         if (gm.getCageLocations().contains(event.getBlock().getLocation().toBlockLocation())) {
             event.setCancelled(true);
+            return;
+        }
+        // Im Pause-Mode: In-Game-Spieler dürfen keine Blöcke abbauen
+        if (gm.isPaused() && gm.isInGame(event.getPlayer())) {
+            event.setCancelled(true);
         }
     }
 
@@ -111,6 +116,11 @@ public class GameListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         // Käfigblöcke immer schützen (für alle Spieler, jederzeit)
         if (gm.getCageLocations().contains(event.getBlock().getLocation().toBlockLocation())) {
+            event.setCancelled(true);
+            return;
+        }
+        // Im Pause-Mode: In-Game-Spieler dürfen keine Blöcke setzen
+        if (gm.isPaused() && gm.isInGame(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
