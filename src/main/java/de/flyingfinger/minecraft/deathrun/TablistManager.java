@@ -40,9 +40,9 @@ public class TablistManager {
 
     /**
      * Baut die Herzanzeige als Adventure-Component.
-     * Das ♥-Symbol wird als normaler Unicode-Text übergeben, nicht durch den
-     * Legacy-Serializer gejagt – so rendert Minecraft es korrekt.
-     * Farbe: grün > 6 Herzen, gelb 3–6, rot ≤ 3.
+     * Fehlende Herzen erscheinen als hohle ♡ (dunkelgrau), vorhandene als ♥ (farbig).
+     * Beispiel bei 8/10 Herzen: ♡♡♥♥♥♥♥♥♥♥
+     * Farbe der vollen Herzen: grün > 6, gelb 3–6, rot ≤ 3.
      */
     private Component heartsComponent(Player p) {
         double health    = p.getHealth();
@@ -51,8 +51,14 @@ public class TablistManager {
         int hearts    = (int) Math.ceil(health / 2.0);
         int maxHearts = (int) Math.ceil(maxHealth / 2.0);
         TextColor color = hearts > 6 ? NamedTextColor.GREEN : hearts > 3 ? NamedTextColor.YELLOW : NamedTextColor.RED;
-        return Component.text(" " + hearts + "♥", color)
-            .append(Component.text("/" + maxHearts, NamedTextColor.GRAY));
+
+        int missing = maxHearts - hearts;
+        Component result = Component.text(" ");
+        if (missing > 0) {
+            result = result.append(Component.text("♡".repeat(missing), NamedTextColor.DARK_GRAY));
+        }
+        result = result.append(Component.text("♥".repeat(hearts), color));
+        return result;
     }
 
     public void reset(Collection<PlayerData> players) {
