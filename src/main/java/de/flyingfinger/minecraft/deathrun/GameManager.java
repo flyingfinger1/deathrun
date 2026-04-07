@@ -274,6 +274,7 @@ public class GameManager {
         state = GameState.RUNNING;
         raceStartTime = System.currentTimeMillis();
         totalPausedMs = 0;
+        setDayCycle(true); // Zyklus läuft nur während aktiven Rennens
 
         // Käfigtür ZUERST öffnen – unabhängig von allem anderen
         cageBuilder.openCage();
@@ -484,9 +485,7 @@ public class GameManager {
         }
 
         // Tag-Nacht-Zyklus anhalten & End-Scoreboard aufbauen
-        if (spawnLocation != null) {
-            spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        }
+        setDayCycle(false);
         sidebar.setupEnded(finalResults, players, serverName);
         startLobbyTask();
     }
@@ -499,7 +498,7 @@ public class GameManager {
         paused = !paused;
         if (paused) {
             pauseStartMs = System.currentTimeMillis();
-            if (spawnLocation != null) spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            setDayCycle(false);
             broadcast("game.pause.paused");
             // Action-Bar alle 0.5s anzeigen solange pausiert
             actionBarTask = new BukkitRunnable() {
@@ -513,7 +512,7 @@ public class GameManager {
             }.runTaskTimer(plugin, 0L, 10L);
         } else {
             totalPausedMs += System.currentTimeMillis() - pauseStartMs;
-            if (spawnLocation != null) spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+            setDayCycle(true);
             if (actionBarTask != null) { actionBarTask.cancel(); actionBarTask = null; }
             // Action-Bar löschen
             for (UUID uuid : players.keySet()) {
@@ -534,10 +533,8 @@ public class GameManager {
     }
 
     public void forceStop() {
-        // Tag-Nacht-Zyklus immer wiederherstellen (egal ob durch Pause oder Spielende angehalten)
-        if (spawnLocation != null) {
-            spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-        }
+        // Tag-Nacht-Zyklus anhalten (IDLE/ENDED = immer eingefroren)
+        setDayCycle(false);
         paused = false;
         if (lobbyTask != null) { lobbyTask.cancel(); lobbyTask = null; }
         cancelTasks();
@@ -595,6 +592,7 @@ public class GameManager {
 
     public void startLobbyTask() {
         if (!plugin.isEnabled()) return;
+        setDayCycle(false); // Lobby/Ende = Zyklus eingefroren
         if (lobbyTask != null) { lobbyTask.cancel(); lobbyTask = null; }
         lobbyTask = new BukkitRunnable() {
             @Override public void run() {
@@ -699,6 +697,16 @@ public class GameManager {
         if (borderTask != null)     { borderTask.cancel();     borderTask = null; }
         if (updateTask != null)     { updateTask.cancel();     updateTask = null; }
         if (actionBarTask != null)  { actionBarTask.cancel();  actionBarTask = null; }
+    }
+
+    /**
+     * Steuert den Tag-Nacht-Zyklus der Spawn-Welt.
+     * true = läuft (nur während aktiven Rennens), false = eingefroren (Lobby, Countdown, Pause, Ende).
+     */
+    private void setDayCycle(boolean running) {
+        World world = spawnLocation != null ? spawnLocation.getWorld()
+            : (Bukkit.getWorlds().isEmpty() ? null : Bukkit.getWorlds().get(0));
+        if (world != null) world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, running);
     }
 
     /** Sendet eine lokalisierte Nachricht an jeden online Spieler in seiner eigenen Sprache. */

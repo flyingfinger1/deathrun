@@ -6,6 +6,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -58,7 +60,8 @@ public class CageBuilder {
         // 2. Item-Drops im Bereich entfernen
         Location areaCenter = new Location(world, cx + 0.5, cy + height / 2.0, cz + 0.5);
         for (Entity e : world.getNearbyEntities(areaCenter, r + 2, height + 4, r + 2)) {
-            if (e instanceof Item) e.remove();
+            if (e instanceof Item) { e.remove(); continue; }
+            if (e instanceof LivingEntity && !(e instanceof Player)) e.remove();
         }
 
         // 3. Käfig aufbauen

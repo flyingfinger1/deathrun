@@ -97,11 +97,18 @@ public class GameListener implements Listener {
         player.setSaturation(0f);
     }
 
-    // ── Käfig schützen + Pause: kein Block-Abbau/-Platzierung ────────────────
+    // ── Block-Schutz ──────────────────────────────────────────────────────────
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (gm.isPaused() && gm.isInGame(event.getPlayer())) { event.setCancelled(true); return; }
+        // Teilnehmer dürfen während Countdown + Rennen gar keine Blöcke abbauen
+        GameState state = gm.getState();
+        if ((state == GameState.STARTING || state == GameState.RUNNING)
+                && gm.isInGame(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
+        // Käfigblöcke immer schützen (auch für Nicht-Teilnehmer)
         if (gm.getCageLocations().contains(event.getBlock().getLocation().toBlockLocation())) {
             event.setCancelled(true);
         }
@@ -109,7 +116,14 @@ public class GameListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (gm.isPaused() && gm.isInGame(event.getPlayer())) { event.setCancelled(true); return; }
+        // Teilnehmer dürfen während Countdown + Rennen gar keine Blöcke setzen
+        GameState state = gm.getState();
+        if ((state == GameState.STARTING || state == GameState.RUNNING)
+                && gm.isInGame(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
+        // Käfigblöcke immer schützen (auch für Nicht-Teilnehmer)
         if (gm.getCageLocations().contains(event.getBlock().getLocation().toBlockLocation())) {
             event.setCancelled(true);
         }
