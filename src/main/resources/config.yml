@@ -1,3 +1,6 @@
+# Sprache / Language: de, en  (eigene Dateien in plugins/Deathrun/lang/ möglich)
+language: de
+
 # Maximale Abweichung in Blöcken nach Ost/West vom Startpunkt
 corridor-width: 30
 

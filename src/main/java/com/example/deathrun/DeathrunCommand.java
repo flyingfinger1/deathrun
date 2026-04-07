@@ -22,7 +22,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Berechtigungs-Check (Konsole hat immer Zugriff)
         if (sender instanceof Player player && !player.hasPermission("deathrun.admin")) {
-            player.sendMessage(Component.text("Keine Berechtigung.", NamedTextColor.RED));
+            player.sendMessage(Messages.comp("cmd.no-permission"));
             return true;
         }
 
@@ -36,7 +36,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
             // ── Nur für Spieler (braucht Position) ───────────────────────────
             case "buildcage", "removecage" -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage("Dieser Befehl erfordert einen Spieler im Spiel.");
+                    sender.sendMessage(Messages.comp("cmd.player-only"));
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("buildcage")) gm.buildCage(player);
@@ -52,7 +52,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
             case "status" -> gm.showStatus(sender);
             case "goto"   -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage("Dieser Befehl erfordert einen Spieler.");
+                    sender.sendMessage(Messages.comp("cmd.goto.player-only"));
                     return true;
                 }
                 gm.handleGoto(player);
@@ -60,16 +60,16 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
 
             case "setcorridor" -> {
                 if (args.length < 2) {
-                    sender.sendMessage(Component.text("Nutzung: /dr setcorridor <Blöcke>", NamedTextColor.RED));
+                    sender.sendMessage(Messages.comp("cmd.setcorridor.usage"));
                     return true;
                 }
                 try { gm.setCorridorWidth(sender, Integer.parseInt(args[1])); }
-                catch (NumberFormatException e) { sender.sendMessage(Component.text("Ungültige Zahl.", NamedTextColor.RED)); }
+                catch (NumberFormatException e) { sender.sendMessage(Messages.comp("cmd.invalid-number")); }
             }
 
             case "setdirection" -> {
                 if (args.length < 2) {
-                    sender.sendMessage(Component.text("Nutzung: /dr setdirection <NORTH|SOUTH|EAST|WEST>", NamedTextColor.RED));
+                    sender.sendMessage(Messages.comp("cmd.setdirection.usage"));
                     return true;
                 }
                 gm.setDirection(sender, args[1]);
@@ -77,11 +77,11 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
 
             case "settime" -> {
                 if (args.length < 2) {
-                    sender.sendMessage(Component.text("Nutzung: /dr settime <Minuten> (0 = kein Limit)", NamedTextColor.RED));
+                    sender.sendMessage(Messages.comp("cmd.settime.usage"));
                     return true;
                 }
                 try { gm.setMaxTime(sender, Integer.parseInt(args[1])); }
-                catch (NumberFormatException e) { sender.sendMessage(Component.text("Ungültige Zahl.", NamedTextColor.RED)); }
+                catch (NumberFormatException e) { sender.sendMessage(Messages.comp("cmd.invalid-number")); }
             }
 
             default -> sendHelp(sender);
@@ -90,19 +90,19 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelp(CommandSender s) {
-        s.sendMessage(Component.text("── Deathrun Befehle ──", NamedTextColor.GOLD));
-        help(s, "/dr buildcage",          "Baut den Glaskäfig & setzt Spawn/Messpunkt [Spieler]");
-        help(s, "/dr removecage",         "Entfernt den Käfig [Spieler]");
-        help(s, "/dr open",               "Gibt den Server für alle Spieler frei");
-        help(s, "/dr close",              "Sperrt den Server (nur OPs)");
-        help(s, "/dr setcorridor <n>",    "Setzt die Korridorbreite (±n Blöcke)");
-        help(s, "/dr setdirection <dir>", "Laufrichtung: NORTH/SOUTH/EAST/WEST");
-        help(s, "/dr settime <Min>",      "Maximale Spielzeit (0 = kein Limit)");
-        help(s, "/dr start",              "Startet das Deathrun");
-        help(s, "/dr stop",               "Bricht das Deathrun ab / Reset nach Ende");
-        help(s, "/dr pause",              "Pausiert/Setzt das Deathrun fort");
-        help(s, "/dr goto",               "Teleportiert zum Gewinner-Ort [Spieler]");
-        help(s, "/dr status",             "Zeigt aktuelle Konfiguration");
+        s.sendMessage(Component.text(Messages.str("cmd.help.header"), NamedTextColor.GOLD));
+        help(s, "/dr buildcage",          Messages.str("cmd.help.buildcage"));
+        help(s, "/dr removecage",         Messages.str("cmd.help.removecage"));
+        help(s, "/dr open",               Messages.str("cmd.help.open"));
+        help(s, "/dr close",              Messages.str("cmd.help.close"));
+        help(s, "/dr setcorridor <n>",    Messages.str("cmd.help.setcorridor"));
+        help(s, "/dr setdirection <dir>", Messages.str("cmd.help.setdirection"));
+        help(s, "/dr settime <min>",      Messages.str("cmd.help.settime"));
+        help(s, "/dr start",              Messages.str("cmd.help.start"));
+        help(s, "/dr stop",               Messages.str("cmd.help.stop"));
+        help(s, "/dr pause",              Messages.str("cmd.help.pause"));
+        help(s, "/dr goto",               Messages.str("cmd.help.goto"));
+        help(s, "/dr status",             Messages.str("cmd.help.status"));
     }
 
     private void help(CommandSender s, String cmd, String desc) {

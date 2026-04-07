@@ -1,7 +1,6 @@
 package com.example.deathrun;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -271,8 +270,7 @@ public class GameListener implements Listener {
         if (!gm.isServerOpen() && (state == GameState.IDLE || state == GameState.ENDED)) {
             if (!isAdmin) {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
-                    Component.text("Der Server ist im Wartungsmodus. Bitte warte.",
-                        NamedTextColor.RED));
+                    Messages.comp("login.maintenance"));
             }
             return;
         }
@@ -281,8 +279,7 @@ public class GameListener implements Listener {
         if (state == GameState.STARTING || state == GameState.RUNNING) {
             if (!isAdmin && !gm.getPlayers().containsKey(event.getPlayer().getUniqueId())) {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
-                    Component.text("Ein Deathrun läuft gerade. Bitte warte bis es vorbei ist.",
-                        NamedTextColor.RED));
+                    Messages.comp("login.game-running"));
             }
         }
     }

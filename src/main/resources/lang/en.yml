@@ -1,0 +1,144 @@
+# Deathrun – English Translation
+
+motd:
+  maintenance:  "§c[Maintenance] §7DeathRun is being set up..."
+  countdown:    "§e[Countdown] §7DeathRun starts soon..."
+  running:      "§a[Running] §7DeathRun is in progress!"
+  ended:        "§6[Ended] §7DeathRun finished – results available"
+
+login:
+  maintenance:  "§cThe server is in maintenance mode. Please wait."
+  game-running: "§cA Deathrun is currently in progress. Please wait until it's over."
+
+cmd:
+  no-permission:  "§cNo permission."
+  player-only:    "§cThis command requires a player in-game."
+  invalid-number: "§cInvalid number."
+  buildcage:
+    success: "§a✔ Cage built | Spawn & measurement point set | Direction: §f{0}"
+  removecage:
+    success: "§a✔ Cage removed."
+  open:
+    no-cage:   "§cCage must be built first! /dr buildcage"
+    success:   "§a✔ Server is now open for everyone!"
+    broadcast: "§a§l🟢 The server is now open for all players!"
+  close:
+    success: "§e✔ Server is now locked (OPs only)."
+  setcorridor:
+    success: "§a✔ Corridor width: ±{0} blocks."
+    invalid: "§cWidth must be between 5 and 500."
+    usage:   "§cUsage: /dr setcorridor <blocks>"
+  setdirection:
+    success: "§a✔ Run direction: §f{0}"
+    invalid: "§cUnknown direction. Use NORTH, SOUTH, EAST or WEST."
+    usage:   "§cUsage: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maximum playtime: §f{0}"
+    unlimited: "no limit"
+    minutes:   "{0} min."
+    invalid:   "§cTime must be >= 0 (0 = no limit)."
+    usage:     "§cUsage: /dr settime <minutes> (0 = no limit)"
+  goto:
+    success:     "§aTeleported to winner's location!"
+    no-game:     "§cNo finished game available."
+    no-location: "§cTarget location not available."
+    player-only: "§cThis command requires a player."
+  start:
+    already-running: "§cGame is already running!"
+    no-cage:         "§cNo cage set! Use /dr buildcage"
+    no-players:      "§cNo players online!"
+  stop:
+    no-game: "§cNo active game!"
+    success: "§a✔ Game reset."
+  pause:
+    not-running: "§cPause is only possible during an active game."
+  status:
+    header:    "§6§l── Deathrun Status ──"
+    state:     "State"
+    spawn:     "Spawn (cage center)"
+    start:     "Measurement point"
+    direction: "Direction"
+    corridor:  "Corridor"
+    countdown: "Countdown"
+    maxtime:   "Max time"
+    online:    "Players online"
+    not-set:   "not set"
+    corridor-value:   "±{0} blocks"
+    countdown-value:  "{0}s"
+    time-unlimited:   "no limit"
+    time-minutes:     "{0} min."
+
+  help:
+    header:       "── Deathrun Commands ──"
+    buildcage:    "Builds the cage & sets spawn/measurement point [Player]"
+    removecage:   "Removes the cage [Player]"
+    open:         "Opens the server for all players"
+    close:        "Locks the server (OPs only)"
+    setcorridor:  "Sets corridor half-width in blocks"
+    setdirection: "Run direction: NORTH/SOUTH/EAST/WEST"
+    settime:      "Maximum playtime in minutes (0 = no limit)"
+    start:        "Starts the Deathrun"
+    stop:         "Aborts the game / reset after end"
+    pause:        "Pauses/resumes the game"
+    goto:         "Teleport to the winner's location [Player]"
+    status:       "Shows current configuration"
+
+game:
+  countdown:
+    announce: "§6§lThe Deathrun starts in §e{0} §6§lseconds!"
+    tick:     "§eStarting in §f{0}§e…"
+    go:       "§a§lGO! Run towards §f{0}§a§l!"
+  death:      "§c☠ §f{0} §cdied! Distance: §6{1}m"
+  disconnect: "§7⚡ §f{0} §7disconnected. (§f{1}m§7) §8[can rejoin]"
+  reconnect:  "§a▶ §f{0} §ahas rejoined!"
+  time-limit: "§c§l⏱ Time's up! The race is over."
+  pause:
+    on:        "§e§l⏸ Game paused."
+    off:       "§a§l▶ Game resumed."
+    actionbar: "§e§l⏸  PAUSED  ⏸"
+  end:
+    header:      "§6§l══════ RESULTS ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Teleport to winner's location]"
+    goto-hover:  "§aClick to teleport!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServer locked"
+    step-label:  "§7Step 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Place the cage"
+    cage-ok:     "§a✔ Cage placed"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Open server"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Remove cage"
+    server-open: "§aServer open"
+    waiting:     "§7Waiting for start..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eStarting in §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... more"
+    ready:     "§7{0} players ready"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Rank: §f#{0}"
+    dist:        "§7Dist: §f{0}m"
+    ew:          "§7L/R:  §f{0}m"
+    time:        "§7Time: {0}"
+    timer-pause: "§e⏸ PAUSED"
+  end:
+    winner-label: "§6🏆 §eWinner:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"
+    rank:         "§7Rank: §f#{0}"
+    dist:         "§7Dist: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"

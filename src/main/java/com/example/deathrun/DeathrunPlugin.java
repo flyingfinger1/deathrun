@@ -1,7 +1,5 @@
 package com.example.deathrun;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -14,6 +12,7 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        Messages.load(this, getConfig().getString("language", "de"));
         gameManager = new GameManager(this);
 
         var cmd = getCommand("dr");
@@ -43,13 +42,13 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
         if (gameManager == null) return;
         GameState state = gameManager.getState();
         if (!gameManager.isServerOpen() && state == GameState.IDLE) {
-            event.motd(Component.text("§c[Wartung] §7DeathRun wird eingerichtet...", NamedTextColor.WHITE));
+            event.motd(Messages.comp("motd.maintenance"));
         } else if (state == GameState.STARTING) {
-            event.motd(Component.text("§e[Countdown] §7DeathRun startet gleich...", NamedTextColor.WHITE));
+            event.motd(Messages.comp("motd.countdown"));
         } else if (state == GameState.RUNNING) {
-            event.motd(Component.text("§a[Läuft] §7DeathRun ist im Gange!", NamedTextColor.WHITE));
+            event.motd(Messages.comp("motd.running"));
         } else if (state == GameState.ENDED) {
-            event.motd(Component.text("§6[Ende] §7DeathRun beendet – Ergebnisse verfügbar", NamedTextColor.WHITE));
+            event.motd(Messages.comp("motd.ended"));
         }
     }
 

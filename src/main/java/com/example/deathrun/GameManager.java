@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -135,9 +134,7 @@ public class GameManager {
         // World-Spawn setzen
         center.getWorld().setSpawnLocation(spawnLocation);
 
-        sender.sendMessage(Component.text(
-            "✔ Käfig gebaut | Spawn & Messpunkt gesetzt | Richtung: " + direction.getDisplayName(),
-            NamedTextColor.GREEN));
+        sender.sendMessage(Messages.comp("cmd.buildcage.success", direction.getDisplayName()));
     }
 
     private float spawnYaw(RunDirection dir) {
@@ -161,18 +158,18 @@ public class GameManager {
     public void removeCage(Player sender) {
         cageBuilder.removeCage(cageLocations);
         cageLocations.clear();
-        sender.sendMessage(Component.text("✔ Käfig entfernt.", NamedTextColor.GREEN));
+        sender.sendMessage(Messages.comp("cmd.removecage.success"));
     }
 
     public void setCorridorWidth(CommandSender sender, int width) {
         if (width < 5 || width > 500) {
-            send(sender, "Breite muss zwischen 5 und 500 liegen.", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.setcorridor.invalid"));
             return;
         }
         corridorWidth = width;
         plugin.getConfig().set("corridor-width", width);
         plugin.saveConfig();
-        sender.sendMessage(Component.text("✔ Korridorbreite: ±" + width + " Blöcke.", NamedTextColor.GREEN));
+        sender.sendMessage(Messages.comp("cmd.setcorridor.success", width));
     }
 
     public void setDirection(CommandSender sender, String arg) {
@@ -180,46 +177,59 @@ public class GameManager {
             direction = RunDirection.valueOf(arg.toUpperCase());
             plugin.getConfig().set("direction", direction.name());
             plugin.saveConfig();
-            sender.sendMessage(Component.text("✔ Laufrichtung: " + direction.getDisplayName(), NamedTextColor.GREEN));
+            sender.sendMessage(Messages.comp("cmd.setdirection.success", direction.getDisplayName()));
         } catch (IllegalArgumentException e) {
-            send(sender, "Unbekannte Richtung. Nutze NORTH, SOUTH, EAST oder WEST.", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.setdirection.invalid"));
         }
     }
 
     public void setMaxTime(CommandSender sender, int minutes) {
-        if (minutes < 0) { send(sender, "Zeit muss >= 0 sein (0 = kein Limit).", NamedTextColor.RED); return; }
+        if (minutes < 0) {
+            sender.sendMessage(Messages.comp("cmd.settime.invalid"));
+            return;
+        }
         maxTimeSeconds = minutes * 60;
         plugin.getConfig().set("max-time", maxTimeSeconds);
         plugin.saveConfig();
-        sender.sendMessage(Component.text("✔ Maximale Spielzeit: " +
-            (maxTimeSeconds == 0 ? "kein Limit" : minutes + " Min."), NamedTextColor.GREEN));
+        String display = maxTimeSeconds == 0
+            ? Messages.str("cmd.settime.unlimited")
+            : Messages.str("cmd.settime.minutes", minutes);
+        sender.sendMessage(Messages.comp("cmd.settime.success", display));
     }
 
     public void showStatus(CommandSender sender) {
-        sender.sendMessage(Component.text("── Deathrun Status ──", NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
-        sender.sendMessage(line("Zustand", state.name()));
-        sender.sendMessage(line("Spawn (Käfig-Mitte)", spawnLocation == null ? "nicht gesetzt" : fmtLoc(spawnLocation)));
-        sender.sendMessage(line("Messpunkt",           startLocation == null ? "nicht gesetzt" : fmtLoc(startLocation)));
-        sender.sendMessage(line("Richtung", direction.getDisplayName()));
-        sender.sendMessage(line("Korridor", "±" + corridorWidth + " Blöcke"));
-        sender.sendMessage(line("Countdown", countdownSeconds + "s"));
-        sender.sendMessage(line("Max-Zeit", maxTimeSeconds == 0 ? "kein Limit" : (maxTimeSeconds / 60) + " Min."));
-        sender.sendMessage(line("Spieler online", String.valueOf(Bukkit.getOnlinePlayers().size())));
+        sender.sendMessage(Messages.comp("cmd.status.header"));
+        sender.sendMessage(line(Messages.str("cmd.status.state"), state.name()));
+        sender.sendMessage(line(Messages.str("cmd.status.spawn"),
+            spawnLocation == null ? Messages.str("cmd.status.not-set") : fmtLoc(spawnLocation)));
+        sender.sendMessage(line(Messages.str("cmd.status.start"),
+            startLocation == null ? Messages.str("cmd.status.not-set") : fmtLoc(startLocation)));
+        sender.sendMessage(line(Messages.str("cmd.status.direction"), direction.getDisplayName()));
+        sender.sendMessage(line(Messages.str("cmd.status.corridor"),
+            Messages.str("cmd.status.corridor-value", corridorWidth)));
+        sender.sendMessage(line(Messages.str("cmd.status.countdown"),
+            Messages.str("cmd.status.countdown-value", countdownSeconds)));
+        sender.sendMessage(line(Messages.str("cmd.status.maxtime"),
+            maxTimeSeconds == 0
+                ? Messages.str("cmd.status.time-unlimited")
+                : Messages.str("cmd.status.time-minutes", maxTimeSeconds / 60)));
+        sender.sendMessage(line(Messages.str("cmd.status.online"),
+            String.valueOf(Bukkit.getOnlinePlayers().size())));
     }
 
     // ── Spielstart ────────────────────────────────────────────────────────────
 
     public boolean startGame(CommandSender sender) {
         if (state == GameState.STARTING || state == GameState.RUNNING) {
-            send(sender, "Spiel läuft bereits!", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.start.already-running"));
             return false;
         }
         if (spawnLocation == null) {
-            send(sender, "Kein Käfig gesetzt! Nutze /dr buildcage", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.start.no-cage"));
             return false;
         }
         if (Bukkit.getOnlinePlayers().isEmpty()) {
-            send(sender, "Keine Spieler online!", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.start.no-players"));
             return false;
         }
 
@@ -238,8 +248,7 @@ public class GameManager {
             p.setSaturation(20f);
         }
 
-        broadcast(Component.text("Das Deathrun startet in " + countdownSeconds + " Sekunden!",
-            NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+        broadcast(Messages.comp("game.countdown.announce", countdownSeconds));
 
         // Scoreboard schon während Countdown zeigen
         sidebar.setupStarting(players.values(), serverName);
@@ -251,7 +260,7 @@ public class GameManager {
                 if (state != GameState.STARTING) { cancel(); return; }
                 if (rem[0] <= 0) { cancel(); beginRace(); return; }
                 if (rem[0] <= 5 || rem[0] % 10 == 0) {
-                    broadcast(Component.text("Start in " + rem[0] + "…", NamedTextColor.YELLOW));
+                    broadcast(Messages.comp("game.countdown.tick", rem[0]));
                 }
                 sidebar.updateStarting(players.values(), rem[0]);
                 sound(Sound.BLOCK_NOTE_BLOCK_PLING, rem[0] <= 3 ? 2f : 1f);
@@ -310,8 +319,7 @@ public class GameManager {
                 if (state != GameState.RUNNING) { cancel(); return; }
                 // Zeitlimit prüfen (nicht während Pause)
                 if (maxTimeSeconds > 0 && !paused && getElapsedSeconds() >= maxTimeSeconds) {
-                    broadcast(Component.text("⏱ Zeit abgelaufen! Das Rennen ist vorbei.",
-                        NamedTextColor.RED).decorate(TextDecoration.BOLD));
+                    broadcast(Messages.comp("game.time-limit"));
                     endGame();
                     return;
                 }
@@ -322,8 +330,7 @@ public class GameManager {
             }
         }.runTaskTimer(plugin, 20L, 20L);
 
-        broadcast(Component.text("LOS! Rennt Richtung " + direction.getDisplayName() + "!",
-            NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        broadcast(Messages.comp("game.countdown.go", direction.getDisplayName()));
         sound(Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1f);
     }
 
@@ -372,11 +379,7 @@ public class GameManager {
         pd.setAlive(false);
         clearBorder(pd);
 
-        // Spektatormodus nach dem nächsten Tick (nach Respawn)
-        broadcast(Component.text("☠ ", NamedTextColor.RED)
-            .append(Component.text(player.getName(), NamedTextColor.WHITE))
-            .append(Component.text(" ist gestorben! Distanz: ", NamedTextColor.RED))
-            .append(Component.text(fmt(dist) + "m", NamedTextColor.GOLD)));
+        broadcast(Messages.comp("game.death", player.getName(), fmt(dist)));
 
         checkEndCondition();
     }
@@ -457,24 +460,19 @@ public class GameManager {
         }
 
         // Ergebnis im Chat
-        broadcast(Component.text("══════ ERGEBNIS ══════", NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+        broadcast(Messages.comp("game.end.header"));
         for (int i = 0; i < finalResults.size(); i++) {
             PlayerData pd = finalResults.get(i);
-            NamedTextColor c = i == 0 ? NamedTextColor.GOLD
-                             : i == 1 ? NamedTextColor.YELLOW
-                             : i == 2 ? NamedTextColor.GREEN
-                             : NamedTextColor.GRAY;
-            broadcast(Component.text("#" + (i + 1) + " " + pd.getName() + " – " + fmt(pd.getFinalDistance()) + "m", c));
+            String col = i == 0 ? "§6" : i == 1 ? "§e" : i == 2 ? "§a" : "§7";
+            broadcast(Messages.comp("game.end.entry", col, i + 1, pd.getName(), fmt(pd.getFinalDistance())));
         }
 
         // Klickbare Teleport-Nachricht (wenn Gewinner-Position bekannt)
         if (winnerLocation != null) {
-            Component gotoMsg = Component.text("» ", NamedTextColor.GOLD)
-                .append(Component.text("[Zum Gewinner-Ort teleportieren]", NamedTextColor.YELLOW)
-                    .decorate(TextDecoration.UNDERLINED)
+            Component gotoMsg = Messages.comp("game.end.goto-prefix")
+                .append(Messages.comp("game.end.goto-link")
                     .clickEvent(ClickEvent.runCommand("/dr goto"))
-                    .hoverEvent(HoverEvent.showText(
-                        Component.text("Klick zum Teleportieren!", NamedTextColor.GREEN))));
+                    .hoverEvent(HoverEvent.showText(Messages.comp("game.end.goto-hover"))));
             broadcast(gotoMsg);
         }
 
@@ -485,20 +483,19 @@ public class GameManager {
 
     public void togglePause(CommandSender sender) {
         if (state != GameState.RUNNING) {
-            send(sender, "Pause nur während eines laufenden Spiels möglich.", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.pause.not-running"));
             return;
         }
         paused = !paused;
         if (paused) {
             pauseStartMs = System.currentTimeMillis();
             if (spawnLocation != null) spawnLocation.getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-            broadcast(Component.text("⏸ Spiel pausiert.", NamedTextColor.YELLOW).decorate(TextDecoration.BOLD));
+            broadcast(Messages.comp("game.pause.on"));
             // Action-Bar alle 0.5s anzeigen solange pausiert
             actionBarTask = new BukkitRunnable() {
                 @Override public void run() {
                     if (!paused) { cancel(); actionBarTask = null; return; }
-                    Component msg = Component.text("⏸  PAUSE  ⏸", NamedTextColor.YELLOW)
-                                             .decorate(TextDecoration.BOLD);
+                    Component msg = Messages.comp("game.pause.actionbar");
                     for (UUID uuid : players.keySet()) {
                         Player p = Bukkit.getPlayer(uuid);
                         if (p != null) p.sendActionBar(msg);
@@ -514,17 +511,17 @@ public class GameManager {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) p.sendActionBar(Component.empty());
             }
-            broadcast(Component.text("▶ Spiel fortgesetzt.", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+            broadcast(Messages.comp("game.pause.off"));
         }
     }
 
     public void stopGame(CommandSender sender) {
         if (state == GameState.IDLE) {
-            send(sender, "Kein aktives Spiel!", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.stop.no-game"));
             return;
         }
         forceStop();
-        sender.sendMessage(Component.text("✔ Spiel zurückgesetzt.", NamedTextColor.GREEN));
+        sender.sendMessage(Messages.comp("cmd.stop.success"));
     }
 
     public void forceStop() {
@@ -553,30 +550,32 @@ public class GameManager {
 
     public void openServer(CommandSender sender) {
         if (spawnLocation == null) {
-            send(sender, "Käfig muss zuerst gebaut werden! /dr buildcage", NamedTextColor.RED);
+            sender.sendMessage(Messages.comp("cmd.open.no-cage"));
             return;
         }
         serverOpen = true;
-        sender.sendMessage(Component.text("✔ Server ist jetzt für alle geöffnet!", NamedTextColor.GREEN));
-        broadcast(Component.text("🟢 Der Server ist jetzt für alle Spieler freigegeben!",
-            NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+        sender.sendMessage(Messages.comp("cmd.open.success"));
+        broadcast(Messages.comp("cmd.open.broadcast"));
     }
 
     public void closeServer(CommandSender sender) {
         serverOpen = false;
-        sender.sendMessage(Component.text("✔ Server ist jetzt gesperrt (nur OPs).", NamedTextColor.YELLOW));
+        sender.sendMessage(Messages.comp("cmd.close.success"));
     }
 
     public void handleGoto(Player player) {
         if (finalResults.isEmpty()) {
-            send(player, "Kein abgeschlossenes Spiel verfügbar.", NamedTextColor.RED);
+            player.sendMessage(Messages.comp("cmd.goto.no-game"));
             return;
         }
         Location dest = winnerLocation != null ? winnerLocation : spawnLocation;
-        if (dest == null) { send(player, "Zielposition nicht verfügbar.", NamedTextColor.RED); return; }
+        if (dest == null) {
+            player.sendMessage(Messages.comp("cmd.goto.no-location"));
+            return;
+        }
         if (player.getGameMode() == GameMode.SPECTATOR) player.setGameMode(GameMode.SURVIVAL);
         player.teleport(dest);
-        send(player, "Teleportiert zum Gewinner-Ort!", NamedTextColor.GREEN);
+        player.sendMessage(Messages.comp("cmd.goto.success"));
     }
 
     // ── Lobby-Task ────────────────────────────────────────────────────────────
@@ -626,8 +625,7 @@ public class GameManager {
                 player.setGameMode(GameMode.SURVIVAL);
                 assignBorder(pd, player, startLocation.getX(), startLocation.getZ());
                 sidebar.setupPlayerBoard(pd, player, serverName);
-                broadcast(Component.text("▶ " + player.getName() + " ist wieder dabei!",
-                    NamedTextColor.GREEN));
+                broadcast(Messages.comp("game.reconnect", player.getName()));
 
             } else if (pd != null && !pd.isAlive()) {
                 // War schon tot → Zuschauer-Scoreboard wiederherstellen
@@ -661,9 +659,7 @@ public class GameManager {
         pd.setFinalDistance(Math.max(0, dist));
         pd.setDisconnected(true);
         clearBorder(pd);
-        broadcast(Component.text("⚡ " + player.getName() +
-            " hat die Verbindung getrennt. (" + fmt(dist) + "m) [kann zurückkehren]",
-            NamedTextColor.GRAY));
+        broadcast(Messages.comp("game.disconnect", player.getName(), fmt(dist)));
         checkEndCondition();
     }
 
@@ -703,10 +699,6 @@ public class GameManager {
         }
     }
 
-    private void send(CommandSender s, String msg, NamedTextColor color) {
-        s.sendMessage(Component.text(msg, color));
-    }
-
     private String fmt(double d) {
         return String.format("%.0f", d);
     }
@@ -715,8 +707,8 @@ public class GameManager {
         return l.getWorld().getName() + " " + l.getBlockX() + "/" + l.getBlockY() + "/" + l.getBlockZ();
     }
 
-    private Component line(String key, String val) {
-        return Component.text("  " + key + ": ", NamedTextColor.GRAY)
+    private Component line(String label, String val) {
+        return Component.text("  " + label + ": ", NamedTextColor.GRAY)
             .append(Component.text(val, NamedTextColor.WHITE));
     }
 
@@ -739,7 +731,7 @@ public class GameManager {
     }
 
     public String getTimerDisplay() {
-        if (paused) return "§e⏸ PAUSE";
+        if (paused) return Messages.str("sidebar.game.timer-pause");
         int secs = hasTimeLimit() ? getRemainingSeconds() : getElapsedSeconds();
         String color = !hasTimeLimit() ? "§f"
             : getRemainingSeconds() > maxTimeSeconds / 2 ? "§a"

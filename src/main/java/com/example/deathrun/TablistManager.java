@@ -1,6 +1,6 @@
 package com.example.deathrun;
 
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -19,9 +19,9 @@ public class TablistManager {
             if (p == null) continue;
 
             double dist   = pd.isAlive() ? liveDistance(pd, gm) : pd.getFinalDistance();
-            String status = pd.isAlive() ? "§a⬤" : "§c✦";
-            p.playerListName(Component.text(
-                "§7#" + (i + 1) + " §f" + p.getName() + " §8- §7" + fmt(dist) + "m " + status
+            String status = Messages.str(pd.isAlive() ? "sidebar.game.icon-alive" : "sidebar.game.icon-dead");
+            p.playerListName(LegacyComponentSerializer.legacySection().deserialize(
+                Messages.str("tablist.entry", i + 1, p.getName(), fmt(dist), status)
             ));
         }
     }

@@ -1,0 +1,146 @@
+# Deathrun – Deutsche Übersetzung
+
+motd:
+  maintenance:  "§c[Wartung] §7DeathRun wird eingerichtet..."
+  countdown:    "§e[Countdown] §7DeathRun startet gleich..."
+  running:      "§a[Läuft] §7DeathRun ist im Gange!"
+  ended:        "§6[Ende] §7DeathRun beendet – Ergebnisse verfügbar"
+
+login:
+  maintenance:  "§cDer Server ist im Wartungsmodus. Bitte warte."
+  game-running: "§cEin Deathrun läuft gerade. Bitte warte bis es vorbei ist."
+
+cmd:
+  no-permission:  "§cKeine Berechtigung."
+  player-only:    "§cDieser Befehl erfordert einen Spieler im Spiel."
+  invalid-number: "§cUngültige Zahl."
+  buildcage:
+    success: "§a✔ Käfig gebaut | Spawn & Messpunkt gesetzt | Richtung: §f{0}"
+  removecage:
+    success: "§a✔ Käfig entfernt."
+  open:
+    no-cage:   "§cKäfig muss zuerst gebaut werden! /dr buildcage"
+    success:   "§a✔ Server ist jetzt für alle geöffnet!"
+    broadcast: "§a§l🟢 Der Server ist jetzt für alle Spieler freigegeben!"
+  close:
+    success: "§e✔ Server ist jetzt gesperrt (nur OPs)."
+  setcorridor:
+    success: "§a✔ Korridorbreite: ±{0} Blöcke."
+    invalid: "§cBreite muss zwischen 5 und 500 liegen."
+    usage:   "§cNutzung: /dr setcorridor <Blöcke>"
+  setdirection:
+    success: "§a✔ Laufrichtung: §f{0}"
+    invalid: "§cUnbekannte Richtung. Nutze NORTH, SOUTH, EAST oder WEST."
+    usage:   "§cNutzung: /dr setdirection <NORTH|SOUTH|EAST|WEST>"
+  settime:
+    success:   "§a✔ Maximale Spielzeit: §f{0}"
+    unlimited: "kein Limit"
+    minutes:   "{0} Min."
+    invalid:   "§cZeit muss >= 0 sein (0 = kein Limit)."
+    usage:     "§cNutzung: /dr settime <Minuten> (0 = kein Limit)"
+  goto:
+    success:     "§aTeleportiert zum Gewinner-Ort!"
+    no-game:     "§cKein abgeschlossenes Spiel verfügbar."
+    no-location: "§cZielposition nicht verfügbar."
+    player-only: "§cDieser Befehl erfordert einen Spieler."
+  start:
+    already-running: "§cSpiel läuft bereits!"
+    no-cage:         "§cKein Käfig gesetzt! Nutze /dr buildcage"
+    no-players:      "§cKeine Spieler online!"
+  stop:
+    no-game: "§cKein aktives Spiel!"
+    success: "§a✔ Spiel zurückgesetzt."
+  pause:
+    not-running: "§cPause nur während eines laufenden Spiels möglich."
+  status:
+    header:     "§6§l── Deathrun Status ──"
+    state:      "Zustand"
+    spawn:      "Spawn (Käfig-Mitte)"
+    start:      "Messpunkt"
+    direction:  "Richtung"
+    corridor:   "Korridor"
+    countdown:  "Countdown"
+    maxtime:    "Max-Zeit"
+    online:     "Spieler online"
+    not-set:    "nicht gesetzt"
+    # Formatierungen für Werte
+    corridor-value:   "±{0} Blöcke"
+    countdown-value:  "{0}s"
+    time-unlimited:   "kein Limit"
+    time-minutes:     "{0} Min."
+
+  # Hilfe-Text
+  help:
+    header:      "── Deathrun Befehle ──"
+    buildcage:   "Baut den Glaskäfig & setzt Spawn/Messpunkt [Spieler]"
+    removecage:  "Entfernt den Käfig [Spieler]"
+    open:        "Gibt den Server für alle Spieler frei"
+    close:       "Sperrt den Server (nur OPs)"
+    setcorridor: "Setzt die Korridorbreite (±n Blöcke)"
+    setdirection: "Laufrichtung: NORTH/SOUTH/EAST/WEST"
+    settime:     "Maximale Spielzeit (0 = kein Limit)"
+    start:       "Startet das Deathrun"
+    stop:        "Bricht das Deathrun ab / Reset nach Ende"
+    pause:       "Pausiert/Setzt das Deathrun fort"
+    goto:        "Teleportiert zum Gewinner-Ort [Spieler]"
+    status:      "Zeigt aktuelle Konfiguration"
+
+game:
+  countdown:
+    announce: "§6§lDas Deathrun startet in §e{0} §6§lSekunden!"
+    tick:     "§eStart in §f{0}§e…"
+    go:       "§a§lLOS! Rennt Richtung §f{0}§a§l!"
+  death:       "§c☠ §f{0} §cist gestorben! Distanz: §6{1}m"
+  disconnect:  "§7⚡ §f{0} §7hat die Verbindung getrennt. (§f{1}m§7) §8[kann zurückkehren]"
+  reconnect:   "§a▶ §f{0} §aist wieder dabei!"
+  time-limit:  "§c§l⏱ Zeit abgelaufen! Das Rennen ist vorbei."
+  pause:
+    on:        "§e§l⏸ Spiel pausiert."
+    off:       "§a§l▶ Spiel fortgesetzt."
+    actionbar: "§e§l⏸  PAUSE  ⏸"
+  end:
+    header:      "§6§l══════ ERGEBNIS ══════"
+    entry:       "{0}#{1} §f{2} §7– {3}m"   # {0}=Farbe, {1}=Rang, {2}=Name, {3}=Distanz
+    goto-prefix: "§6» "
+    goto-link:   "§e§n[Zum Gewinner-Ort teleportieren]"
+    goto-hover:  "§aKlick zum Teleportieren!"
+
+sidebar:
+  separator: "§8§m──────────────"
+  lobby:
+    locked:      "§cServer gesperrt"
+    step-label:  "§7Schritt 1:"
+    step-cmd:    "§f/dr buildcage"
+    step-hint:   "§7Käfig platzieren"
+    cage-ok:     "§a✔ Käfig gesetzt"
+    open-cmd:    "§f/dr open"
+    open-hint:   "§7Server freigeben"
+    remove-cmd:  "§f/dr removecage"
+    remove-hint: "§7Käfig entfernen"
+    server-open: "§aServer geöffnet"
+    waiting:     "§7Warte auf Start..."
+    start-cmd:   "§f/dr start"
+    online:      "§7Online: §f{0}"
+  starting:
+    countdown: "§eStartet in §f{0}s§e..."
+    player:    "§7⬤ §f{0}"
+    more:      "§7  ... weitere"
+    ready:     "§7{0} Spieler bereit"
+  game:
+    top-entry:   "{0}#{1} §f{2} §7{3}m {4}"  # {0}=Farbe, {1}=Rang, {2}=Name, {3}=Dist, {4}=Icon
+    icon-alive:  "§a⬤"
+    icon-dead:   "§c✦"
+    rank:        "§7Rang: §f#{0}"
+    dist:        "§7Dist: §f{0}m"
+    ew:          "§7EW:   §f{0}m"
+    time:        "§7Zeit: {0}"
+    timer-pause: "§e⏸ PAUSE"
+  end:
+    winner-label: "§6🏆 §eGewinner:"
+    winner-name:  "§f{0}"
+    top-entry:    "{0}#{1} §f{2} §7{3}m"     # {0}=Farbe, {1}=Rang, {2}=Name, {3}=Dist
+    rank:         "§7Rang: §f#{0}"
+    dist:         "§7Dist: §f{0}m"
+
+tablist:
+  entry: "§7#{0} §f{1} §8- §7{2}m {3}"  # {0}=Rang, {1}=Name, {2}=Dist, {3}=Icon
