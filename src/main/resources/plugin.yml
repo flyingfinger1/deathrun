@@ -10,9 +10,11 @@ commands:
   dr:
     description: Deathrun Hauptbefehl
     usage: /dr <subbefehl>
-    permission: deathrun.admin
 
 permissions:
   deathrun.admin:
-    description: Voller Zugriff auf Deathrun-Befehle
+    description: Voller Zugriff auf alle Deathrun-Befehle
     default: op
+  deathrun.goto:
+    description: Teleportation zum Gewinner-Ort nach dem Spiel
+    default: true

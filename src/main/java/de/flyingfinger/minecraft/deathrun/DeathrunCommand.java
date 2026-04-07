@@ -20,7 +20,19 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        // Berechtigungs-Check (Konsole hat immer Zugriff)
+        String sub = args.length > 0 ? args[0].toLowerCase() : "";
+
+        // /dr goto ist für alle Spieler erlaubt (kein Admin nötig)
+        if (sub.equals("goto")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(Messages.comp("cmd.goto.player-only"));
+                return true;
+            }
+            gm.handleGoto(player);
+            return true;
+        }
+
+        // Alle anderen Befehle erfordern deathrun.admin (Konsole hat immer Zugriff)
         if (sender instanceof Player player && !player.hasPermission("deathrun.admin")) {
             player.sendMessage(Messages.comp(player, "cmd.no-permission"));
             return true;
@@ -31,7 +43,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        switch (args[0].toLowerCase()) {
+        switch (sub) {
 
             // ── Nur für Spieler (braucht Position) ───────────────────────────
             case "buildcage", "removecage" -> {
@@ -50,13 +62,6 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
             case "stop"   -> gm.stopGame(sender);
             case "pause"  -> gm.togglePause(sender);
             case "status" -> gm.showStatus(sender);
-            case "goto"   -> {
-                if (!(sender instanceof Player player)) {
-                    sender.sendMessage(Messages.comp("cmd.goto.player-only"));
-                    return true;
-                }
-                gm.handleGoto(player);
-            }
 
             case "setcorridor" -> {
                 if (args.length < 2) {

@@ -32,22 +32,22 @@ The script downloads Maven 3.9.9 on first run, compiles the plugin, and copies t
 
 ## Commands
 
-All commands require the `deathrun.admin` permission. Console can run all commands except those marked `[Player]`.
+Most commands require the `deathrun.admin` permission (default: OP). `/dr goto` is available to all players.
 
-| Command | Description |
-|---------|-------------|
-| `/dr buildcage` | Builds the cage at your position, sets spawn & measurement point `[Player]` |
-| `/dr removecage` | Removes the cage `[Player]` |
-| `/dr open` | Opens the server for all players |
-| `/dr close` | Locks the server (OPs only) |
-| `/dr start` | Starts the countdown |
-| `/dr stop` | Aborts the current game / resets after game ends |
-| `/dr pause` | Pauses or resumes the game |
-| `/dr goto` | Teleports to the winner's location `[Player]` |
-| `/dr setcorridor <n>` | Sets corridor half-width in blocks (default: 30) |
-| `/dr setdirection <dir>` | Sets run direction: `NORTH` / `SOUTH` / `EAST` / `WEST` |
-| `/dr settime <min>` | Sets time limit in minutes (0 = no limit) |
-| `/dr status` | Shows current configuration |
+| Command | Permission | Description |
+|---------|------------|-------------|
+| `/dr buildcage` | `deathrun.admin` | Builds the cage at your position, sets spawn & measurement point `[Player]` |
+| `/dr removecage` | `deathrun.admin` | Removes the cage `[Player]` |
+| `/dr open` | `deathrun.admin` | Opens the server for all players |
+| `/dr close` | `deathrun.admin` | Locks the server (OPs only) |
+| `/dr start` | `deathrun.admin` | Starts the countdown |
+| `/dr stop` | `deathrun.admin` | Aborts the current game / resets after game ends |
+| `/dr pause` | `deathrun.admin` | Pauses or resumes the game |
+| `/dr goto` | everyone | Teleports to the winner's location `[Player]` |
+| `/dr setcorridor <n>` | `deathrun.admin` | Sets corridor half-width in blocks (default: 30) |
+| `/dr setdirection <dir>` | `deathrun.admin` | Sets run direction: `NORTH` / `SOUTH` / `EAST` / `WEST` |
+| `/dr settime <min>` | `deathrun.admin` | Sets time limit in minutes (0 = no limit) |
+| `/dr status` | `deathrun.admin` | Shows current configuration |
 
 ## Configuration
 
