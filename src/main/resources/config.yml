@@ -14,9 +14,6 @@ countdown: 10
 # Name der im Scoreboard-Titel angezeigt wird
 server-name: "DeathRun"
 
-# Radius des Glaskäfigs um den Startpunkt (in Blöcken)
-cage-radius: 3
-
 # Laufrichtung: NORTH, SOUTH, EAST oder WEST
 direction: NORTH
 
@@ -51,3 +48,10 @@ spawn:
   x: 0
   y: 64
   z: 0
+
+# Käfig-Einstellungen
+cage:
+  # Radius des Glaskäfigs (in Blöcken, effektive Breite = radius * 3)
+  radius: 3
+  # Wird automatisch gesetzt – true wenn ein Käfig im Spiel steht
+  built: false

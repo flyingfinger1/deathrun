@@ -72,7 +72,7 @@ public class GameManager {
         corridorWidth = cfg.getInt("corridor-width", 30);
         countdownSeconds = cfg.getInt("countdown", 10);
         serverName = cfg.getString("server-name", "DeathRun");
-        cageRadius = cfg.getInt("cage-radius", 3);
+        cageRadius = cfg.getInt("cage.radius", 3);
         try {
             direction = RunDirection.valueOf(cfg.getString("direction", "NORTH").toUpperCase());
         } catch (IllegalArgumentException ignored) {}
