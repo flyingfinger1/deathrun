@@ -54,6 +54,11 @@ All commands require the `deathrun.admin` permission. Console can run all comman
 `plugins/Deathrun/config.yml`:
 
 ```yaml
+# Language / Sprache
+#   de, en, fr, es, ...  – one language for all players
+#   auto                  – each player sees their Minecraft client language
+language: de
+
 server-name: "DeathRun"       # Scoreboard title
 direction: NORTH               # Run direction
 corridor-width: 30             # WorldBorder half-width (blocks left/right)
@@ -78,6 +83,29 @@ spawn:
   yaw: 180.0
 ```
 
+## Multilingual Support
+
+The plugin ships with 19 languages. All language files are extracted to `plugins/Deathrun/lang/` on first start and can be freely edited.
+
+| Code | Language | Code | Language |
+|------|----------|------|----------|
+| `de` | Deutsch | `ru` | Русский |
+| `en` | English | `zh` | 简体中文 |
+| `fr` | Français | `ja` | 日本語 |
+| `es` | Español | `ko` | 한국어 |
+| `pt` | Português | `tr` | Türkçe |
+| `it` | Italiano | `sv` | Svenska |
+| `nl` | Nederlands | `cs` | Čeština |
+| `pl` | Polski | `hu` | Magyar |
+| `uk` | Українська | `ro` | Română |
+| `fi` | Suomi | | |
+
+**Modes:**
+- `language: de` (or any code) — everyone sees that one language, regardless of client settings
+- `language: auto` — each player sees the plugin texts in their Minecraft client language; falls back to English if the language is not available
+
+**Adding a custom language:** Place a new `xx.yml` file (e.g. `ar.yml`) in `plugins/Deathrun/lang/` using the same key structure as `en.yml`. With `language: auto` it is picked up automatically on the next server start.
+
 ## Scoreboard States
 
 | State | Display |
@@ -86,17 +114,17 @@ spawn:
 | Server locked, cage built | Prompt to `/dr open` or `/dr removecage` |
 | Server open, waiting | "Waiting for /dr start" + player count |
 | Countdown | Live countdown + participant list |
-| Race running | Top 5, personal rank/distance/EW-deviation, timer |
+| Race running | Top 5, personal rank/distance/lateral deviation, timer |
 | Game ended | Top 5 + winner + personal rank, persists until `/dr stop` |
 
 ## Server List MOTD
 
-The server list entry changes automatically based on game state:
+The server list entry changes automatically based on game state (text follows the configured language):
 
-- `[Wartung]` — Server locked (setup phase)
+- `[Maintenance]` — Server locked (setup phase)
 - `[Countdown]` — Countdown running
-- `[Läuft]` — Race in progress
-- `[Ende]` — Game ended, results available
+- `[Running]` — Race in progress
+- `[Ended]` — Game ended, results available
 
 ## Game Rules
 
@@ -118,6 +146,10 @@ The server list entry changes automatically based on game state:
 - Day/night cycle paused
 - All inventory interaction, item use, attacking, projectiles, drops and pickups blocked
 - Visible `⏸ PAUSE` action bar for all participants
+
+## Package
+
+`de.flyingfinger.minecraft.deathrun`
 
 ## License
 
