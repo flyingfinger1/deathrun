@@ -104,6 +104,11 @@ public class GameManager {
                     (float) cfg.getDouble("spawn.yaw", 0.0), 0f);
             }
         }
+
+        // Käfig-Zustand nach Neustart wiederherstellen (Blöcke existieren noch in der Welt)
+        if (cfg.getBoolean("cage.built", false) && spawnLocation != null) {
+            cageLocations = cageBuilder.restoreState(spawnLocation, cageRadius, direction);
+        }
     }
 
     // ── Admin-Befehle ─────────────────────────────────────────────────────────
@@ -132,9 +137,10 @@ public class GameManager {
             case WEST  -> startLocation.setX(cx - r);
         }
 
-        // Config speichern
+        // Config speichern (inkl. cage.built-Flag für Neustart-Persistenz)
         saveLocCfg("start", startLocation);
         saveLocCfg("spawn", spawnLocation);
+        plugin.getConfig().set("cage.built", true);
         plugin.saveConfig();
 
         // World-Spawn setzen
@@ -164,6 +170,8 @@ public class GameManager {
     public void removeCage(Player sender) {
         cageBuilder.removeCage(cageLocations);
         cageLocations.clear();
+        plugin.getConfig().set("cage.built", false);
+        plugin.saveConfig();
         sender.sendMessage(Messages.comp(sender, "cmd.removecage.success"));
     }
 
@@ -759,6 +767,7 @@ public class GameManager {
         pvpDelayTask = new BukkitRunnable() {
             @Override public void run() {
                 if (state != GameState.RUNNING) { cancel(); pvpDelayTask = null; return; }
+                if (paused) return; // Delay-Timer pausiert mit dem Spiel
                 remaining[0]--;
                 if (remaining[0] <= 0) {
                     pvpActive = true;

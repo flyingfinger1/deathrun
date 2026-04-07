@@ -195,6 +195,60 @@ public class CageBuilder {
     }
 
     /**
+     * Stellt den internen Zustand nach einem Server-Neustart wieder her.
+     * Die Blöcke existieren bereits in der Welt – es werden nur die Location-Sets
+     * neu berechnet, ohne irgendetwas am Weltinhalt zu ändern.
+     * Kein Snapshot verfügbar nach Neustart → removeCage() fällt auf AIR-Fallback zurück.
+     */
+    public Set<Location> restoreState(Location spawnCenter, int radius, RunDirection dir) {
+        builtLocations.clear();
+        indicatorLocations.clear();
+        lastRemovedLocations.clear();
+        snapshot.clear();
+
+        World world = spawnCenter.getWorld();
+        if (world == null) return new HashSet<>();
+
+        int cx     = spawnCenter.getBlockX();
+        int cy     = spawnCenter.getBlockY();
+        int cz     = spawnCenter.getBlockZ();
+        int r      = radius * CAGE_SCALE;
+        int height = 4;
+
+        // Boden + Decke
+        for (int x = cx - r; x <= cx + r; x++) {
+            for (int z = cz - r; z <= cz + r; z++) {
+                for (int dy = 1; dy <= FLOOR_DEPTH; dy++) {
+                    builtLocations.add(world.getBlockAt(x, cy - dy, z).getLocation());
+                }
+                builtLocations.add(world.getBlockAt(x, cy + height, z).getLocation());
+            }
+        }
+
+        // Wände (nur Rand)
+        for (int y = cy; y < cy + height; y++) {
+            for (int x = cx - r; x <= cx + r; x++) {
+                for (int z = cz - r; z <= cz + r; z++) {
+                    if (x != cx - r && x != cx + r && z != cz - r && z != cz + r) continue;
+                    Location loc = world.getBlockAt(x, y, z).getLocation();
+                    builtLocations.add(loc);
+                    boolean isIndicator = switch (dir) {
+                        case NORTH -> z == cz - r;
+                        case SOUTH -> z == cz + r;
+                        case EAST  -> x == cx + r;
+                        case WEST  -> x == cx - r;
+                    };
+                    if (isIndicator) indicatorLocations.add(loc);
+                }
+            }
+        }
+
+        // lastRemovedLocations = aktuelle Indicator-Positionen (für closeCage nach Stop)
+        lastRemovedLocations.addAll(indicatorLocations);
+        return new HashSet<>(builtLocations);
+    }
+
+    /**
      * Entfernt alle vom Plugin gebauten Blöcke und restauriert die ursprüngliche Welt.
      * Wenn ein Snapshot vorhanden ist, werden die Originalblöcke wiederhergestellt.
      */
