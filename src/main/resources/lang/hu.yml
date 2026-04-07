@@ -82,6 +82,9 @@ cmd:
     status:       "Megjeleníti az aktuális konfigurációt"
 
 game:
+  start:
+    title:    "§a§lRAJTA!"
+    subtitle: "§7Irány: §f{0}"
   countdown:
     announce: "§6§lA DeathRun §e{0} §6§lmásodperc múlva kezdődik!"
     tick:     "§eIndulás §f{0}§e mp múlva…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ A PVP §f{0} §cmásodperc múlva aktiválódik!"
     countdown: "§c⚔ PVP §f{0}§c mp..."
     activated: "§c§l⚔ A PVP most aktív!"
+    title:     "§c§l⚔ PVP AKTÍV!"
+    subtitle:  "§7A játékosok most támadhatnak"
   pause:
     paused:    "§e§l⏸ Játék szüneteltetve."
     resumed:   "§a§l▶ Játék folytatva."
     actionbar: "§e§l⏸  SZÜNET  ⏸"
   end:
+    title:       "§6§l{0} §6§lnyer!"
+    subtitle:    "§7Távolság: §f{1}m"
     header:      "§6§l══════ EREDMÉNYEK ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

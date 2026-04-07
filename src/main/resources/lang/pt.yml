@@ -82,6 +82,9 @@ cmd:
     status:       "Exibe a configuração atual"
 
 game:
+  start:
+    title:    "§a§lVÁ!"
+    subtitle: "§7Direção §f{0}"
   countdown:
     announce: "§6§lO Deathrun começa em §e{0} §6§lsegundos!"
     tick:     "§eIniciando em §f{0}§e…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ O PVP ativa em §f{0} §csegundos!"
     countdown: "§c⚔ PVP em §f{0}§c..."
     activated: "§c§l⚔ O PVP está ativo agora!"
+    title:     "§c§l⚔ PVP ATIVO!"
+    subtitle:  "§7Jogadores podem se atacar"
   pause:
     paused:    "§e§l⏸ Partida pausada."
     resumed:   "§a§l▶ Partida retomada."
     actionbar: "§e§l⏸  PAUSADO  ⏸"
   end:
+    title:       "§6§l{0} §6§lganha!"
+    subtitle:    "§7Distância: §f{1}m"
     header:      "§6§l══════ RESULTADOS ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

@@ -82,6 +82,9 @@ cmd:
     status:       "Показує поточну конфігурацію"
 
 game:
+  start:
+    title:    "§a§lСТАРТ!"
+    subtitle: "§7Напрямок §f{0}"
   countdown:
     announce: "§6§lDeathRun починається через §e{0} §6§lсекунд!"
     tick:     "§eСтарт через §f{0}§e…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP активується через §f{0} §cсекунд!"
     countdown: "§c⚔ PVP через §f{0}§c..."
     activated: "§c§l⚔ PVP тепер активне!"
+    title:     "§c§l⚔ ПВП АКТИВНЕ!"
+    subtitle:  "§7Гравці тепер можуть атакувати"
   pause:
     paused:    "§e§l⏸ Гру призупинено."
     resumed:   "§a§l▶ Гру відновлено."
     actionbar: "§e§l⏸  ПАУЗА  ⏸"
   end:
+    title:       "§6§l{0} §6§lперемагає!"
+    subtitle:    "§7Відстань: §f{1}м"
     header:      "§6§l══════ РЕЗУЛЬТАТИ ══════"
     entry:       "{0}#{1} §f{2} §7– {3}м"
     goto-prefix: "§6» "

@@ -4,12 +4,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -373,10 +375,18 @@ public class GameManager {
             }
         }.runTaskTimer(plugin, 20L, 20L);
 
-        // "GO!"-Nachricht pro Spieler in dessen Sprache senden
+        // "GO!"-Nachricht + Start-Titel pro Spieler in dessen Sprache senden
+        Title.Times startTimes = Title.Times.times(
+            Duration.ofMillis(200), Duration.ofSeconds(3), Duration.ofMillis(500));
         for (UUID uuid : players.keySet()) {
             Player p = Bukkit.getPlayer(uuid);
-            if (p != null) p.sendMessage(Messages.comp(p, "game.countdown.go", Messages.str(p, direction.getLangKey())));
+            if (p == null) continue;
+            String dirName = Messages.str(p, direction.getLangKey());
+            p.sendMessage(Messages.comp(p, "game.countdown.go", dirName));
+            p.showTitle(Title.title(
+                Messages.comp(p, "game.start.title"),
+                Messages.comp(p, "game.start.subtitle", dirName),
+                startTimes));
         }
         sound(Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1f);
     }
@@ -506,6 +516,12 @@ public class GameManager {
             Player p = Bukkit.getPlayer(pd.getUuid());
             if (p != null) p.setGameMode(GameMode.SURVIVAL);
         }
+
+        // Titel + Feuerwerk-Sound
+        String winnerName = finalResults.isEmpty() ? "" : finalResults.get(0).getName();
+        String winnerDist = finalResults.isEmpty() ? "0" : fmt(finalResults.get(0).getFinalDistance());
+        titleAllLong("game.end.title", "game.end.subtitle", winnerName, winnerDist);
+        sound(Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1f);
 
         // Ergebnis im Chat – jeder Spieler bekommt seine Sprache
         broadcast("game.end.header");
@@ -757,6 +773,8 @@ public class GameManager {
         if (pvpDelaySeconds <= 0) {
             pvpActive = true;
             broadcast("game.pvp.activated");
+            titleAll("game.pvp.title", "game.pvp.subtitle");
+            sound(Sound.ENTITY_WITHER_SPAWN, 1f);
             return;
         }
 
@@ -772,6 +790,8 @@ public class GameManager {
                 if (remaining[0] <= 0) {
                     pvpActive = true;
                     broadcast("game.pvp.activated");
+                    titleAll("game.pvp.title", "game.pvp.subtitle");
+                    sound(Sound.ENTITY_WITHER_SPAWN, 1f);
                     cancel();
                     pvpDelayTask = null;
                     return;
@@ -797,6 +817,30 @@ public class GameManager {
     private void broadcast(String key, Object... args) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendMessage(Messages.comp(p, key, args));
+        }
+    }
+
+    /** Zeigt allen Teilnehmern einen Titel (3 s Anzeigezeit). */
+    private void titleAll(String titleKey, String subtitleKey, Object... args) {
+        showTitles(titleKey, subtitleKey,
+            Title.Times.times(Duration.ofMillis(300), Duration.ofSeconds(3), Duration.ofMillis(500)),
+            args);
+    }
+
+    /** Zeigt allen Teilnehmern einen Titel mit längerer Anzeigezeit (5 s, für Spielende). */
+    private void titleAllLong(String titleKey, String subtitleKey, Object... args) {
+        showTitles(titleKey, subtitleKey,
+            Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(5), Duration.ofMillis(1000)),
+            args);
+    }
+
+    private void showTitles(String titleKey, String subtitleKey, Title.Times times, Object... args) {
+        for (UUID uuid : players.keySet()) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) p.showTitle(Title.title(
+                Messages.comp(p, titleKey, args),
+                Messages.comp(p, subtitleKey, args),
+                times));
         }
     }
 

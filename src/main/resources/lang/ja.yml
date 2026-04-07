@@ -82,6 +82,9 @@ cmd:
     status:       "現在の設定を表示"
 
 game:
+  start:
+    title:    "§a§lスタート！"
+    subtitle: "§7方向：§f{0}"
   countdown:
     announce: "§6§lDeathRun が §e{0} §6§l秒後に始まります！"
     tick:     "§e§f{0}§e 秒後にスタート…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ §f{0}§c秒後にPVPが有効になります！"
     countdown: "§c⚔ PVP あと§f{0}§c秒..."
     activated: "§c§l⚔ PVPが有効になりました！"
+    title:     "§c§l⚔ PVP開始！"
+    subtitle:  "§7プレイヤーは互いに攻撃できる"
   pause:
     paused:    "§e§l⏸ ゲームを一時停止しました。"
     resumed:   "§a§l▶ ゲームを再開しました。"
     actionbar: "§e§l⏸  一時停止中  ⏸"
   end:
+    title:       "§6§l{0} §6§lの勝利！"
+    subtitle:    "§7距離：§f{1}m"
     header:      "§6§l══════ 結果 ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

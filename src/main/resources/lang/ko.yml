@@ -82,6 +82,9 @@ cmd:
     status:       "현재 설정 표시"
 
 game:
+  start:
+    title:    "§a§l출발！"
+    subtitle: "§7방향: §f{0}"
   countdown:
     announce: "§6§lDeathRun이 §e{0}§6§l초 후에 시작됩니다!"
     tick:     "§e§f{0}§e초 후 시작…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ §f{0}§c초 후 PVP가 활성화됩니다!"
     countdown: "§c⚔ PVP §f{0}§c초..."
     activated: "§c§l⚔ PVP가 활성화되었습니다!"
+    title:     "§c§l⚔ PVP 활성화！"
+    subtitle:  "§7플레이어가 서로 공격 가능"
   pause:
     paused:    "§e§l⏸ 게임 일시 정지."
     resumed:   "§a§l▶ 게임 재개."
     actionbar: "§e§l⏸  일시 정지  ⏸"
   end:
+    title:       "§6§l{0} §6§l승리！"
+    subtitle:    "§7거리: §f{1}m"
     header:      "§6§l══════ 결과 ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

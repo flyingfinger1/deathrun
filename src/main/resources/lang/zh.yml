@@ -82,6 +82,9 @@ cmd:
     status:       "显示当前配置"
 
 game:
+  start:
+    title:    "§a§l出发！"
+    subtitle: "§7方向：§f{0}"
   countdown:
     announce: "§6§lDeathRun 将在 §e{0} §6§l秒后开始！"
     tick:     "§e{0}§e 秒后开始…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP将在§f{0}§c秒后激活！"
     countdown: "§c⚔ PVP还有§f{0}§c秒..."
     activated: "§c§l⚔ PVP现已激活！"
+    title:     "§c§l⚔ PVP已激活！"
+    subtitle:  "§7玩家现在可以互相攻击"
   pause:
     paused:    "§e§l⏸ 游戏已暂停。"
     resumed:   "§a§l▶ 游戏已恢复。"
     actionbar: "§e§l⏸  已暂停  ⏸"
   end:
+    title:       "§6§l{0} §6§l获胜！"
+    subtitle:    "§7距离：§f{1}m"
     header:      "§6§l══════ 结果 ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

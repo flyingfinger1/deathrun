@@ -82,6 +82,9 @@ cmd:
     status:       "Toont huidige configuratie"
 
 game:
+  start:
+    title:    "§a§lGAAN!"
+    subtitle: "§7Richting §f{0}"
   countdown:
     announce: "§6§lDe Deathrun begint over §e{0} §6§lseconden!"
     tick:     "§eStarten over §f{0}§e…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP activeren over §f{0} §cseconden!"
     countdown: "§c⚔ PVP over §f{0}§c..."
     activated: "§c§l⚔ PVP is nu actief!"
+    title:     "§c§l⚔ PVP ACTIEF!"
+    subtitle:  "§7Spelers kunnen elkaar aanvallen"
   pause:
     paused:    "§e§l⏸ Spel gepauzeerd."
     resumed:   "§a§l▶ Spel hervat."
     actionbar: "§e§l⏸  GEPAUZEERD  ⏸"
   end:
+    title:       "§6§l{0} §6§lwint!"
+    subtitle:    "§7Afstand: §f{1}m"
     header:      "§6§l══════ RESULTATEN ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

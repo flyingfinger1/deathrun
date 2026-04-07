@@ -82,6 +82,9 @@ cmd:
     status:       "Visar aktuell konfiguration"
 
 game:
+  start:
+    title:    "§a§lSPRING!"
+    subtitle: "§7Riktning §f{0}"
   countdown:
     announce: "§6§lDeathRun startar om §e{0} §6§lsekunder!"
     tick:     "§eStartar om §f{0}§e…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP aktiveras om §f{0} §csekunder!"
     countdown: "§c⚔ PVP om §f{0}§c..."
     activated: "§c§l⚔ PVP är nu aktivt!"
+    title:     "§c§l⚔ PVP AKTIVT!"
+    subtitle:  "§7Spelare kan nu attackera varandra"
   pause:
     paused:    "§e§l⏸ Spel pausat."
     resumed:   "§a§l▶ Spel återupptaget."
     actionbar: "§e§l⏸  PAUSAT  ⏸"
   end:
+    title:       "§6§l{0} §6§lvinner!"
+    subtitle:    "§7Avstånd: §f{1}m"
     header:      "§6§l══════ RESULTAT ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

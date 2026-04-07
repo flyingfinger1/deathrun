@@ -82,6 +82,9 @@ cmd:
     status:       "Zobrazí aktuální konfiguraci"
 
 game:
+  start:
+    title:    "§a§lSTART!"
+    subtitle: "§7Směr §f{0}"
   countdown:
     announce: "§6§lDeathRun začíná za §e{0} §6§lvteřin!"
     tick:     "§eStart za §f{0}§e…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP se aktivuje za §f{0} §csekund!"
     countdown: "§c⚔ PVP za §f{0}§c..."
     activated: "§c§l⚔ PVP je nyní aktivní!"
+    title:     "§c§l⚔ PVP AKTIVNÍ!"
+    subtitle:  "§7Hráči se nyní mohou napadat"
   pause:
     paused:    "§e§l⏸ Hra pozastavena."
     resumed:   "§a§l▶ Hra obnovena."
     actionbar: "§e§l⏸  PAUZA  ⏸"
   end:
+    title:       "§6§l{0} §6§lvyhrává!"
+    subtitle:    "§7Vzdálenost: §f{1}m"
     header:      "§6§l══════ VÝSLEDKY ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

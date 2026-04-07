@@ -82,6 +82,9 @@ cmd:
     status:       "Mevcut yapılandırmayı gösterir"
 
 game:
+  start:
+    title:    "§a§lGİT!"
+    subtitle: "§7Yön: §f{0}"
   countdown:
     announce: "§6§lDeathRun §e{0} §6§lsaniye sonra başlıyor!"
     tick:     "§e§f{0}§e saniye sonra başlıyor…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP §f{0} §csaniye sonra aktif olacak!"
     countdown: "§c⚔ PVP §f{0}§c saniye..."
     activated: "§c§l⚔ PVP artık aktif!"
+    title:     "§c§l⚔ PVP AKTİF!"
+    subtitle:  "§7Oyuncular birbirine saldırabilir"
   pause:
     paused:    "§e§l⏸ Oyun duraklatıldı."
     resumed:   "§a§l▶ Oyun devam ediyor."
     actionbar: "§e§l⏸  DURAKLATILDI  ⏸"
   end:
+    title:       "§6§l{0} §6§lkazandı!"
+    subtitle:    "§7Mesafe: §f{1}m"
     header:      "§6§l══════ SONUÇLAR ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

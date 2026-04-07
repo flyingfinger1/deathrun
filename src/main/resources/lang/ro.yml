@@ -82,6 +82,9 @@ cmd:
     status:       "Afișează configurația actuală"
 
 game:
+  start:
+    title:    "§a§lSTART!"
+    subtitle: "§7Direcție §f{0}"
   countdown:
     announce: "§6§lDeathRun începe în §e{0} §6§lsecunde!"
     tick:     "§eStart în §f{0}§e…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP se activează în §f{0} §csecunde!"
     countdown: "§c⚔ PVP în §f{0}§c..."
     activated: "§c§l⚔ PVP este acum activ!"
+    title:     "§c§l⚔ PVP ACTIV!"
+    subtitle:  "§7Jucătorii se pot acum ataca"
   pause:
     paused:    "§e§l⏸ Joc pus pe pauză."
     resumed:   "§a§l▶ Joc reluat."
     actionbar: "§e§l⏸  PAUZĂ  ⏸"
   end:
+    title:       "§6§l{0} §6§lcâștigă!"
+    subtitle:    "§7Distanță: §f{1}m"
     header:      "§6§l══════ REZULTATE ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "

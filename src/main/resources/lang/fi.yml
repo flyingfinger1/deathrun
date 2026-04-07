@@ -82,6 +82,9 @@ cmd:
     status:       "Näyttää nykyisen kokoonpanon"
 
 game:
+  start:
+    title:    "§a§lLÄHTÖ!"
+    subtitle: "§7Suunta: §f{0}"
   countdown:
     announce: "§6§lDeathRun alkaa §e{0} §6§lsekunnin kuluttua!"
     tick:     "§eAlkaa §f{0}§e sekunnin kuluttua…"
@@ -94,11 +97,15 @@ game:
     announce:  "§c⚔ PVP aktivoituu §f{0} §csekuntin kuluttua!"
     countdown: "§c⚔ PVP §f{0}§c s..."
     activated: "§c§l⚔ PVP on nyt aktiivinen!"
+    title:     "§c§l⚔ PVP AKTIIVINEN!"
+    subtitle:  "§7Pelaajat voivat nyt hyökätä"
   pause:
     paused:    "§e§l⏸ Peli tauolla."
     resumed:   "§a§l▶ Peli jatkuu."
     actionbar: "§e§l⏸  TAUKO  ⏸"
   end:
+    title:       "§6§l{0} §6§lvoittaa!"
+    subtitle:    "§7Matka: §f{1}m"
     header:      "§6§l══════ TULOKSET ══════"
     entry:       "{0}#{1} §f{2} §7– {3}m"
     goto-prefix: "§6» "
