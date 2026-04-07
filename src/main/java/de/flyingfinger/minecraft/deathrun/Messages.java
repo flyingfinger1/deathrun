@@ -69,14 +69,23 @@ public final class Messages {
         }
     }
 
-    /** Extrahiert lang/<language>.yml aus dem JAR (falls noch nicht vorhanden) und lädt sie. */
+    /**
+     * Extrahiert lang/<language>.yml aus dem JAR und lädt sie.
+     *
+     * Bundled-Sprachen (im JAR enthalten) werden bei jedem Plugin-Start
+     * überschrieben, damit neue Keys (z.B. {4} in tablist.entry) auf dem
+     * Server immer aktuell sind. Eigene Dateien, die nicht im JAR liegen,
+     * werden nur angelegt, nie überschrieben.
+     */
     private static String extractAndLoad(Plugin plugin, String language) {
         File langDir  = new File(plugin.getDataFolder(), "lang");
         File langFile = new File(langDir, language + ".yml");
 
-        if (!langFile.exists()) {
-            InputStream resource = plugin.getResource("lang/" + language + ".yml");
-            if (resource == null) return null;
+        InputStream resource = plugin.getResource("lang/" + language + ".yml");
+        boolean isBundled = resource != null;
+
+        if (isBundled) {
+            // Bundled-Datei immer aus dem JAR überschreiben (hält Keys aktuell)
             langDir.mkdirs();
             try (InputStream in = resource; OutputStream out = new FileOutputStream(langFile)) {
                 in.transferTo(out);
@@ -84,15 +93,12 @@ public final class Messages {
                 plugin.getLogger().severe("Sprachdatei konnte nicht gespeichert werden: " + e.getMessage());
                 return null;
             }
+        } else if (!langFile.exists()) {
+            // Benutzerdefinierte Datei: nur anlegen, nie überschreiben
+            return null;
         }
 
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(langFile);
-        // JAR-Defaults einblenden, damit neue Keys automatisch ergänzt werden
-        InputStream def = plugin.getResource("lang/" + language + ".yml");
-        if (def != null) {
-            cfg.setDefaults(YamlConfiguration.loadConfiguration(
-                new InputStreamReader(def, StandardCharsets.UTF_8)));
-        }
         cache.put(language, cfg);
         return language;
     }
