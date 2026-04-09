@@ -159,18 +159,35 @@ public final class Messages {
 
     // ── Public API ───────────────────────────────────────────────────────
 
-    /** Default language – for broadcasts, console, and non-player contexts. */
+    /**
+     * Returns a localized string using the default language (for broadcasts, console, and non-player contexts).
+     * @param key  the message key
+     * @param args placeholder values in order
+     * @return formatted localized string
+     */
     public static String str(String key, Object... args) {
         return format(getLang(defaultLang), key, args);
     }
 
-    /** Player-specific language (client locale in auto mode, otherwise default language). */
+    /**
+     * Returns a localized string using the player's language (client locale in auto mode, otherwise default language).
+     * @param player the player whose language is used (may be {@code null})
+     * @param key    the message key
+     * @param args   placeholder values in order
+     * @return formatted localized string
+     */
     public static String str(Player player, String key, Object... args) {
         if (player == null) return str(key, args);
         return format(getLang(playerLang(player)), key, args);
     }
 
-    /** CommandSender: player locale if available, otherwise default language. */
+    /**
+     * Returns a localized string using the sender's language (player locale if available, otherwise default language).
+     * @param sender the command sender whose language is used
+     * @param key    the message key
+     * @param args   placeholder values in order
+     * @return formatted localized string
+     */
     public static String str(CommandSender sender, String key, Object... args) {
         if (sender instanceof Player p) return str(p, key, args);
         return str(key, args);
@@ -208,6 +225,9 @@ public final class Messages {
         return LegacyComponentSerializer.legacySection().deserialize(str(sender, key, args));
     }
 
-    /** @return {@code true} if the client locale is used per player */
+    /**
+     * Returns whether the per-player client locale is active.
+     * @return {@code true} if the client locale is used per player
+     */
     public static boolean isAutoMode() { return autoMode; }
 }

@@ -15,6 +15,9 @@ import java.util.*;
  */
 public class TablistManager {
 
+    /** Creates a new TablistManager instance. */
+    public TablistManager() {}
+
     /**
      * Updates the {@code playerListName} of all participants in the tab list.
      * Shows rank, name, distance, status icon, and heart display.

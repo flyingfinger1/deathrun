@@ -11,6 +11,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class DeathrunPlugin extends JavaPlugin implements Listener {
 
+    /** Creates the plugin instance. Called by the Bukkit plugin loader. */
+    public DeathrunPlugin() {}
+
     private GameManager gameManager;
 
     /** Called when the plugin is enabled. Loads configuration and starts all subsystems. */
@@ -62,6 +65,9 @@ public class DeathrunPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    /** @return the central {@link GameManager} instance of this plugin */
+    /**
+     * Returns the central {@link GameManager} instance of this plugin.
+     * @return the central {@link GameManager} instance of this plugin
+     */
     public GameManager getGameManager() { return gameManager; }
 }

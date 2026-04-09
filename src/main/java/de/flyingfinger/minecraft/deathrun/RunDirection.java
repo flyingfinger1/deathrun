@@ -7,9 +7,23 @@ import org.bukkit.Material;
  * Contains helper methods for distance and position calculation relative to the start line.
  */
 public enum RunDirection {
-    NORTH, SOUTH, EAST, WEST;
+    /** Players run toward decreasing Z (negative Z axis). */
+    NORTH,
+    /** Players run toward increasing Z (positive Z axis). */
+    SOUTH,
+    /** Players run toward increasing X (positive X axis). */
+    EAST,
+    /** Players run toward decreasing X (negative X axis). */
+    WEST;
 
-    /** How many blocks the player is from the start in the run direction (positive = forward). */
+    /**
+     * Returns how many blocks the player is from the start in the run direction (positive = forward).
+     * @param startX X coordinate of the start point
+     * @param startZ Z coordinate of the start point
+     * @param curX   current X coordinate of the player
+     * @param curZ   current Z coordinate of the player
+     * @return forward distance in blocks (positive = ahead of start)
+     */
     public double getForwardDistance(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH -> startZ - curZ;  // -Z = north
@@ -19,7 +33,14 @@ public enum RunDirection {
         };
     }
 
-    /** Lateral deviation from the corridor center (positive = right, negative = left). */
+    /**
+     * Returns the lateral deviation from the corridor center (positive = right, negative = left).
+     * @param startX X coordinate of the start point
+     * @param startZ Z coordinate of the start point
+     * @param curX   current X coordinate of the player
+     * @param curZ   current Z coordinate of the player
+     * @return lateral deviation in blocks (positive = right, negative = left)
+     */
     public double getLateralDeviation(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH, SOUTH -> curX - startX;
@@ -27,7 +48,14 @@ public enum RunDirection {
         };
     }
 
-    /** WorldBorder center X for this player (follows in the forward direction). */
+    /**
+     * Returns the WorldBorder center X coordinate for this player (follows in the forward direction).
+     * @param startX X coordinate of the start point
+     * @param startZ Z coordinate of the start point
+     * @param curX   current X coordinate of the player
+     * @param curZ   current Z coordinate of the player
+     * @return WorldBorder center X coordinate
+     */
     public double getBorderCenterX(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH, SOUTH -> startX;
@@ -35,7 +63,14 @@ public enum RunDirection {
         };
     }
 
-    /** WorldBorder center Z for this player (follows in the forward direction). */
+    /**
+     * Returns the WorldBorder center Z coordinate for this player (follows in the forward direction).
+     * @param startX X coordinate of the start point
+     * @param startZ Z coordinate of the start point
+     * @param curX   current X coordinate of the player
+     * @param curZ   current Z coordinate of the player
+     * @return WorldBorder center Z coordinate
+     */
     public double getBorderCenterZ(double startX, double startZ, double curX, double curZ) {
         return switch (this) {
             case NORTH, SOUTH -> curZ;
@@ -43,7 +78,10 @@ public enum RunDirection {
         };
     }
 
-    /** Lang key for the localized direction name. */
+    /**
+     * Returns the lang key for the localized direction name.
+     * @return message key for this direction's localized name
+     */
     public String getLangKey() {
         return switch (this) {
             case NORTH -> "direction.north";
@@ -53,12 +91,18 @@ public enum RunDirection {
         };
     }
 
-    /** Glass color for the cage wall in the run direction. */
+    /**
+     * Returns the glass color used for the cage wall facing the run direction.
+     * @return indicator material for the run-direction cage wall
+     */
     public Material getIndicatorMaterial() {
         return Material.LIME_STAINED_GLASS;
     }
 
-    /** Default material for all non-indicator cage walls (plain glass). */
+    /**
+     * Returns the default material for all non-indicator cage walls (plain glass).
+     * @return material used for the remaining cage walls
+     */
     public Material getWallMaterial() {
         return Material.GLASS;
     }

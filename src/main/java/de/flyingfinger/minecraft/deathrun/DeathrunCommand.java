@@ -20,6 +20,7 @@ public class DeathrunCommand implements CommandExecutor, TabCompleter {
     private final GameManager gm;
 
     /**
+     * Creates a new command handler backed by the given GameManager.
      * @param gm the central GameManager instance to which commands are delegated
      */
     public DeathrunCommand(GameManager gm) {

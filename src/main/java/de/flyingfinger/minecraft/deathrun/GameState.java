@@ -10,8 +10,12 @@ package de.flyingfinger.minecraft.deathrun;
  * </ul>
  */
 public enum GameState {
+    /** No active game; the lobby scoreboard is running. */
     IDLE,
+    /** Countdown is running; players are standing in the cage. */
     STARTING,
+    /** The race is active. */
     RUNNING,
+    /** The game has finished; results are being displayed. */
     ENDED
 }

@@ -39,6 +39,7 @@ public class GameListener implements Listener {
     private final DeathrunPlugin plugin;
 
     /**
+     * Creates a new event listener connected to the given GameManager.
      * @param gm     the central GameManager
      * @param plugin the plugin instance (for deferred tasks)
      */
@@ -49,7 +50,10 @@ public class GameListener implements Listener {
 
     // ── Death ───────────────────────────────────────────────────────────────────
 
-    /** Handles the death of a player during the running race. Suppresses the default death message. */
+    /**
+     * Handles the death of a player during the running race. Suppresses the default death message.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
@@ -64,7 +68,10 @@ public class GameListener implements Listener {
         event.deathMessage(null);  // No default death message
     }
 
-    /** Sets the respawn point to spawn and transitions the player to spectator mode in the next tick. */
+    /**
+     * Sets the respawn point to spawn and transitions the player to spectator mode in the next tick.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
@@ -83,7 +90,10 @@ public class GameListener implements Listener {
 
     // ── Disable regeneration ────────────────────────────────────────────────────
 
-    /** Prevents natural health regeneration for living players during the race. */
+    /**
+     * Prevents natural health regeneration for living players during the race.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHealthRegen(EntityRegainHealthEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -95,7 +105,10 @@ public class GameListener implements Listener {
         event.setCancelled(true); // No healing during the race
     }
 
-    /** Keeps saturation at 0 so the regeneration mechanic cannot be triggered by eating. */
+    /**
+     * Keeps saturation at 0 so the regeneration mechanic cannot be triggered by eating.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFoodChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -112,7 +125,10 @@ public class GameListener implements Listener {
 
     // ── Block protection ──────────────────────────────────────────────────────────
 
-    /** Protects cage blocks from being broken; locks block interaction during pause. */
+    /**
+     * Protects cage blocks from being broken; locks block interaction during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         // Always protect cage blocks (for all players, at all times)
@@ -126,7 +142,10 @@ public class GameListener implements Listener {
         }
     }
 
-    /** Protects cage blocks from being placed on; locks block interaction during pause. */
+    /**
+     * Protects cage blocks from being placed on; locks block interaction during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         // Always protect cage blocks (for all players, at all times)
@@ -142,7 +161,10 @@ public class GameListener implements Listener {
 
     // ── Pause: inventory, eating, crafting locked ──────────────────────────────
 
-    /** Locks inventory clicks for in-game players during pause. */
+    /**
+     * Locks inventory clicks for in-game players during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (!gm.isPaused()) return;
@@ -151,7 +173,10 @@ public class GameListener implements Listener {
         event.setCancelled(true);
     }
 
-    /** Locks inventory drag for in-game players during pause. */
+    /**
+     * Locks inventory drag for in-game players during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
         if (!gm.isPaused()) return;
@@ -160,7 +185,10 @@ public class GameListener implements Listener {
         event.setCancelled(true);
     }
 
-    /** Prevents consuming items (potions, food) during pause. */
+    /**
+     * Prevents consuming items (potions, food) during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         if (!gm.isPaused()) return;
@@ -169,7 +197,10 @@ public class GameListener implements Listener {
     }
 
     // No item use (ender pearls, fishing rods, potions, buckets …)
-    /** Prevents right-click actions (item use) for in-game players during pause. */
+    /**
+     * Prevents right-click actions (item use) for in-game players during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         if (!gm.isPaused()) return;
@@ -182,7 +213,10 @@ public class GameListener implements Listener {
     }
 
     // No projectiles (arrows, snowballs, tridents …)
-    /** Prevents in-game players from launching projectiles during pause. */
+    /**
+     * Prevents in-game players from launching projectiles during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProjectile(ProjectileLaunchEvent event) {
         if (!gm.isPaused()) return;
@@ -192,7 +226,10 @@ public class GameListener implements Listener {
     }
 
     // No item dropping
-    /** Prevents in-game players from dropping items during pause. */
+    /**
+     * Prevents in-game players from dropping items during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent event) {
         if (!gm.isPaused()) return;
@@ -201,7 +238,10 @@ public class GameListener implements Listener {
     }
 
     // No item picking up
-    /** Prevents in-game players from picking up items during pause. */
+    /**
+     * Prevents in-game players from picking up items during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPickup(EntityPickupItemEvent event) {
         if (!gm.isPaused()) return;
@@ -211,7 +251,10 @@ public class GameListener implements Listener {
     }
 
     // No entering boats/minecarts (bypasses the movement freeze)
-    /** Prevents entering vehicles (boat, minecart) during pause. */
+    /**
+     * Prevents entering vehicles (boat, minecart) during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVehicleEnter(VehicleEnterEvent event) {
         if (!gm.isPaused()) return;
@@ -222,7 +265,10 @@ public class GameListener implements Listener {
 
     // ── Pause: freeze movement ────────────────────────────────────────────
 
-    /** Freezes the horizontal movement of living in-game players during pause; vertical falling remains allowed. */
+    /**
+     * Freezes the horizontal movement of living in-game players during pause; vertical falling remains allowed.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(PlayerMoveEvent event) {
         if (!gm.isPaused()) return;
@@ -244,7 +290,10 @@ public class GameListener implements Listener {
 
     // ── No damage after game end + pause ───────────────────────────────────
 
-    /** Suppresses damage after game end and for in-game players during pause. */
+    /**
+     * Suppresses damage after game end and for in-game players during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         // After game end: no damage for players
@@ -259,7 +308,10 @@ public class GameListener implements Listener {
 
     // ── Mobs do not attack after game end + pause ──────────────────────────
 
-    /** Disables mob targeting of players after game end and during pause. */
+    /**
+     * Disables mob targeting of players after game end and during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobTarget(EntityTargetLivingEntityEvent event) {
         // After game end: disable mobs targeting players
@@ -274,7 +326,10 @@ public class GameListener implements Listener {
 
     // ── Pause: game participants may not attack ───────────────────────
 
-    /** Prevents attacks by in-game players during pause. */
+    /**
+     * Prevents attacks by in-game players during pause.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAttackDuringPause(EntityDamageByEntityEvent event) {
         if (!gm.isPaused()) return;
@@ -285,7 +340,10 @@ public class GameListener implements Listener {
 
     // ── PVP control (always active during the race) ────────────────────────
 
-    /** Blocks PVP between in-game players as long as the PVP delay has not yet expired. */
+    /**
+     * Blocks PVP between in-game players as long as the PVP delay has not yet expired.
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPvp(EntityDamageByEntityEvent event) {
         if (gm.getState() != GameState.RUNNING) return;
@@ -301,6 +359,7 @@ public class GameListener implements Listener {
     /**
      * Checks at login whether the player is permitted in the current game phase.
      * Admins (OP or {@code deathrun.admin}) can always join.
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onLogin(PlayerLoginEvent event) {
@@ -328,7 +387,10 @@ public class GameListener implements Listener {
 
     // ── Join ──────────────────────────────────────────────────────────────────
 
-    /** Delegates a player's join to the GameManager in the next tick. */
+    /**
+     * Delegates a player's join to the GameManager in the next tick.
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         // Execute in the next tick so the player is fully loaded
@@ -338,7 +400,10 @@ public class GameListener implements Listener {
 
     // ── Disconnect ────────────────────────────────────────────────────────────
 
-    /** Delegates a player's departure to the GameManager. */
+    /**
+     * Delegates a player's departure to the GameManager.
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         gm.handleQuit(event.getPlayer());

@@ -494,7 +494,11 @@ public class GameManager {
 
     // ── Death ───────────────────────────────────────────────────────────────────
 
-    /** Called from GameListener when a player dies during the race. */
+    /**
+     * Called from GameListener when a player dies during the race.
+     * @param player   the player who died
+     * @param deathLoc the location where the player died
+     */
     public void handleDeath(Player player, Location deathLoc) {
         PlayerData pd = players.get(player.getUniqueId());
         if (pd == null || !pd.isAlive()) return;
@@ -512,7 +516,10 @@ public class GameManager {
         checkEndCondition();
     }
 
-    /** After respawn: set player to spectator mode. */
+    /**
+     * After respawn: set player to spectator mode.
+     * @param player the player who just respawned
+     */
     public void handleRespawn(Player player) {
         PlayerData pd = players.get(player.getUniqueId());
         if (pd == null || pd.isAlive()) return;
@@ -783,7 +790,10 @@ public class GameManager {
 
     // ── Join ──────────────────────────────────────────────────────────────────
 
-    /** Called when a player joins the server (next tick after join). */
+    /**
+     * Called when a player joins the server (next tick after join).
+     * @param player the player who joined
+     */
     public void handleJoin(Player player) {
         UUID uuid = player.getUniqueId();
 
@@ -1017,17 +1027,36 @@ public class GameManager {
 
     // ── Getters ────────────────────────────────────────────────────────────────
 
-    /** @return current game state */
+    /**
+     * Returns the current game state.
+     * @return current game state
+     */
     public GameState getState()  { return state; }
-    /** @return {@code true} if the game is currently paused */
+    /**
+     * Returns whether the game is currently paused.
+     * @return {@code true} if the game is currently paused
+     */
     public boolean isPaused()       { return paused; }
-    /** @return {@code true} if PVP is enabled in the configuration */
+    /**
+     * Returns whether PvP is enabled in the configuration.
+     * @return {@code true} if PVP is enabled in the configuration
+     */
     public boolean isPvpEnabled()   { return pvpEnabled; }
-    /** PVP is currently active: only during RUNNING, after the delay has expired, and not while paused. */
+    /**
+     * Returns whether PvP is currently active (running, not paused, after delay).
+     * PVP is only active during RUNNING state, after the delay has expired, and not while paused.
+     * @return {@code true} if PVP is currently active
+     */
     public boolean isPvpActive()    { return pvpActive && !paused; }
-    /** @return {@code true} if a maximum time limit is configured */
+    /**
+     * Returns whether a maximum time limit is configured.
+     * @return {@code true} if a maximum time limit is configured
+     */
     public boolean hasTimeLimit()   { return maxTimeSeconds > 0; }
-    /** @return configured time limit in seconds (0 = unlimited) */
+    /**
+     * Returns the configured time limit in seconds.
+     * @return configured time limit in seconds (0 = unlimited)
+     */
     public int getMaxTimeSeconds()  { return maxTimeSeconds; }
 
     /**
@@ -1048,7 +1077,10 @@ public class GameManager {
         return Math.max(0, maxTimeSeconds - getElapsedSeconds());
     }
 
-    /** @return formatted timer string for the sidebar (default language) */
+    /**
+     * Returns a formatted timer string for the sidebar (default language).
+     * @return formatted timer string for the sidebar (default language)
+     */
     public String getTimerDisplay() {
         return getTimerDisplay(null);
     }
@@ -1071,27 +1103,60 @@ public class GameManager {
             : "§c";
         return color + String.format("%02d:%02d", secs / 60, secs % 60);
     }
-    /** @return measurement point at the outer edge of the cage start wall, or {@code null} if not set */
+    /**
+     * Returns the measurement start point at the outer edge of the cage start wall.
+     * @return measurement point at the outer edge of the cage start wall, or {@code null} if not set
+     */
     public Location getStartLocation()    { return startLocation; }
-    /** @return spawn position in the center of the cage, or {@code null} if no cage has been built */
+    /**
+     * Returns the spawn position in the center of the cage.
+     * @return spawn position in the center of the cage, or {@code null} if no cage has been built
+     */
     public Location getSpawnLocation()    { return spawnLocation; }
-    /** @return last known position of the winner after game end, or {@code null} */
+    /**
+     * Returns the last known winner position after game end.
+     * @return last known position of the winner after game end, or {@code null}
+     */
     public Location getWinnerLocation()   { return winnerLocation; }
-    /** @return {@code true} if non-admin players are allowed to join */
+    /**
+     * Returns whether non-admin players are allowed to join.
+     * @return {@code true} if non-admin players are allowed to join
+     */
     public boolean isServerOpen()         { return serverOpen; }
-    /** @return {@code true} if a cage has been built (spawn location present) */
+    /**
+     * Returns whether a cage has been built (spawn location present).
+     * @return {@code true} if a cage has been built (spawn location present)
+     */
     public boolean isCageBuilt()          { return spawnLocation != null; }
-    /** @return displayed server name (for scoreboard title) */
+    /**
+     * Returns the displayed server name used for the scoreboard title.
+     * @return displayed server name (for scoreboard title)
+     */
     public String  getServerName()        { return serverName; }
-    /** @return final result list sorted descending by distance (empty if no game has ended) */
+    /**
+     * Returns the final result list sorted descending by distance.
+     * @return final result list sorted descending by distance (empty if no game has ended)
+     */
     public List<PlayerData> getResults()  { return finalResults; }
-    /** @return configured run direction */
+    /**
+     * Returns the configured run direction.
+     * @return configured run direction
+     */
     public RunDirection getDirection() { return direction; }
-    /** @return half WorldBorder width in blocks */
+    /**
+     * Returns the half WorldBorder width in blocks.
+     * @return half WorldBorder width in blocks
+     */
     public int getCorridorWidth() { return corridorWidth; }
-    /** @return all participants of the current game (UUID → PlayerData) */
+    /**
+     * Returns all participants of the current game.
+     * @return all participants of the current game (UUID → PlayerData)
+     */
     public Map<UUID, PlayerData> getPlayers() { return players; }
-    /** @return all protected cage block positions */
+    /**
+     * Returns all protected cage block positions.
+     * @return all protected cage block positions
+     */
     public Set<Location> getCageLocations() { return cageLocations; }
     /**
      * Checks whether a player is registered as a participant of the current game.

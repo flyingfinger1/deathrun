@@ -18,14 +18,22 @@ import java.util.Set;
 /**
  * Creates, opens, closes, and removes the glass start cage in the game world.
  * Saves a block snapshot before building so the original world
- * can be restored by {@link #removeCage(java.util.Set)}.
+ * can be restored by {@link #removeCage(Set)}.
  */
 public class CageBuilder {
+
+    /** Creates a new CageBuilder instance. */
+    public CageBuilder() {}
 
     private static final int FLOOR_DEPTH  = 3; // floor depth in blocks
     private static final int CAGE_SCALE   = 3; // cage is 3x as wide as cage-radius
 
-    /** Effective radius in blocks (for external calculation of the measurement point). */
+    /**
+     * Effective radius in blocks (for external calculation of the measurement point).
+     *
+     * @param baseRadius the configured cage radius
+     * @return the effective radius in blocks ({@code baseRadius * CAGE_SCALE})
+     */
     public static int getEffectiveRadius(int baseRadius) { return baseRadius * CAGE_SCALE; }
 
     private final Set<Location>           builtLocations       = new HashSet<>();
@@ -36,17 +44,27 @@ public class CageBuilder {
     /** Player foot level (cy) – used as fallback in removeCage without snapshot. */
     private int cageBaseY = 0;
 
-    /** Returns the blocks removed during the last openCage() call. */
+    /**
+     * Returns the blocks removed during the last {@link #openCage()} call.
+     *
+     * @return a copy of the last removed locations
+     */
     public Set<Location> getLastRemovedLocations() { return new HashSet<>(lastRemovedLocations); }
 
     /**
      * Builds a glass cage at the start position.
-     * - Snapshot of existing blocks is saved beforehand (for /dr removecage).
-     * - Floor: Reinforced Deepslate, 3 blocks deep
-     * - Walls: plain glass
-     * - Wall in run direction: lime glass
-     * - Ceiling: plain glass
-     * Returns all built block positions (for protection).
+     * <ul>
+     *   <li>Snapshot of existing blocks is saved beforehand (for /dr removecage).</li>
+     *   <li>Floor: Reinforced Deepslate, {@value FLOOR_DEPTH} blocks deep</li>
+     *   <li>Walls: plain glass</li>
+     *   <li>Wall in run direction: lime glass (direction indicator)</li>
+     *   <li>Ceiling: plain glass</li>
+     * </ul>
+     *
+     * @param center the cage centre (player foot position)
+     * @param radius the configured cage radius (effective width = radius * {@value CAGE_SCALE})
+     * @param dir    the run direction (determines which wall gets the lime glass indicator)
+     * @return all built block positions (used for block protection)
      */
     public Set<Location> buildCage(Location center, int radius, RunDirection dir) {
         builtLocations.clear();
@@ -166,6 +184,12 @@ public class CageBuilder {
      * Changes the direction indicator (lime glass wall) to a new direction,
      * without rebuilding the entire cage.
      * Called after /dr setdirection when the cage is already built.
+     *
+     * @param cx     cage centre X coordinate
+     * @param cy     cage centre Y coordinate (player foot level)
+     * @param cz     cage centre Z coordinate
+     * @param radius the configured cage radius
+     * @param newDir the new run direction
      */
     public void changeDirection(int cx, int cy, int cz, int radius, RunDirection newDir) {
         if (builtLocations.isEmpty()) return;
@@ -214,7 +238,13 @@ public class CageBuilder {
      * Restores the internal state after a server restart.
      * The blocks already exist in the world – only the location sets
      * are recalculated, without changing any world content.
-     * No snapshot available after restart → removeCage() falls back to AIR fallback.
+     * No snapshot is available after restart, so {@link #removeCage(Set)} falls back
+     * to the grass/dirt/air fallback.
+     *
+     * @param spawnCenter the cage centre (spawn location stored in config)
+     * @param radius      the configured cage radius
+     * @param dir         the run direction (to identify indicator locations)
+     * @return the reconstructed set of all cage block positions
      */
     public Set<Location> restoreState(Location spawnCenter, int radius, RunDirection dir) {
         builtLocations.clear();
@@ -267,7 +297,10 @@ public class CageBuilder {
 
     /**
      * Removes all blocks built by the plugin and restores the original world.
-     * If a snapshot is available, the original blocks are restored.
+     * If a snapshot is available, the exact original blocks are restored.
+     * Otherwise a grass/dirt/air fallback is applied.
+     *
+     * @param locations the set of cage block positions to clear
      */
     public void removeCage(Set<Location> locations) {
         if (!snapshot.isEmpty()) {

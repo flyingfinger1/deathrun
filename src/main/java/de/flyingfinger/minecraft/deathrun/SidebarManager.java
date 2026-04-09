@@ -17,6 +17,9 @@ import java.util.*;
  */
 public class SidebarManager {
 
+    /** Creates a new SidebarManager instance. */
+    public SidebarManager() {}
+
     private static final String[] SLOTS = Arrays.stream(ChatColor.values())
             .map(ChatColor::toString)
             .toArray(String[]::new);
@@ -38,7 +41,12 @@ public class SidebarManager {
         });
     }
 
-    /** Initializes the scoreboards for the starting phase (countdown). */
+    /**
+     * Initializes the scoreboards for the starting phase (countdown).
+     *
+     * @param players    all participants
+     * @param serverName the server name displayed as the scoreboard title
+     */
     public void setupStarting(Collection<PlayerData> players, String serverName) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -56,7 +64,12 @@ public class SidebarManager {
         }
     }
 
-    /** Updates the countdown scoreboard (STARTING phase). */
+    /**
+     * Updates the countdown scoreboard (STARTING phase).
+     *
+     * @param players          all participants
+     * @param remainingSeconds seconds remaining until race start
+     */
     public void updateStarting(Collection<PlayerData> players, int remainingSeconds) {
         for (PlayerData pd : players) {
             Player viewer = Bukkit.getPlayer(pd.getUuid());
@@ -84,7 +97,12 @@ public class SidebarManager {
         }
     }
 
-    /** Initializes the player scoreboards for all participants at the start of the race. */
+    /**
+     * Initializes the player scoreboards for all participants at the start of the race.
+     *
+     * @param players    all participants
+     * @param serverName the server name displayed as the scoreboard title
+     */
     public void setup(Collection<PlayerData> players, String serverName) {
         for (PlayerData pd : players) {
             Player p = Bukkit.getPlayer(pd.getUuid());
@@ -93,7 +111,13 @@ public class SidebarManager {
         }
     }
 
-    /** Sets up the scoreboard for a single player (also for late joiners). */
+    /**
+     * Sets up the scoreboard for a single player (also used for reconnecting players).
+     *
+     * @param pd         the player's data
+     * @param p          the online player instance
+     * @param serverName the server name displayed as the scoreboard title
+     */
     public void setupPlayerBoard(PlayerData pd, Player p, String serverName) {
         Scoreboard sb = getOrCreateBoard(pd, p);
         p.setScoreboard(sb);
@@ -242,7 +266,13 @@ public class SidebarManager {
 
     // ── End board (ENDED) ─────────────────────────────────────────────────────
 
-    /** Called once when the game ends – builds the end boards. */
+    /**
+     * Called once when the game ends – builds the end scoreboards for all participants.
+     *
+     * @param sorted     player list sorted descending by distance
+     * @param allPlayers all participants (UUID → PlayerData)
+     * @param serverName the server name displayed as the scoreboard title
+     */
     public void setupEnded(List<PlayerData> sorted, Map<UUID, PlayerData> allPlayers, String serverName) {
         // Convert game boards into end boards
         for (PlayerData pd : allPlayers.values()) {
@@ -252,7 +282,13 @@ public class SidebarManager {
         }
     }
 
-    /** Called by the lobby task to keep end boards up to date. */
+    /**
+     * Called by the lobby task to keep end scoreboards up to date.
+     *
+     * @param sorted     player list sorted descending by distance
+     * @param allPlayers all participants (UUID → PlayerData)
+     * @param gm         reference to the GameManager for timer and state
+     */
     public void updateEnded(List<PlayerData> sorted, Map<UUID, PlayerData> allPlayers, GameManager gm) {
         String winnerName = sorted.isEmpty() ? "?" : sorted.get(0).getName();
 
@@ -305,7 +341,11 @@ public class SidebarManager {
         lobbyObjs.clear();
     }
 
-    /** Removes a single player from the scoreboard system (e.g. disconnect during countdown). */
+    /**
+     * Removes a single player from the scoreboard system (e.g. disconnect during countdown).
+     *
+     * @param pd the player data of the player to remove
+     */
     public void removePlayer(PlayerData pd) {
         boards.remove(pd.getUuid());
         sidebarObjs.remove(pd.getUuid());
