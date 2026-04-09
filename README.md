@@ -1,5 +1,9 @@
 # Deathrun Plugin
 
+[![JavaDoc](https://img.shields.io/badge/JavaDoc-latest-blue)](https://flyingfinger1.github.io/deathrun/)
+[![Release](https://img.shields.io/github/v/release/flyingfinger1/deathrun)](https://github.com/flyingfinger1/deathrun/releases/latest)
+[![License](https://img.shields.io/github/license/flyingfinger1/deathrun)](LICENSE)
+
 A Minecraft Deathrun plugin for **Paper 1.21.8**. Players race in one cardinal direction — every heart lost is permanent, the corridor is enforced by a moving WorldBorder, and the scoreboard tracks live distances for all participants.
 
 ## Concept
