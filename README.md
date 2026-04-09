@@ -128,9 +128,9 @@ When `pvp: true` is set, PvP is **not** active immediately at race start. The de
 
 PvP is only ever active during an **active, unpaused race**. It is automatically disabled before the race, during pause, and after the game ends. The delay timer also pauses when the game is paused and resumes on unpause. Set `pvp-delay: 0` to activate PvP immediately at the GO signal.
 
-## Day/Night Cycle
+## Day/Night & Weather Cycle
 
-The day/night cycle is controlled automatically:
+The day/night and weather cycles are controlled automatically:
 
 | State | Cycle |
 |-------|-------|
@@ -201,7 +201,7 @@ The server list entry changes automatically based on game state (text follows th
 
 - Movement locked (vertical movement still allowed)
 - No damage, no mob targeting
-- Day/night cycle frozen
+- Day/night and weather cycle frozen
 - PvP delay timer frozen
 - All inventory interaction, item use, attacking, projectiles, drops, pickups and block placing/breaking blocked
 - Visible `⏸ PAUSE` action bar for all participants
