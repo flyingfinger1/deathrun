@@ -1,8 +1,5 @@
 package de.flyingfinger.minecraft.deathrun;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -57,8 +54,7 @@ public class SidebarManager {
             Objective existing = sb.getObjective("dr_side");
             if (existing != null) existing.unregister();
 
-            Objective obj = sb.registerNewObjective("dr_side", Criteria.DUMMY,
-                Component.text(serverName, NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+            Objective obj = sb.registerNewObjective("dr_side", "dummy", "§6§l" + serverName);
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
             sidebarObjs.put(pd.getUuid(), obj);
         }
@@ -132,11 +128,10 @@ public class SidebarManager {
         Objective oldTab = sb.getObjective("dr_tab");
         if (oldTab != null) oldTab.unregister();
 
-        Objective sidebar = sb.registerNewObjective("dr_side", Criteria.DUMMY,
-            Component.text(serverName, NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+        Objective sidebar = sb.registerNewObjective("dr_side", "dummy", "§6§l" + serverName);
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        Objective tab = sb.registerNewObjective("dr_tab", Criteria.DUMMY, Component.empty());
+        Objective tab = sb.registerNewObjective("dr_tab", "dummy", "");
         tab.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
         sidebarObjs.put(pd.getUuid(), sidebar);
@@ -224,8 +219,7 @@ public class SidebarManager {
 
             Objective obj = sb.getObjective("dr_lobby");
             if (obj == null) {
-                obj = sb.registerNewObjective("dr_lobby", Criteria.DUMMY,
-                    Component.text(gm.getServerName(), NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+                obj = sb.registerNewObjective("dr_lobby", "dummy", "§6§l" + gm.getServerName());
                 obj.setDisplaySlot(DisplaySlot.SIDEBAR);
                 lobbyObjs.put(uuid, obj);
             }
@@ -381,7 +375,7 @@ public class SidebarManager {
         String entry = SLOTS[score];
         Team   team  = sb.registerNewTeam("l" + score);
         team.addEntry(entry);
-        team.prefix(Component.text(content));
+        team.setPrefix(content);
         obj.getScore(entry).setScore(score);
         return score - 1;
     }

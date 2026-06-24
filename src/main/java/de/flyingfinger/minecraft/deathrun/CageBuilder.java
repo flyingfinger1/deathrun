@@ -112,7 +112,7 @@ public class CageBuilder {
         for (int x = cx - r; x <= cx + r; x++) {
             for (int z = cz - r; z <= cz + r; z++) {
                 for (int dy = 1; dy <= FLOOR_DEPTH; dy++) {
-                    setBlock(world, x, cy - dy, z, Material.REINFORCED_DEEPSLATE);
+                    setBlock(world, x, cy - dy, z, Material.OBSIDIAN);
                 }
                 // Ceiling
                 setBlock(world, x, cy + height, z, Material.GLASS);
