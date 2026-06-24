@@ -3,10 +3,10 @@
 [![JavaDoc](https://img.shields.io/badge/JavaDoc-latest-blue)](https://flyingfinger1.github.io/deathrun/)
 [![Release](https://img.shields.io/github/v/release/flyingfinger1/deathrun)](https://github.com/flyingfinger1/deathrun/releases/latest)
 [![License](https://img.shields.io/github/license/flyingfinger1/deathrun)](LICENSE)
-[![Paper](https://img.shields.io/badge/Paper-1.21.8-f96854)](https://papermc.io)
+[![Paper](https://img.shields.io/badge/Paper-1.20.2%2B-f96854)](https://papermc.io)
 [![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)](https://adoptium.net)
 
-A Minecraft Deathrun plugin for **Paper 1.21.8**. Players race in one cardinal direction — every heart lost is permanent, the corridor is enforced by a moving WorldBorder, and the scoreboard tracks live distances for all participants.
+A Minecraft Deathrun plugin for **Paper 1.20.2+**. Players race in one cardinal direction — every heart lost is permanent, the corridor is enforced by a moving WorldBorder, and the scoreboard tracks live distances for all participants.
 
 ## Concept
 
@@ -14,9 +14,18 @@ All players start inside a glass cage. When the countdown ends, the lime-glass f
 
 ## Requirements
 
-- Paper 1.21.8
+- Paper 1.20.2 or higher (see [Version Compatibility](#version-compatibility))
 - Java 21
 - Maven 3.6+
+
+## Version Compatibility
+
+| JAR | Paper versions | Branch |
+|-----|---------------|--------|
+| `Deathrun-x.x.x.jar` | 1.20.2 – latest | `main` |
+| `Deathrun-x.x.x-legacy.jar` | 1.16.5 – 1.20.1 | `legacy-1.16` |
+
+The legacy JAR is functionally identical with two visual differences: the cage floor uses **Obsidian** instead of Reinforced Deepslate, and scoreboard titles use legacy color formatting.
 
 ## Building
 
