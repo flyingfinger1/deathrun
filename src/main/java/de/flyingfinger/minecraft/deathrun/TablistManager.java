@@ -55,8 +55,8 @@ public class TablistManager {
      */
     private Component heartsComponent(Player p) {
         double health    = p.getHealth();
-        double maxHealth = p.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH) != null
-            ? p.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue() : 20.0;
+        double maxHealth = p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH) != null
+            ? p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getValue() : 20.0;
         int hearts    = (int) Math.ceil(health / 2.0);
         int maxHearts = (int) Math.ceil(maxHealth / 2.0);
         TextColor color = hearts > 6 ? NamedTextColor.GREEN : hearts > 3 ? NamedTextColor.YELLOW : NamedTextColor.RED;
