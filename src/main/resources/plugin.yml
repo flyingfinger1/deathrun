@@ -1,7 +1,7 @@
 name: Deathrun
 version: '1.0.0'
 main: de.flyingfinger.minecraft.deathrun.DeathrunPlugin
-api-version: '1.21.8'
+api-version: '1.20'
 description: Deathrun Minigame – Race with permanent health loss
 authors:
   - Du
